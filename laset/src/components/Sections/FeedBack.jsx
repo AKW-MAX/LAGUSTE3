@@ -30,7 +30,7 @@ export default function FeedBack() {
                     </div>
 
                     {/* Navigation Arrows */}
-                    <div className="flex gap-4 mt-4 justify-start sm:justify-start">
+                    <div className="flex gap-4 ml-40 mt-4 justify-start sm:justify-start">
                         <Link to="Allcommen">
                             <img className="w-5" src="/images/arrow2.png" alt="arrow icon" />
                         </Link>
@@ -41,12 +41,12 @@ export default function FeedBack() {
                 </div>
 
                 {/* Right Image */}
-                <div className="flex-shrink-0 mt-4 lg:mt-0">
-                    <img
-                        className="w-full sm:w-80 md:w-96 lg:w-[560px] h-64 sm:h-80 md:h-80 lg:h-[560px] rounded-lg object-cover"
-                        src="/images/FeedbackPic.png"
-                        alt="farmer using a phone"
-                    />
+               <div className="flex-shrink-0 mt-4 lg:mt-0">
+    
+                    <img className="w-full sm:w-80 md:w-96 lg:w-[560px] h-64 sm:h-64 md:h-64  lg:max-h-[560px] rounded-lg object-cover"
+                    src="/images/FeedbackPic.png"
+                    alt="farmer using a phone" />
+                
                 </div>
             </div>
         </>
