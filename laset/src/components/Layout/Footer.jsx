@@ -14,7 +14,7 @@ function Footer() {
                         QualityFirst
                     </h3>
 
-                    <div className="flex gap-4 md:gap-2 items-center">
+                    <div className="flex gap-4 md:gap-2 items-center mr-11">
 
                         <Link to="Contacts">
                             <img className="w-5 md:w-4" src="/images/phone.png" alt="phone icon" />
