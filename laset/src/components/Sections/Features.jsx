@@ -49,7 +49,7 @@ export default function Features() {
                             hover:scale-105 hover:shadow-lg
                             cursor-pointer
                         "
-                        src="src/assets/images/FeaturesPic.png"
+                        src="/images/FeaturesPic.png"
                         alt="farmers"
                     />
                 </div>

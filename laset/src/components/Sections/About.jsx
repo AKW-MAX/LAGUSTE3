@@ -22,7 +22,7 @@ export default function About() {
                             w-48 sm:w-64 md:w-80 lg:w-130
                             h-auto
                         "
-                        src="src/assets/images/AboutPic.png"
+                        src="/images/AboutPic.png"
                         alt="A happy farmer smiling in the field"
                     />
                 </div>

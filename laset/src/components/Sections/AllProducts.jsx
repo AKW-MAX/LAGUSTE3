@@ -27,9 +27,9 @@ export default function AllProducts() {
             >
                 <div>
                     <ProductsCard
-                        imgSrc="src/assets/images/Kelpreal.png"
+                        imgSrc="/images/Kelpreal.png"
                         imgAlt="capsicum image"
-                        add="src/assets/images/add.png"
+                        add="/images/add.png"
                         name="Kelpreal 250ml"
                         price="sh600"
                     />
@@ -37,8 +37,8 @@ export default function AllProducts() {
 
                 <div>
                     <ProductsCard
-                        imgSrc="src/assets/images/Actellic.png"
-                        add="src/assets/images/add.png"
+                        imgSrc="/images/Actellic.png"
+                        add="/images/add.png"
                         imgAlt="Actellic image"
                         name="Actellic 1L"
                         price="sh6000"
@@ -47,8 +47,8 @@ export default function AllProducts() {
 
                 <div>
                     <ProductsCard
-                        imgSrc="src/assets/images/Atom.png"
-                        add="src/assets/images/add.png"
+                        imgSrc="/images/Atom.png"
+                        add="/images/add.png"
                         imgAlt="Atom image"
                         name="Atom 1L"
                         price="sh1700"
@@ -57,8 +57,8 @@ export default function AllProducts() {
 
                 <div>
                     <ProductsCard
-                        imgSrc="src/assets/images/Bedlam.png"
-                        add="src/assets/images/add.png"
+                        imgSrc="/images/Bedlam.png"
+                        add="/images/add.png"
                         imgAlt="Bedlam image"
                         name="Bedlam 50ml"
                         price="sh400"
@@ -67,8 +67,8 @@ export default function AllProducts() {
 
                 <div>
                     <ProductsCard
-                        imgSrc="src/assets/images/Dynamo.png"
-                        add="src/assets/images/add.png"
+                        imgSrc="/images/Dynamo.png"
+                        add="/images/add.png"
                         imgAlt="Dynamo image"
                         name="Dynamo 100g"
                         price="sh900"
@@ -77,8 +77,8 @@ export default function AllProducts() {
 
                 <div>
                     <ProductsCard
-                        imgSrc="src/assets/images/Fendona.png"
-                        add="src/assets/images/add.png"
+                        imgSrc="/images/Fendona.png"
+                        add="/images/add.png"
                         imgAlt="Fendona image"
                         name="Fendona 250ml"
                         price="sh2200"
@@ -87,8 +87,8 @@ export default function AllProducts() {
 
                 <div>
                     <ProductsCard
-                        imgSrc="src/assets/images/Lancer.png"
-                        add="src/assets/images/add.png"
+                        imgSrc="/images/Lancer.png"
+                        add="/images/add.png"
                         imgAlt="Lancer image"
                         name="Lancer 1l"
                         price="sh2800"
@@ -97,8 +97,8 @@ export default function AllProducts() {
 
                 <div>
                     <ProductsCard
-                        imgSrc="src/assets/images/SpiderPlant.png"
-                        add="src/assets/images/add.png"
+                        imgSrc="/images/SpiderPlant.png"
+                        add="/images/add.png"
                         imgAlt="SpiderPlant image"
                         name="Spider Plant 500g"
                         price="sh1900"

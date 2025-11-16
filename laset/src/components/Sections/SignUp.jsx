@@ -9,7 +9,7 @@ export default function SignUp() {
                 {/* Image */}
                 <img
                     className="w-80 h-64 absolute p-6 ml-11 sm:w-64 sm:h-52 md:w-72 md:h-60 lg:w-80 lg:h-64"
-                    src="src/assets/images/SignupPic.png"
+                    src="/images/SignupPic.png"
                     alt="farmer images"
                 />
 

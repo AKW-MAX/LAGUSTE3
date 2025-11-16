@@ -11,22 +11,22 @@ const Cards =() =>{
         
             <div>
             <ProductsCard
-                imgSrc="src/assets/images/Malin.png" 
-                add="src/assets/images/add.png"
+                imgSrc="/images/Malin.png" 
+                add="/images/add.png"
                 imgAlt="capsicum image" 
                 name="Malin F1" />
              </div> 
              <div>  
             <ProductsCard
-            imgSrc="src/assets/images/RedRiz.png" 
-            add="src/assets/images/add.png"
+            imgSrc="/images/RedRiz.png" 
+            add="/images/add.png"
                 imgAlt="capsicum image" 
                 name="Red Riz F1" /> 
             </div>
             <div>
             <ProductsCard
-            imgSrc="src/assets/images/Twix.png" 
-            add="src/assets/images/add.png"
+            imgSrc="/images/Twix.png" 
+            add="/images/add.png"
                 imgAlt="capsicum image" 
                 name="Twiz F1" />
             </div> 
