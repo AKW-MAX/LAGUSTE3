@@ -16,7 +16,7 @@ export default function FeedBack() {
                     <div className="py-2 px-2 bg-white rounded-xl w-full sm:w-90 shadow-lg flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-4">
                         <img
                             className="h-12 mt-2 ml-0 sm:ml-4"
-                            src="src/assets/images/WomanImage.png"
+                            src="/images/WomanImage.png"
                             alt="Woman's icon"
                         />
 
@@ -32,10 +32,10 @@ export default function FeedBack() {
                     {/* Navigation Arrows */}
                     <div className="flex gap-4 mt-4 ml-30">
                         <Link to="Allcommen">
-                            <img className="w-5 mt-1" src="src/assets/images/arrow2.png" alt="arrow icon" />
+                            <img className="w-5 mt-1" src="/images/arrow2.png" alt="arrow icon" />
                         </Link>
                         <Link to="Allcomments">
-                            <img className="w-5 mt-1" src="src/assets/images/arrow.png" alt="arrow icon" />
+                            <img className="w-5 mt-1" src="/images/arrow.png" alt="arrow icon" />
                         </Link>
                     </div>
                 </div>
@@ -44,7 +44,7 @@ export default function FeedBack() {
                 <div className="flex-shrink-0">
                     <img
                         className="w-64 sm:w-80 md:w-96 lg:w-140 h-80 rounded-lg"
-                        src="src/assets/images/FeedbackPic.png"
+                        src="/images/FeedbackPic.png"
                         alt="farmer using a phone"
                     />
                 </div>

@@ -20,7 +20,7 @@ export default function NewProducts() {
                         <Link to="NewProducts">
                             <img
                                 className="w-5 lg:w-6 mt-1 lg:mt-0"
-                                src="src/assets/images/arrow.png"
+                                src="/images/arrow.png"
                                 alt="arrow icon"
                             />
                         </Link>
