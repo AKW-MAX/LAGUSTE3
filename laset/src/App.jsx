@@ -9,7 +9,6 @@ import Features from "./components/Sections/Features"
 import AllProducts from "./components/Sections/AllProducts"
 import FeedBack from "./components/Sections/FeedBack"
 import SignUp from "./components/Sections/SignUp"
-import Navigation from "./components/Layout/Navigation"
 import "./index.css"
 
 
