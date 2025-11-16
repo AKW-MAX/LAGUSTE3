@@ -9,13 +9,13 @@ function Footer() {
                 <div className="flex flex-wrap justify-between items-center gap-4 mr-11 mt-2">
                     <h3 className="ml-11 mt-4 mb-5 font-bold text-lg sm:text-base">QualityFirst</h3>
                     <Link to="Contacts">
-                        <img className="w-5 mt-1 ml-20 sm:ml-4 bg-white" src="src/assets/images/phone.png" alt="phone icon" />
+                        <img className="w-5 mt-1 ml-20 sm:ml-4 bg-white" src="/images/phone.png" alt="phone icon" />
                     </Link>
                     <Link to="facebook">
-                        <img className="w-5 mt-1 bg-white" src="src/assets/images/facebook.png" alt="facebook icon" />
+                        <img className="w-5 mt-1 bg-white" src="/images/facebook.png" alt="facebook icon" />
                     </Link>
                     <Link to="contacts">
-                        <img className="w-5 mt-1 bg-white mr-30 sm:mr-4" src="src/assets/images/whatsapp.png" alt="whatsapp icon" />
+                        <img className="w-5 mt-1 bg-white mr-30 sm:mr-4" src="/images/whatsapp.png" alt="whatsapp icon" />
                     </Link>
                 </div>
 
