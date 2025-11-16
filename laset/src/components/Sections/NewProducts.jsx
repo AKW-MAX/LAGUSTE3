@@ -5,17 +5,20 @@ export default function NewProducts() {
     return (
         <>
             <title>New Products</title>
+
             <div className="flex flex-col lg:flex-row items-start lg:items-center p-4 lg:p-4">
 
                 {/* Left Text Section */}
-                <div className="flex-1 mb-10 lg:mb-0 lg:mr-0 ml-11 ">
+                <div className="flex-1 mb-10 lg:mb-0 lg:mr-0 ml-6 sm:ml-11 text-center sm:text-left">
                     <h2 className="font-extrabold text-2xl lg:text-3xl mb-5 lg:mb-8 text-green-900">
                         New In Store With<br />Great Discounts!!
                     </h2>
+
                     <p className="text-sm lg:text-base mb-5 lg:mb-8">
                         Check out our latest additions to the collection!
                     </p>
-                    <div className="flex items-center gap-2 lg:gap-4">
+
+                    <div className="flex items-center justify-center sm:justify-start gap-2 lg:gap-4">
                         <p className="text-green-900 font-semibold">View All Products</p>
                         <Link to="NewProducts">
                             <img
@@ -28,7 +31,7 @@ export default function NewProducts() {
                 </div>
 
                 {/* Right Cards Section */}
-                <div className="flex-1 w-0 overflow-x-auto">
+                <div className="flex-1 w-full lg:w-0 overflow-x-auto">
                     <Cards />
                 </div>
 
@@ -36,3 +39,4 @@ export default function NewProducts() {
         </>
     );
 }
+

@@ -5,22 +5,40 @@ function Footer() {
     return (
         <footer>
             <div className="font-sans text-white bg-green-950 p-4">
+
                 {/* Top icons and title */}
-                <div className="flex flex-wrap justify-between items-center gap-4 mr-11 mt-2">
-                    <h3 className="ml-11 mt-4 mb-5 font-bold text-lg sm:text-base">QualityFirst</h3>
-                    <Link to="Contacts">
-                        <img className="w-5 mt-1 ml-20 sm:ml-4 bg-white" src="/images/phone.png" alt="phone icon" />
-                    </Link>
-                    <Link to="facebook">
-                        <img className="w-5 mt-1 bg-white" src="/images/facebook.png" alt="facebook icon" />
-                    </Link>
-                    <Link to="contacts">
-                        <img className="w-5 mt-1 bg-white mr-30 sm:mr-4" src="/images/whatsapp.png" alt="whatsapp icon" />
-                    </Link>
+                <div className="flex flex-wrap justify-between items-center gap-4 mr-11 mt-2
+                                sm:flex-nowrap sm:justify-between">
+
+                    <h3 className="ml-11 mt-4 mb-5 font-bold text-lg sm:text-base
+                                   w-full sm:w-auto text-center sm:text-left">
+                        QualityFirst
+                    </h3>
+
+                    <div className="flex flex-wrap gap-6 sm:gap-4 justify-center sm:justify-end w-full sm:w-auto">
+
+                        <Link to="Contacts">
+                            <img className="w-5 mt-1 ml-20 sm:ml-4 bg-white" 
+                                 src="/images/phone.png" alt="phone icon" />
+                        </Link>
+
+                        <Link to="facebook">
+                            <img className="w-5 mt-1 bg-white" 
+                                 src="/images/facebook.png" alt="facebook icon" />
+                        </Link>
+
+                        <Link to="contacts">
+                            <img className="w-5 mt-1 bg-white mr-30 sm:mr-4" 
+                                 src="/images/whatsapp.png" alt="whatsapp icon" />
+                        </Link>
+
+                    </div>
                 </div>
 
                 {/* Footer links grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 pl-4 pr-4 border-t mt-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 
+                                gap-6 pl-4 pr-4 border-t mt-6">
+
                     <div>
                         <h5 className="font-semibold mt-6">Our Products</h5>
                         <p className="text-sm">Inseticides</p>
@@ -60,6 +78,7 @@ function Footer() {
                         <p className="text-sm">Innovative Solutions</p>
                         <p className="text-sm">Sustainability Commitment</p>
                     </div>
+
                 </div>
 
                 {/* Bottom copyright */}
@@ -72,3 +91,4 @@ function Footer() {
 }
 
 export default Footer;
+
