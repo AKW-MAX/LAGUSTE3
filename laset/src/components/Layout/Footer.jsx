@@ -7,88 +7,85 @@ function Footer() {
             <div className="font-sans text-white bg-green-950 p-4">
 
                 {/* Top icons and title */}
-                <div className="flex flex-wrap justify-between items-center gap-4 mr-11 mt-2
-                                sm:flex-nowrap sm:justify-between">
+                <div className="flex justify-between items-center flex-wrap gap-4 mt-2">
 
-                    <h3 className="ml-11 mt-4 mb-5 font-bold text-lg sm:text-base
-                                   w-full sm:w-auto text-center sm:text-left">
+                    <h3 className="font-bold text-lg sm:text-base md:text-sm w-auto text-left 
+                                   md:text-sm md:truncate">
                         QualityFirst
                     </h3>
 
-                    <div className="flex flex-wrap gap-6 sm:gap-4 justify-center sm:justify-end w-full sm:w-auto">
+                    <div className="flex gap-4 md:gap-2 items-center">
 
                         <Link to="Contacts">
-                            <img className="w-5 mt-1 ml-20 sm:ml-4 bg-white" 
-                                 src="/images/phone.png" alt="phone icon" />
+                            <img className="w-5 md:w-4" src="/images/phone.png" alt="phone icon" />
                         </Link>
 
                         <Link to="facebook">
-                            <img className="w-5 mt-1 bg-white" 
-                                 src="/images/facebook.png" alt="facebook icon" />
+                            <img className="w-5 md:w-4" src="/images/facebook.png" alt="facebook icon" />
                         </Link>
 
                         <Link to="contacts">
-                            <img className="w-5 mt-1 bg-white mr-30 sm:mr-4" 
-                                 src="/images/whatsapp.png" alt="whatsapp icon" />
+                            <img className="w-5 md:w-4" src="/images/whatsapp.png" alt="whatsapp icon" />
                         </Link>
 
                     </div>
                 </div>
 
                 {/* Footer links grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 
-                                gap-6 pl-4 pr-4 border-t mt-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-3 md:gap-2 px-2 sm:px-4 md:px-6 mt-6 border-t">
 
-                    <div>
+                    <div className="text-sm sm:text-xs md:text-[12px]">
                         <h5 className="font-semibold mt-6">Our Products</h5>
-                        <p className="text-sm">Inseticides</p>
-                        <p className="text-sm">Fungicides</p>
-                        <p className="text-sm">Foliar Fertilizers</p>
-                        <p className="text-sm">Public Health Products</p>
+                        <p>Inseticides</p>
+                        <p>Fungicides</p>
+                        <p>Foliar Fertilizers</p>
+                        <p>Public Health Products</p>
                     </div>
 
-                    <div>
+                    <div className="text-sm sm:text-xs md:text-[12px]">
                         <h3 className="font-semibold mt-6">Our Services</h3>
-                        <p className="text-sm">Agricultural Consultancy</p>
-                        <p className="text-sm">Soil and Plant Tissue Analysis</p>
-                        <p className="text-sm">Custom Formulation of Agrochemicals</p>
-                        <p className="text-sm">Fumigation Services</p>
+                        <p>Agricultural Consultancy</p>
+                        <p>Soil and Plant Tissue Analysis</p>
+                        <p>Custom Formulation of Agrochemicals</p>
+                        <p>Fumigation Services</p>
                     </div>
 
-                    <div>
+                    <div className="text-sm sm:text-xs md:text-[12px]">
                         <h3 className="font-semibold mt-6">Resources</h3>
-                        <p className="text-sm">Product Catalog</p>
-                        <p className="text-sm">Most Popular Products</p>
-                        <p className="text-sm">Blog post of our products</p>
+                        <p>Product Catalog</p>
+                        <p>Most Popular Products</p>
+                        <p>Blog post of our products</p>
                     </div>
 
-                    <div>
+                    <div className="text-sm sm:text-xs md:text-[12px]">
                         <h3 className="font-semibold mt-6">Company</h3>
-                        <p className="text-sm">About Us</p>
-                        <p className="text-sm">Contact Us</p>
-                        <p className="text-sm">Privacy Policy</p>
-                        <p className="text-sm">Terms of Service</p>
+                        <p>About Us</p>
+                        <p>Contact Us</p>
+                        <p>Privacy Policy</p>
+                        <p>Terms of Service</p>
                     </div>
 
-                    <div>
+                    <div className="text-sm sm:text-xs md:text-[12px]">
                         <h3 className="font-semibold mt-6">Why Choose Us?</h3>
-                        <p className="text-sm">High-Quality Products</p>
-                        <p className="text-sm">Expertise and Experience</p>
-                        <p className="text-sm">Customer-Centric Approach</p>
-                        <p className="text-sm">Innovative Solutions</p>
-                        <p className="text-sm">Sustainability Commitment</p>
+                        <p>High-Quality Products</p>
+                        <p>Expertise and Experience</p>
+                        <p>Customer-Centric Approach</p>
+                        <p>Innovative Solutions</p>
+                        <p>Sustainability Commitment</p>
                     </div>
 
                 </div>
 
                 {/* Bottom copyright */}
-                <div className="text-center bg-green-950 p-4 text-white text-sm">
+                <div className="text-center bg-green-950 p-4 text-white text-sm sm:text-xs md:text-[12px] mt-4">
                     <p>© Agriventure Enterprises 2025- All Rights Reserved</p>
                 </div>
+
             </div>
         </footer>
     );
 }
 
 export default Footer;
+
 

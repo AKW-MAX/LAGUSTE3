@@ -1,4 +1,3 @@
-
 export default function Starts() {
 	return (
 		<div className="
@@ -6,37 +5,35 @@ export default function Starts() {
 			flex flex-col sm:flex-row 
 			text-center place-content-between 
 			bg-green-900 text-white 
-			p-4 
-			ml-5 sm:ml-10 md:ml-15 
-			mr-5 sm:mr-10 md:mr-20 
-			mb-10 
-			mt-10 sm:mt-15 md:mt-62
-			gap-6 sm:gap-0
+			p-2 sm:p-4 md:p-6
+			mx-2 sm:mx-4 md:mx-10
+			my-4 sm:my-6 md:my-10
+			gap-2 sm:gap-4
 		">
-			<div className="border-r sm:border-r border-white-800 px-10 sm:px-20">
-				<p className="font-bold text-lg sm:text-xl">10</p> 
-				<p className="text-sm sm:text-base font-normal">
+			<div className="border-b sm:border-b-0 sm:border-r border-white-800 px-2 sm:px-6 md:px-10 py-2">
+				<p className="font-bold text-base sm:text-lg md:text-xl">10</p> 
+				<p className="text-xs sm:text-sm md:text-base font-normal">
 					Years <br />of Experience
 				</p>
 			</div>
 
-			<div className="border-r sm:border-r border-white-800 px-10 sm:px-20">
-				<p className="font-bold text-lg sm:text-xl">5</p> 
-				<p className="text-sm sm:text-base font-normal">
+			<div className="border-b sm:border-b-0 sm:border-r border-white-800 px-2 sm:px-6 md:px-10 py-2">
+				<p className="font-bold text-base sm:text-lg md:text-xl">5</p> 
+				<p className="text-xs sm:text-sm md:text-base font-normal">
 					Branches <br />Across the Country
 				</p>
 			</div>
 
-			<div className="border-r sm:border-r border-white-800 px-10 sm:px-20">
-				<p className="font-bold text-lg sm:text-xl">50+</p>
-				<p className="text-sm sm:text-base font-normal">
+			<div className="border-b sm:border-b-0 sm:border-r border-white-800 px-2 sm:px-6 md:px-10 py-2">
+				<p className="font-bold text-base sm:text-lg md:text-xl">50+</p>
+				<p className="text-xs sm:text-sm md:text-base font-normal">
 					Expert <br />Employees
 				</p>
 			</div>
 
-			<div className="mr-0 sm:mr-30 px-10 sm:px-20">
-				<p className="font-bold text-lg sm:text-xl">10k+</p>
-				<p className="text-sm sm:text-base font-normal">
+			<div className="px-2 sm:px-6 md:px-10 py-2">
+				<p className="font-bold text-base sm:text-lg md:text-xl">10k+</p>
+				<p className="text-xs sm:text-sm md:text-base font-normal">
 					Customers <br />Served
 				</p>
 			</div>

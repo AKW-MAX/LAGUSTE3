@@ -5,29 +5,29 @@ export default function SignUp() {
         <>
             <title>Sign up</title>
 
-            <div className="relative">
+            <div className="relative flex flex-col sm:flex-row items-center sm:items-start p-4">
 
                 {/* Image */}
                 <img
-                    className="w-64 h-52 sm:w-80 sm:h-64 absolute p-6 left-0 sm:left-auto"
+                    className="w-48 h-40 sm:w-80 sm:h-64 mb-4 sm:mb-0 sm:mr-6"
                     src="/images/SignupPic.png"
                     alt="farmer images"
                 />
 
                 {/* Text Section */}
-                <div className="text-justify text-white bg-green-900 pr-4 pl-4 pb-12 pt-8 mt-4 sm:mt-4">
-                    <h2 className="font-extrabold text-2xl mb-2 ml-0 sm:ml-150 mt-3 text-center sm:text-left">
+                <div className="text-white bg-green-900 p-4 rounded w-full sm:w-auto">
+                    <h2 className="font-extrabold text-xl sm:text-2xl md:text-3xl mb-2 text-center sm:text-left">
                         Sign Up for Exclusive Offers
                     </h2>
-                    <p className="font-semibold mb-1 ml-0 sm:ml-150 text-center sm:text-left">
+                    <p className="font-semibold mb-4 text-sm sm:text-base md:text-lg text-center sm:text-left">
                         Join our community and stay updated on the latest products <br />and promotions!
                     </p>
                     <input
                         type="email"
                         placeholder="Enter your email"
-                        className="text-black text-center rounded-lg pr-20 pb-2 ml-0 sm:ml-150 bg-white mt-4 w-full sm:w-64"
+                        className="text-black text-center rounded-lg p-2 w-full sm:w-64 mb-4"
                     />
-                    <div className="flex justify-center sm:justify-start mt-4">
+                    <div className="flex justify-center sm:justify-start mt-2">
                         <Buttons />
                     </div>
                 </div>
