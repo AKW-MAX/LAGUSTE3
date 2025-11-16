@@ -43,7 +43,7 @@ export default function FeedBack() {
                 {/* Right Image */}
                 <div className="flex-shrink-0 mt-4 lg:mt-0">
                     <img
-                        className="w-full sm:w-80 md:w-96 lg:w-[560px] h-64 sm:h-80 md:h-96 lg:h-[560px] rounded-lg object-cover"
+                        className="w-full sm:w-80 md:w-96 lg:w-[560px] h-64 sm:h-80 md:h-80 lg:h-[560px] rounded-lg object-cover"
                         src="/images/FeedbackPic.png"
                         alt="farmer using a phone"
                     />

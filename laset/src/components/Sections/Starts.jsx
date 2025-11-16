@@ -4,7 +4,7 @@ export default function Starts() {
 			border rounded-lg relative 
 			flex flex-col sm:flex-row 
 			text-center place-content-between 
-			bg-green-900 text-white 
+			bg-green-900 text-white mt-30
 			p-2 sm:p-4 md:p-6
 			mx-2 sm:mx-4 md:mx-10
 			my-4 sm:my-6 md:my-10
