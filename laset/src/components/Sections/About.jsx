@@ -1,7 +1,7 @@
 export default function About() {
     return (
         <>
-            <title>About</title>
+           
 
             <section 
                 className="

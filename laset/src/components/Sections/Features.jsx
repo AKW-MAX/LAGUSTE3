@@ -1,7 +1,7 @@
 export default function Features() {
     return (
         <>
-            <title>Features</title>
+            
 
             <div
                 className="

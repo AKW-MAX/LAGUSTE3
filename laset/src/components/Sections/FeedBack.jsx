@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function FeedBack() {
     return (
         <>
-            <title>Feed back</title>
+            
 
             <div className="p-4 mx-2 sm:mx-4 lg:mx-11 mt-5 relative flex flex-col lg:flex-row items-start gap-6">
 

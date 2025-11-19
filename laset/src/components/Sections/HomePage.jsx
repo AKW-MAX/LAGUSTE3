@@ -11,7 +11,7 @@ import Footer from "../Layout/Footer";
 const HomePage =() =>{
     return (
         <div>
-            <title>Home</title>
+           
 
 
             <Hero />

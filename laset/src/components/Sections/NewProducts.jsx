@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default function NewProducts() {
     return (
         <>
-            <title>New Products</title>
+          
 
             <div className="flex flex-col lg:flex-row items-start lg:items-center p-4 lg:p-4">
 

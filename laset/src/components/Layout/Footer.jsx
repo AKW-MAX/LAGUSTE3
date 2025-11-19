@@ -7,7 +7,7 @@ function Footer() {
                             p-3 sm:p-3 md:p-3 lg:p-4">
 
                 {/* Top icons and title */}
-                <div className="flex justify-between items-center flex-wrap 
+                <div className="flex justify-between items-center ml-11 mr-20 flex-wrap 
                                 gap-2 sm:gap-2 md:gap-2 lg:gap-4 mt-1">
 
                     <h3 className="font-bold 
@@ -19,17 +19,17 @@ function Footer() {
                                     gap-3 sm:gap-2 md:gap-2 lg:gap-4">
 
                         <Link to="/contacts">
-                            <img className="w-4 md:w-3 lg:w-5" 
+                            <img className="w-4 bg-white md:w-3 lg:w-5" 
                                  src="/images/phone.png" alt="phone icon" />
                         </Link>
 
                         <Link to="/facebook">
-                            <img className="w-4 md:w-3 lg:w-5" 
+                            <img className="w-4 bg-white md:w-3 lg:w-5" 
                                  src="/images/facebook.png" alt="facebook icon" />
                         </Link>
 
                         <Link to="/contacts">
-                            <img className="w-4 md:w-3 lg:w-5" 
+                            <img className="w-4 bg-white md:w-3 lg:w-5" 
                                  src="/images/whatsapp.png" alt="whatsapp icon" />
                         </Link>
 
