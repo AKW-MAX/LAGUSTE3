@@ -15,7 +15,7 @@ const ProductsCard = ({ imgSrc, add, imgAlt, name, price }) => {
         <img 
           src={add} 
           alt="Add to cart" 
-          className="w-4 sm:w-3 ml-auto mr-3 mt-2 cursor-pointer" 
+          className="w-6 sm:w-3 ml-auto mr-3 mt-2 cursor-pointer" 
         />
       </Link>
 

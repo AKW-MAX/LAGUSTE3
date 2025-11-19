@@ -6,7 +6,7 @@ import Navigation from "../Layout/Navigation"
 export default function Hero() {
 	return (
 		<>
-		<title>Hero Section</title>
+		 <title>Hero Section</title>
 	     <img className="
 		 w-screen absolute h-150 saturate-70 sm:h-[32rem] md:h-[40rem] lg:h-[48rem] 
              grayscale-25
