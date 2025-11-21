@@ -9,6 +9,7 @@ import Features from "./components/Sections/Features"
 import AllProducts from "./components/Sections/AllProducts"
 import FeedBack from "./components/Sections/FeedBack"
 import SignUp from "./components/Sections/SignUp"
+import AllContacts from "./components/Sections/Contacts/AllContacts"
 import "./index.css"
 
 
@@ -47,7 +48,9 @@ import "./index.css"
           <Routes>
            <Route path="Footer" element={<Footer />} />
         </Routes>
-          
+          <Routes>
+           <Route path="AllContacts" element={<AllContacts />} />
+        </Routes>
               
        </div>
       

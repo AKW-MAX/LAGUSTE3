@@ -31,7 +31,7 @@ function Navigation() {
             </p>
           </Link>
 
-          <Link to="Contacts">
+          <Link to="AllContacts">
             <p className="hover:bg-green-900 focus:outline-2 focus:outline-offset-1 bg-green-700 active:bg-green-950 transition-15s">
               Contacts
             </p>

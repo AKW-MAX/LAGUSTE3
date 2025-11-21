@@ -18,17 +18,17 @@ function Footer() {
                     <div className="flex items-center 
                                     gap-3 sm:gap-2 md:gap-2 lg:gap-4">
 
-                        <Link to="/contacts">
+                        <Link to="tel:0704519867">
                             <img className="w-4 bg-white md:w-3 lg:w-5" 
                                  src="/images/phone.png" alt="phone icon" />
                         </Link>
 
-                        <Link to="/facebook">
+                        <Link to="https://www.facebook.com/profile.php?id=1000078224891871">
                             <img className="w-4 bg-white md:w-3 lg:w-5" 
                                  src="/images/facebook.png" alt="facebook icon" />
                         </Link>
 
-                        <Link to="/contacts">
+                        <Link to="http://whatsapp.com/biz/0704519867">
                             <img className="w-4 bg-white md:w-3 lg:w-5" 
                                  src="/images/whatsapp.png" alt="whatsapp icon" />
                         </Link>
@@ -44,18 +44,22 @@ function Footer() {
 
                     <div className="text-[10px] sm:text-[11px] md:text-[10px] lg:text-sm">
                         <h5 className="font-semibold mt-3 lg:mt-6">Our Products</h5>
-                        <p>Inseticides</p>
+                        <Link to="AllProducts">
+                        <p >Inseticides</p>
                         <p>Fungicides</p>
                         <p>Foliar Fertilizers</p>
                         <p>Public Health Products</p>
+                        </Link>
                     </div>
 
                     <div className="text-[10px] sm:text-[11px] md:text-[10px] lg:text-sm">
+                        <Link to="AllProducts">
                         <h3 className="font-semibold mt-3 lg:mt-6">Our Services</h3>
                         <p>Agricultural Consultancy</p>
                         <p>Soil & Plant Tissue Analysis</p>
                         <p>Custom Formulations</p>
                         <p>Fumigation Services</p>
+                        </Link>
                     </div>
 
                     <div className="text-[10px] sm:text-[11px] md:text-[10px] lg:text-sm">
@@ -67,19 +71,25 @@ function Footer() {
 
                     <div className="text-[10px] sm:text-[11px] md:text-[10px] lg:text-sm">
                         <h3 className="font-semibold mt-3 lg:mt-6">Company</h3>
+                        <Link to="About">
                         <p>About Us</p>
+                        </Link>
+                        <Link to="Contacts">
                         <p>Contact Us</p>
+                        </Link>
                         <p>Privacy Policy</p>
                         <p>Terms of Service</p>
                     </div>
 
                     <div className="text-[10px] sm:text-[11px] md:text-[10px] lg:text-sm">
                         <h3 className="font-semibold mt-3 lg:mt-6">Why Choose Us?</h3>
+                        <Link to="Features">
                         <p>High Quality</p>
                         <p>Experienced Team</p>
                         <p>Customer Focus</p>
                         <p>Innovation</p>
                         <p>Sustainability</p>
+                        </Link>
                     </div>
 
                 </div>
@@ -89,7 +99,7 @@ function Footer() {
                                 p-2 sm:p-2 md:p-2 lg:p-4
                                 text-[10px] sm:text-[11px] md:text-[10px] lg:text-sm 
                                 mt-3">
-                    <p>© Agriventure Enterprises 2025 — All Rights Reserved</p>
+                    <p>© Agriventure Enterprise 2025 — All Rights Reserved</p>
                 </div>
 
             </div>
