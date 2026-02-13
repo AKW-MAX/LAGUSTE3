@@ -11,11 +11,11 @@ const ProductsCard = ({ imgSrc, add, imgAlt, name, price }) => {
       />
 
       {/* Add to cart icon */}
-      <Link to="AllProducts">
+      <Link to="Cart">
         <img 
           src={add} 
           alt="Add to cart" 
-          className="w-6 sm:w-3 ml-auto mr-3 mt-2 cursor-pointer" 
+          className="w-8 sm:w-4 ml-auto mr-3 mt-2 cursor-pointer" 
         />
       </Link>
 

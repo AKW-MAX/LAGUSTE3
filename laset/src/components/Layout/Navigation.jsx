@@ -36,6 +36,15 @@ function Navigation() {
               Contacts
             </p>
           </Link>
+            <div>
+              <img className="relative hover:bg-green-900 focus:outline-2 focus:outline-offset-1 bg-green-700 active:bg-green-950 transition-15s md:w-4 lg:w-8 h-5 " 
+              src="/images/Cart.png" alt="Cart icon" />
+              <span className="absolute top-1/2 right-20px bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">0</span>
+            </div>
+            
+        
+
+        
 
         </div>
       </div>
