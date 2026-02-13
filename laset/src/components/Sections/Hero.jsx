@@ -13,7 +13,7 @@ export default function Hero() {
                     object-cover"
 		  src = "/images/HeroPic.png" alt = "Tomatoes being harvested" />
 		 <Navigation />
-		     <div className="text-center relative text-white p-2 mt-25 ">
+		     <div className="text-center relative text-white p-0 mt-25 ">
 		<Header />
 		<Buttons />	
 		</div>

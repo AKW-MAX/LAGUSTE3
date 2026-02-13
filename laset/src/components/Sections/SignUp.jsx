@@ -1,6 +1,30 @@
 import Buttons from "../Common/Buttons";
+import { useState } from "react";
 
 export default function SignUp() {
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit(e);
+    }
+  };
+
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:3000/register", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+      setMessage(data.message);
+    } catch (error) {
+      setMessage("An error occurred. Please try again.");
+    }
+  };
   return (
     <>
  
@@ -14,7 +38,9 @@ export default function SignUp() {
               w-40 h-32 
               sm:w-44 sm:h-36 
               md:w-52 md:h-40 
-              lg:w-64 lg:h-52
+              lg:w-120 lg:h-60
+              object-cover 
+              rounded-lg
             "
             src="/images/SignupPic.png"
             alt="Signup image"
@@ -40,6 +66,9 @@ export default function SignUp() {
             <input
               type="email"
               placeholder="Enter your email"
+              value ={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onSubmit={handleSubmit} 
               className="text-black mt-10 bg-white rounded-lg p-2 
                          w-full sm:w-64"
             />

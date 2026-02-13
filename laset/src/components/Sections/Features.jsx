@@ -6,7 +6,7 @@ export default function Features() {
             <div
                 className="
                     flex flex-col lg:flex-row
-                    mt-5 p-4 
+                    mt-0 p-0
                     ml-4 sm:ml-8 lg:ml-11 
                     mb-10 
                     gap-8 lg:gap-0
@@ -15,7 +15,7 @@ export default function Features() {
             >
                 {/* Text Section */}
                 <div className="text-justify max-w-xl">
-                    <h2 className="font-extrabold text-2xl sm:text-3xl p-1 mt-2 mb-5 text-green-900">
+                    <h2 className="font-extrabold text-2xl sm:text-3xl p-1 mt-0 mb-5 text-green-900">
                         Welcome to the Home of Agricultural <br className="hidden sm:block" />
                         Expertise at Its Finest
                     </h2>

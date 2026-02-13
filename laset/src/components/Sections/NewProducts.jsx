@@ -1,4 +1,4 @@
-import Cards from "../Common/Cards";
+import ProductsCard from "../Common/ProductsCard";
 import { Link } from 'react-router-dom';
 
 export default function NewProducts() {
@@ -31,8 +31,28 @@ export default function NewProducts() {
                 </div>
 
                 {/* Right Cards Section */}
-                <div className="flex-1 w-full lg:w-0 overflow-x-auto">
-                    <Cards />
+                <div className="flex-1 w-full lg:w-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-2 sm:px-6 md:px-10">
+                    <ProductsCard
+                        imgSrc="/images/Twix.png"
+                        imgAlt="capsicum image"
+                        add="/images/add.png"
+                        name="Twix 10g"
+                        price="sh600"
+                    />
+                    <ProductsCard
+                        imgSrc="/images/RedRiz.png"
+                        imgAlt="capsicum image"
+                        add="/images/add.png"
+                        name="Red Riz 10g"
+                        price="sh600"
+                    />
+                    <ProductsCard
+                        imgSrc="/images/Malin.png"
+                        imgAlt="capsicum image"
+                        add="/images/add.png"
+                        name="Malin 10g"
+                        price="sh600"
+                    />
                 </div>
 
             </div>

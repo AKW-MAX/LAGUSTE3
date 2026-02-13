@@ -18,7 +18,7 @@ export default function About() {
                 <div className="flex-shrink-0">
                     <img
                         className="
-                            rounded-sm grayscale-25 shadow-md
+                            grayscale-25 shadow-md
                             w-48 sm:w-64 md:w-80 lg:w-130
                             h-auto
                         "

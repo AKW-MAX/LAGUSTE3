@@ -74,7 +74,7 @@ function Footer() {
                         <Link to="About">
                         <p>About Us</p>
                         </Link>
-                        <Link to="Contacts">
+                        <Link to="AllContacts">
                         <p>Contact Us</p>
                         </Link>
                         <p>Privacy Policy</p>

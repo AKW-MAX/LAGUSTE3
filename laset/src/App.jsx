@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route} from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 import HomePage from "./components/Sections/HomePage" 
 import Footer from "./components/Layout/Footer"
 import Hero from "./components/Sections/Hero"
@@ -10,50 +10,28 @@ import AllProducts from "./components/Sections/AllProducts"
 import FeedBack from "./components/Sections/FeedBack"
 import SignUp from "./components/Sections/SignUp"
 import AllContacts from "./components/Sections/Contacts/AllContacts"
+import Cart from "./components/Sections/Cart"
 import "./index.css"
 
-
-
-  function App() {
+function App() {
   return (
     <>
       <div>
         <Routes>
-        <Route index element={<HomePage />} />
-        </Routes>
-        <Routes>
-        <Route path="Hero" element={<Hero />} />
-        </Routes>
-        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="Hero" element={<Hero />} />
           <Route path="About" element={<About />} />
-        </Routes>
-        <Routes>
           <Route path="Starts" element={<Starts />} />
-        </Routes>
-        <Routes>
           <Route path="New Products" element={<NewProducts />} />
-        </Routes>
-        <Routes>
-          <Route path="Features" element={<Features />} /> 
-        </Routes>
-          <Routes>
+          <Route path="Features" element={<Features />} />
           <Route path="AllProducts" element={<AllProducts />} />
-        </Routes>
-        <Routes>
+          <Route path="Cart" element={<Cart />} />
           <Route path="FeedBack" element={<FeedBack />} />
-        </Routes>
-        <Routes>
           <Route path="SignUp" element={<SignUp />} />
+          <Route path="AllContacts" element={<AllContacts />} />
+          <Route path="Footer" element={<Footer />} />
         </Routes>
-          <Routes>
-           <Route path="Footer" element={<Footer />} />
-        </Routes>
-          <Routes>
-           <Route path="AllContacts" element={<AllContacts />} />
-        </Routes>
-              
-       </div>
-      
+      </div>
     </>
   );
 }

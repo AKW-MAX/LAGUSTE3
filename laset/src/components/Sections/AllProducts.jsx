@@ -1,8 +1,10 @@
 import ProductsCard from "../Common/ProductsCard";
+import Cart from "../Sections/Cart";
 
 export default function AllProducts() {
     return (
-        <>
+        <>  
+            
             <div className="mt-20 px-4 text-center">
                 <h2 className="font-extrabold text-2xl text-green-900 mt-10">
                     Check Out Our Range of Products
@@ -11,6 +13,8 @@ export default function AllProducts() {
                     Explore our complete range of products, including the latest innovations and timeless classics.
                 </p>
             </div>
+            
+            <Cart />
 
             <div
                 className="
@@ -104,6 +108,92 @@ export default function AllProducts() {
                         price="sh1900"
                     />
                 </div>
+
+                 <div className="w-[90%] sm:w-full max-w-[260px]">
+                <ProductsCard
+                 imgSrc="/images/Optimizer.png" 
+                 add="/images/add.png"
+                 imgAlt="foliar feed" 
+                 name="Optimizer 1l"
+                 price="2500"
+                />
+                </div>
+                <div className="w-[90%] sm:w-full max-w-[260px]">
+                    <ProductsCard
+                    imgSrc="/images/Ferrari1l.png" 
+                    add="/images/add.png"
+                    imgAlt="foliar feed" 
+                    name="Ferrari 1l"
+                    price="1100"
+                    />
+                </div>
+                <div className="w-[90%] sm:w-full max-w-[260px]">
+                    <ProductsCard
+                    imgSrc="/images/Biozyme100ml.png" 
+                    add="/images/add.png"
+                    imgAlt="foliar feed" 
+                    name="Biozyme 100ml"
+                    price="300"
+                    />
+                </div>
+                <div className="w-[90%] sm:w-full max-w-[260px]">
+                    <ProductsCard
+                    imgSrc="/images/Jamboclean1l.png" 
+                    add="/images/add.png"
+                    imgAlt="foliar feed" 
+                    name="Jambo Clean 1l"
+                    price="1900"
+                    />
+                </div>
+                <div className="w-[90%] sm:w-full max-w-[260px]">
+                    <ProductsCard
+                    imgSrc="/images/Handspray2l.png" 
+                    add="/images/add.png"
+                    imgAlt="hand spray" 
+                    name="Pressure sprayer 2l"
+                    price="500"
+                    />
+                </div>
+                <div className="w-[90%] sm:w-full max-w-[260px]">
+                    <ProductsCard
+                    imgSrc="/images/Lavendertotal1l.png" 
+                    add="/images/add.png"
+                    imgAlt="foliar feed" 
+                    name="Lavender Total 1l"
+                    price="1800"
+                    />
+                </div>
+                <div className="w-[90%] sm:w-full max-w-[260px]">
+                    <ProductsCard
+                    imgSrc="/images/Kayazinon1l.png" 
+                    add="/images/add.png"
+                    imgAlt="insecticide" 
+                    name="Kayazinon 1l"
+                    price="3500"
+                    />
+                </div>
+                <div className="w-[90%] sm:w-full max-w-[260px]">
+                    <ProductsCard
+                    imgSrc="/images/Omex500ml.png" 
+                    add="/images/add.png"
+                    imgAlt="foliar feed" 
+                    name="Omex 500ml"
+                    price="1000"
+                    />
+                </div>
+                <div className="w-[90%] sm:w-full max-w-[260px]">
+                    <ProductsCard
+                    imgSrc="/images/Reaper1l.png" 
+                    add="/images/add.png"
+                    imgAlt="insecticide" 
+                    name="Reaper 1l"
+                    price="3300"
+                    />
+                </div>
+                    <div>
+                    
+                    </div>
+
             </div>
         </>
     );
