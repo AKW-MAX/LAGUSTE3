@@ -1,9 +1,27 @@
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../Features/CartSlice";
 import ProductsCard from "../Common/ProductsCard";
 import Cart from "../Sections/Cart";
+import {useGetAllProductsQuery} from '../../Features/ProductsApi';
 
 export default function AllProducts() {
+    const dispatch = useDispatch();
+
+    const {data, error, isLoading} = useGetAllProductsQuery();
+    const handleAddToCart = (product) => {
+        dispatch(addToCart(product));
+
+    }
+    
     return (
         <>  
+            <div>
+                {isLoading ? (
+                    <p>Loading products...</p>
+                ) : error ? (
+                    <p>Failed to load products: {error?.data?.message || error?.message || 'Unknown error'}</p>
+                ) : null}
+            </div>
             
             <div className="mt-20 px-4 text-center">
                 <h2 className="font-extrabold text-2xl text-green-900 mt-10">
@@ -29,171 +47,24 @@ export default function AllProducts() {
                     mb-10 mt-10
                 "
             >
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                        imgSrc="/images/Kelpreal.png"
-                        imgAlt="capsicum image"
-                        add="/images/add.png"
-                        name="Kelpreal 250ml"
-                        price="sh600"
-                    />
-                </div>
-
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                        imgSrc="/images/Actellic.png"
-                        add="/images/add.png"
-                        imgAlt="Actellic image"
-                        name="Actellic 1L"
-                        price="sh6000"
-                    />
-                </div>
-
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                        imgSrc="/images/Atom.png"
-                        add="/images/add.png"
-                        imgAlt="Atom image"
-                        name="Atom 1L"
-                        price="sh1700"
-                    />
-                </div>
-
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                        imgSrc="/images/Bedlam.png"
-                        add="/images/add.png"
-                        imgAlt="Bedlam image"
-                        name="Bedlam 50ml"
-                        price="sh400"
-                    />
-                </div>
-
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                        imgSrc="/images/Dynamo.png"
-                        add="/images/add.png"
-                        imgAlt="Dynamo image"
-                        name="Dynamo 100g"
-                        price="sh900"
-                    />
-                </div>
-
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                        imgSrc="/images/Fendona.png"
-                        add="/images/add.png"
-                        imgAlt="Fendona image"
-                        name="Fendona 250ml"
-                        price="sh2200"
-                    />
-                </div>
-
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                        imgSrc="/images/Lancer.png"
-                        add="/images/add.png"
-                        imgAlt="Lancer image"
-                        name="Lancer 1L"
-                        price="sh2800"
-                    />
-                </div>
-
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                        imgSrc="/images/SpiderPlant.png"
-                        add="/images/add.png"
-                        imgAlt="SpiderPlant image"
-                        name="Spider Plant 500g"
-                        price="sh1900"
-                    />
-                </div>
-
-                 <div className="w-[90%] sm:w-full max-w-[260px]">
-                <ProductsCard
-                 imgSrc="/images/Optimizer.png" 
-                 add="/images/add.png"
-                 imgAlt="foliar feed" 
-                 name="Optimizer 1l"
-                 price="2500"
-                />
-                </div>
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                    imgSrc="/images/Ferrari1l.png" 
-                    add="/images/add.png"
-                    imgAlt="foliar feed" 
-                    name="Ferrari 1l"
-                    price="1100"
-                    />
-                </div>
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                    imgSrc="/images/Biozyme100ml.png" 
-                    add="/images/add.png"
-                    imgAlt="foliar feed" 
-                    name="Biozyme 100ml"
-                    price="300"
-                    />
-                </div>
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                    imgSrc="/images/Jamboclean1l.png" 
-                    add="/images/add.png"
-                    imgAlt="foliar feed" 
-                    name="Jambo Clean 1l"
-                    price="1900"
-                    />
-                </div>
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                    imgSrc="/images/Handspray2l.png" 
-                    add="/images/add.png"
-                    imgAlt="hand spray" 
-                    name="Pressure sprayer 2l"
-                    price="500"
-                    />
-                </div>
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                    imgSrc="/images/Lavendertotal1l.png" 
-                    add="/images/add.png"
-                    imgAlt="foliar feed" 
-                    name="Lavender Total 1l"
-                    price="1800"
-                    />
-                </div>
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                    imgSrc="/images/Kayazinon1l.png" 
-                    add="/images/add.png"
-                    imgAlt="insecticide" 
-                    name="Kayazinon 1l"
-                    price="3500"
-                    />
-                </div>
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                    imgSrc="/images/Omex500ml.png" 
-                    add="/images/add.png"
-                    imgAlt="foliar feed" 
-                    name="Omex 500ml"
-                    price="1000"
-                    />
-                </div>
-                <div className="w-[90%] sm:w-full max-w-[260px]">
-                    <ProductsCard
-                    imgSrc="/images/Reaper1l.png" 
-                    add="/images/add.png"
-                    imgAlt="insecticide" 
-                    name="Reaper 1l"
-                    price="3300"
-                    />
-                </div>
-                    <div>
-                    
+                {data?.map((product) => (
+                    <div key={product.id} className="w-[90%] sm:w-full max-w-[260px]">
+                        <ProductsCard
+                            id={product.id}
+                            imgSrc={product.img}
+                            imgAlt={product.name}
+                            add={product.add}
+                            name={product.name}
+                            price={product.price}  
+                        />
+                         <div>
+                            <button className="bg-green-900 hover:bg-green-750 text-white font-bold py-2 px-4 rounded"
+                             onClick={() => handleAddToCart(product)}>
+                                Add to Cart
+                            </button>
+                         </div>
                     </div>
-
+                ))}
             </div>
         </>
     );
