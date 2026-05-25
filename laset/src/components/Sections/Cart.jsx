@@ -1,6 +1,7 @@
 import Cards from "../Common/Cards";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
 
@@ -14,6 +15,7 @@ export default function Cart() {
             className=" px-4 py-2 bg-green-900 text-white rounded ml-150 mt-5 ">
             Go to Cart
         </button>
+        
         
 
         {/* Overlay */}

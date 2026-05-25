@@ -1,4 +1,6 @@
 import { Routes, Route } from "react-router-dom"
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
 import HomePage from "./components/Sections/HomePage" 
 import Footer from "./components/Layout/Footer"
 import Hero from "./components/Sections/Hero"
@@ -11,9 +13,16 @@ import FeedBack from "./components/Sections/FeedBack"
 import SignUp from "./components/Sections/SignUp"
 import AllContacts from "./components/Sections/Contacts/AllContacts"
 import Cart from "./components/Sections/Cart"
+import { productsFetch } from "./Features/ProductsSlice"
 import "./index.css"
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(productsFetch());
+  }, [dispatch]);
+
   return (
     <>
       <div>

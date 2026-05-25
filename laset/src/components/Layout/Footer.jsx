@@ -99,7 +99,7 @@ function Footer() {
                                 p-2 sm:p-2 md:p-2 lg:p-4
                                 text-[10px] sm:text-[11px] md:text-[10px] lg:text-sm 
                                 mt-3">
-                    <p>© Agriventure Enterprise 2025 — All Rights Reserved</p>
+                    <p>© Agriventure Enterprise 2026 — All Rights Reserved</p>
                 </div>
 
             </div>

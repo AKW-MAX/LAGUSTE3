@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 
-const ProductsCard = ({ imgSrc, add, imgAlt, name, price }) => {
+const ProductsCard = ({ id, imgSrc, add, imgAlt, name, price }) => {
   return (
+     
     <div className="w-44 sm:w-36 xs:w-32 ml-3 sm:ml-2 mt-5 mb-5 shadow-lg rounded-md">
+      {/* Product Id */}
+      <p className="hidden">{id}</p>
       {/* Product Image */}
       <img 
         src={imgSrc} 
