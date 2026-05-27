@@ -3,13 +3,16 @@ import { addToCart } from "../../Features/CartSlice";
 import ProductsCard from "../Common/ProductsCard";
 import Cart from "../Sections/Cart";
 import {useGetAllProductsQuery} from '../../Features/ProductsApi';
+import { useNavigate } from "react-router-dom";
 
 export default function AllProducts() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const {data, error, isLoading} = useGetAllProductsQuery();
     const handleAddToCart = (product) => {
         dispatch(addToCart(product));
+        navigate.push("/Cart");
 
     }
     
@@ -65,6 +68,7 @@ export default function AllProducts() {
                          </div>
                     </div>
                 ))}
+            
             </div>
         </>
     );

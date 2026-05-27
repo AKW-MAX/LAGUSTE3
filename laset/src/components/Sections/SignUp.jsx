@@ -63,15 +63,12 @@ export default function SignUp() {
 
           {/* Email + Button */}
           <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value ={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onSubmit={handleSubmit} 
-              className="text-black mt-10 bg-white rounded-lg p-2 
-                         w-full sm:w-64"
-            />
+            <button className="border border-solid rounded-lg bg-green-950
+			 pr-6 pl-7 pb-2 ml-4 mr-4 mt-10 font-sans
+		    text-white font-semibold form-toggle ">Login </button>
+            <button className="border border-solid rounded-lg bg-green-950
+			 pr-7 pl-7 pb-2 mr-4 mt-10 font-sans
+		    text-white font-semibold">Sign Up</button>
             <Buttons />
           </div>
 

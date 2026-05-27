@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function Navigation() {
+  const cart = useSelector((state) => state.cart);
   return (
     <div className="flex justify-between gap-2 text-center font-bold text-white relative p-4 mt-2 mb-2">
       <div className="flex justify-between items-center gap-4 w-full ml-11 mr-11 
@@ -37,9 +39,11 @@ function Navigation() {
             </p>
           </Link>
             <div>
+              <Link to="Cart">
               <img className="relative hover:bg-green-900 focus:outline-2 focus:outline-offset-1 bg-green-700 active:bg-green-950 transition-15s md:w-4 lg:w-8 h-5 " 
               src="/images/Cart.png" alt="Cart icon" />
-              <span className="absolute top-1/2 right-20px bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">0</span>
+              <span className="absolute top-1/2 right-20px bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">{cart?.cartItems?.length || 0}</span>
+              </Link>
             </div>
             
         

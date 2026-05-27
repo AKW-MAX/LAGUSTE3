@@ -1,9 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from 'react-toastify';
+
+const getInitialCartItems = () => {
+    const stored = localStorage.getItem("cartItems");
+    return stored ? JSON.parse(stored) : [];
+};
+
+const calculateTotals = (cartItems) =>
+    cartItems.reduce(
+        (totals, item) => {
+            const quantity = Number(item.cartQuantity) || 0;
+            totals.cartTotalQuanty += quantity;
+            totals.cartTotalAmount += Number(item.price) * quantity;
+            return totals;
+        },
+        { cartTotalQuanty: 0, cartTotalAmount: 0 }
+    );
+
+const initialCartItems = getInitialCartItems();
+const initialTotals = calculateTotals(initialCartItems);
 
 const initialState = {
-    cartItems: [],
-    cartTotalQuanty: 0,
-    cartTotalAmount: 0,
+    cartItems: initialCartItems,
+    cartTotalQuanty: initialTotals.cartTotalQuanty,
+    cartTotalAmount: initialTotals.cartTotalAmount,
 };
 
 const CartSlice = createSlice({
@@ -11,17 +31,75 @@ const CartSlice = createSlice({
     initialState,
     reducers: {
         addToCart: (state, action) => {
-            const ItemIndex = state.cartItems.findIndex((item) => item.id === action.payload.id);
-            if (ItemIndex >=0) {
-            state.cartItems[ItemIndex].cartQuantity += 1;
+            if (!action.payload || !action.payload.id) {
+                console.error('Invalid product payload:', action.payload);
+                return;
+            }
+            const itemIndex = state.cartItems.findIndex((item) => item.id === action.payload.id);
+            if (itemIndex >= 0) {
+                state.cartItems[itemIndex].cartQuantity += 1;
+                toast.info(`Increased ${state.cartItems[itemIndex].name} quantity`, {
+                    position: "bottom-left",
+                });
             } else {
-            const tempProduct = { ...action.payload, cartQuantity: 1 }; 
-            state.cartItems.push( action.tempProduct);
-        }
-    }
- }
+                const tempProduct = { ...action.payload, cartQuantity: 1 };
+                state.cartItems.push(tempProduct);
+                toast.success(`${action.payload.name} added to cart`, {
+                    position: "bottom-left",
+                });
+            }
+            const totals = calculateTotals(state.cartItems);
+            state.cartTotalQuanty = totals.cartTotalQuanty;
+            state.cartTotalAmount = totals.cartTotalAmount;
+            localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+        },
+        
+        /*remove from cart items*/
+        removeFromCart: (state, action) => {
+            if (!action.payload || !action.payload.id) {
+                console.error('Invalid remove payload:', action.payload);
+                return;
+            }
+            state.cartItems = state.cartItems.filter((cartItem) => cartItem.id !== action.payload.id);
+            const totals = calculateTotals(state.cartItems);
+            state.cartTotalQuanty = totals.cartTotalQuanty;
+            state.cartTotalAmount = totals.cartTotalAmount;
+            localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
 
+            toast.error(`${action.payload.name} removed from cart`, {
+                position: "bottom-left",
+            });
+        },
+
+        decreaseCart: (state, action) => {
+            if (!action.payload || !action.payload.id) {
+                console.error('Invalid decrease payload:', action.payload);
+                return;
+            }
+            const itemIndex = state.cartItems.findIndex((cartItem) => cartItem.id === action.payload.id);
+            if (itemIndex === -1) return;
+
+            if (state.cartItems[itemIndex].cartQuantity > 1) {
+                state.cartItems[itemIndex].cartQuantity -= 1;
+                toast.info(`Decreased ${state.cartItems[itemIndex].name} quantity`, {
+                    position: "bottom-left",
+                });
+            } else {
+                // quantity === 1 -> remove item
+                state.cartItems.splice(itemIndex, 1);
+                toast.error(`${action.payload.name} removed from cart`, {
+                    position: "bottom-left",
+                });
+            }
+            const totals = calculateTotals(state.cartItems);
+            state.cartTotalQuanty = totals.cartTotalQuanty;
+            state.cartTotalAmount = totals.cartTotalAmount;
+            localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+        },
+    
+        
+    },
 });
 
-export const { addToCart } = CartSlice.actions;
+export const { addToCart, removeFromCart, decreaseCart } = CartSlice.actions;
 export default CartSlice.reducer;
