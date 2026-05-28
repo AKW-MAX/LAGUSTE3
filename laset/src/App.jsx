@@ -14,6 +14,8 @@ import SignUp from "./components/Sections/SignUp"
 import AllContacts from "./components/Sections/Contacts/AllContacts"
 import Cart from "./components/Sections/Cart"
 import { productsFetch } from "./Features/ProductsSlice"
+import Register from "./components/Sections/Register"
+import Login from "./components/Sections/Login"
 import "./index.css"
 
 function App() {
@@ -39,6 +41,8 @@ function App() {
           <Route path="SignUp" element={<SignUp />} />
           <Route path="AllContacts" element={<AllContacts />} />
           <Route path="Footer" element={<Footer />} />
+          <Route path="Register" element={<Register />} />
+          <Route path="Login" element={<Login />} />
         </Routes>
       </div>
     </>

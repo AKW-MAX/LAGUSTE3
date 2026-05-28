@@ -1,7 +1,11 @@
 import Buttons from "../Common/Buttons";
+import Register from "./Register";
+import Login from "./Login";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 
 export default function SignUp() {
+  const [isOpen, setIsOpen] = useState(false);
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSubmit(e);
@@ -25,6 +29,7 @@ export default function SignUp() {
       setMessage("An error occurred. Please try again.");
     }
   };
+  
   return (
     <>
  
@@ -32,7 +37,7 @@ export default function SignUp() {
       <div className="bg-green-900 text-white p-6 flex items-center gap-4">
 
         {/* IMAGE - always on the left */}
-        <div className="flex-shrink-0">
+        <div className="shrink-0">
           <img
             className="
               w-40 h-32 
@@ -48,7 +53,7 @@ export default function SignUp() {
         </div>
 
         {/* TEXT - always on the right */}
-        <div className="flex-grow">
+        <div className="grow">
 
           <h2 className="font-extrabold 
                          text-lg sm:text-xl md:text-2xl 
@@ -63,13 +68,27 @@ export default function SignUp() {
 
           {/* Email + Button */}
           <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
-            <button className="border border-solid rounded-lg bg-green-950
-			 pr-6 pl-7 pb-2 ml-4 mr-4 mt-10 font-sans
-		    text-white font-semibold form-toggle ">Login </button>
-            <button className="border border-solid rounded-lg bg-green-950
-			 pr-7 pl-7 pb-2 mr-4 mt-10 font-sans
-		    text-white font-semibold">Sign Up</button>
-            <Buttons />
+              <Link to="/Login">
+              <button
+                type="button"
+                className="border border-solid rounded-lg bg-green-950
+                     pr-7 pl-7 pb-2 mr-4 mt-10 font-sans
+                    text-white font-semibold">
+                 Login
+              </button>
+              </Link>
+              <Link to="/Register">
+              <button
+                type="button"
+                className="border border-solid rounded-lg bg-green-950
+                            pr-7 pl-7 pb-2 mr-4 mt-10 font-sans
+                            text-white font-semibold">
+                Register
+              </button>
+              </Link>
+              <Buttons />
+              <Register isOpen={isOpen} setIsOpen={setIsOpen} />
+              <Login isOpen={isOpen} setIsOpen={setIsOpen} />
           </div>
 
         </div>
