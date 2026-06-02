@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
 
 export default function Register({ isOpen = true, setIsOpen = () => {} }) {
     const [firstName, setFirstName] = useState("");
@@ -8,9 +8,18 @@ export default function Register({ isOpen = true, setIsOpen = () => {} }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
+    const navigate = useNavigate();
     const handleSubmit = (e) =>{
         e.preventDefault();
+        setErrorMessage("");
+
+        if (password !== confirmPassword) {
+            setErrorMessage("Passwords do not match.");
+            return;
+        }
+
         const formData = {
             first_name: firstName,
             last_name: lastName,
@@ -21,14 +30,18 @@ export default function Register({ isOpen = true, setIsOpen = () => {} }) {
 
         axios.post("http://localhost:5000/register", formData)
         .then(response => {
-            console.log("Registration successful:", response.data);
-
+            navigate("/Login");
+            setIsOpen(false);
         })
         .catch(error => {
-            console.error("Registration failed:", error);
+            const message = error.response?.data?.message || "Registration failed.";
+            console.error("Registration failed:", message);
+            setErrorMessage(message);
+
+            if (error.response?.status === 409 || message.toLowerCase().includes("already exists")) {
+                navigate("/Login");
+            }
         });
-        
-        setIsOpen(false);
     };
 
     return (
@@ -36,7 +49,7 @@ export default function Register({ isOpen = true, setIsOpen = () => {} }) {
                      {/* Open register Button */}
     
     {/* register form */}
-    <form onSubmit={handleSubmit} className={` fixed inset-0 flex-direction: column text-black text-align: center bg-white p-20 ml-0 mr-30 rounded bg-opacity-50 ${isOpen ? 'block' : 'hidden'}`}>
+    <form onSubmit={handleSubmit} className={` fixed inset-5 flex-direction: column text-black text-align: center bg-white w-100 ml-0 bg-opacity-50 ${isOpen ? 'block' : 'hidden'}`}>
        <div>
             <h3 className="">Register</h3>
        </div>
@@ -78,6 +91,9 @@ export default function Register({ isOpen = true, setIsOpen = () => {} }) {
         <div className="flex items-center gap-4">
             <button type="submit" className="bg-green-900 text-white px-4 py-2 w-50 rounded">Register</button>
         </div>
+        {errorMessage && (
+            <div className="mt-4 text-red-600 font-medium">{errorMessage}</div>
+        )}
     </form>
     
                 

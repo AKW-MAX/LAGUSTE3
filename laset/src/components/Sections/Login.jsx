@@ -19,12 +19,15 @@ export default function Login({ isOpen = true, setIsOpen = () => {} }) {
         axios.post("http://localhost:5000/login", formData)
         .then(response => {
             console.log("Login successful:", response.data);
+            if(response.data.message === "Login successful") {
+                setIsOpen(false);
+                navigate("/"); // Redirect to home page on successful login
+            }
         })
         .catch(error => {
-            console.error("Login failed:", error);
+            const message = error.response?.data?.message || error.message;
+            console.error("Login failed:", error.response?.status, message);
         });
-        
-        setIsOpen(false);
     };
 
     const handleClose = () => {
@@ -42,14 +45,22 @@ export default function Login({ isOpen = true, setIsOpen = () => {} }) {
 
         <div>
             <label>Email</label>
-            <input type="email" placeholder="Email" className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
+            <input
+               type="email"
+               value={email}
+               placeholder="Email"
+               className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
                onChange={e => setEmail(e.target.value)}
             />
         </div>
 
         <div>
             <label>Password</label>
-            <input type="password" placeholder="Password" className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
+            <input
+               type="password"
+               value={password}
+               placeholder="Password"
+               className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
                onChange={e => setPassword(e.target.value)}
             />
         </div>
