@@ -18,7 +18,7 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/register", {
+      const response = await fetch("https://agriventure-enterprise-backend.onrender.com/register", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ email }),

@@ -16,7 +16,7 @@ export default function Login({ isOpen = true, setIsOpen = () => {} }) {
             password: password,
         };
 
-        axios.post("http://localhost:5000/login", formData)
+        axios.post("https://agriventure-enterprise-backend.onrender.com/login", formData)
         .then(response => {
             console.log("Login successful:", response.data);
             if(response.data.message === "Login successful") {

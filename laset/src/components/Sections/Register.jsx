@@ -28,7 +28,7 @@ export default function Register({ isOpen = true, setIsOpen = () => {} }) {
             confirm_password: confirmPassword,
         };
 
-        axios.post("http://localhost:5000/register", formData)
+        axios.post("https://agriventure-enterprise-backend.onrender.com/register", formData)
         .then(response => {
             navigate("/Login");
             setIsOpen(false);
