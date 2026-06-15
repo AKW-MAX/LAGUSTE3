@@ -1,6 +1,6 @@
 function Header() {
     return (
-        <div className="text-center">
+        <div className="text-center fade-in-scale">
 
             <h1 className="text-3xl sm:text-5xl font-extrabold p-2">
                 Welcome to The PowerHouse Of

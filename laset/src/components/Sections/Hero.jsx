@@ -8,7 +8,7 @@ export default function Hero() {
 		<>
 	
 	     <img className="
-		 w-screen absolute h-150 saturate-70 sm:h-[32rem] md:h-[40rem] lg:h-[48rem] 
+		 w-screen absolute h-150 saturate-70 sm:h-128 md:h-160 lg:h-192 
              grayscale-25
                     object-cover"
 		  src = "/images/HeroPic.png" alt = "Tomatoes being harvested" />

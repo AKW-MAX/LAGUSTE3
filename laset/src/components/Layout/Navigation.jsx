@@ -14,6 +14,7 @@ function Navigation() {
         <div className="flex justify-between items-center gap-4 ml-11 
                         flex-col sm:flex-row"> 
           {/* STACK on small screens */}
+          <input type="text" placeholder="Search Items" className="bg-white text-green-700 border border-green-700 focus:outline-2 focus:outline-offset-1" />
 
           <Link to="/">
             <p className="hover:bg-green-900 focus:outline-2 focus:outline-offset-1 bg-green-700 active:bg-green-900 transition-15s">
@@ -43,6 +44,13 @@ function Navigation() {
               <img className="relative hover:bg-green-900 focus:outline-2 focus:outline-offset-1 bg-green-700 active:bg-green-950 transition-15s md:w-4 lg:w-8 h-5 " 
               src="/images/Cart.png" alt="Cart icon" />
               <span className="absolute top-1/2 right-20px bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">{cart?.cartItems?.length || 0}</span>
+              </Link>
+            </div>
+            <div>
+              <Link to="Register">
+              <button className="hover:bg-green-900 focus:outline-2 focus:outline-offset-1 bg-green-700 active:bg-green-950 transition-15s">
+                Login/Register
+              </button>
               </Link>
             </div>
             

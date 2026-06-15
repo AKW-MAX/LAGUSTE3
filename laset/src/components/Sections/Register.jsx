@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default function Register({ isOpen = true, setIsOpen = () => {} }) {
@@ -94,6 +95,9 @@ export default function Register({ isOpen = true, setIsOpen = () => {} }) {
         {errorMessage && (
             <div className="mt-4 text-red-600 font-medium">{errorMessage}</div>
         )}
+        <div className="mt-4">
+            <p>Already have an account? <Link to="/Login" className="text-green-900 hover:underline">Login here</Link></p>
+        </div>
     </form>
     
                 
