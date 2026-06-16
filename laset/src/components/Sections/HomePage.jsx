@@ -9,6 +9,8 @@ import SignUp from "./SignUp";
 import Footer from "../Layout/Footer";
 
 const HomePage =() =>{
+
+    
     return (
         <div>
            

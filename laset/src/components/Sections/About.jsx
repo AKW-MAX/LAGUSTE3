@@ -1,3 +1,5 @@
+import AboutPic from "../../assets/AboutPic.png";
+
 export default function About() {
     return (
         <>
@@ -22,7 +24,7 @@ export default function About() {
                             w-48 sm:w-64 md:w-80 lg:w-130
                             h-auto
                         "
-                        src="/images/AboutPic.png"
+                        src={AboutPic}
                         alt="A happy farmer smiling in the field"
                     />
                 </div>

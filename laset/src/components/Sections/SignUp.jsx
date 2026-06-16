@@ -3,6 +3,7 @@ import Register from "./Register";
 import Login from "./Login";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import SignupPic from "../../assets/SignupPic.png";
 
 export default function SignUp() {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,7 +48,7 @@ export default function SignUp() {
               object-cover 
               rounded-lg
             "
-            src="/images/SignupPic.png"
+            src={SignupPic}
             alt="Signup image"
           />
         </div>

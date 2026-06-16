@@ -1,3 +1,5 @@
+import FeaturesPic from "../../assets/FeaturesPic.png";
+
 export default function Features() {
     return (
         <>
@@ -35,7 +37,7 @@ export default function Features() {
                 </div>
 
                 {/* Image Section */}
-                <div className="flex-shrink-0">
+                <div className="-shrink-0">
                     <img
                         className="
                             w-64 sm:w-80 md:w-96 lg:w-120 
@@ -47,9 +49,8 @@ export default function Features() {
 
                             transition-transform duration-300 ease-in-out
                             hover:scale-105 hover:shadow-lg
-                            cursor-pointer
-                        "
-                        src="/images/FeaturesPic.png"
+                            cursor-pointer"
+                        src={FeaturesPic}
                         alt="farmers"
                     />
                 </div>

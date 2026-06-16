@@ -1,4 +1,7 @@
 import { Link } from 'react-router-dom';
+import PhoneIcon from '../../assets/phone.png';
+import FacebookIcon from '../../assets/facebook.png';
+import WhatsappIcon from '../../assets/whatsapp.png';
 
 function Footer() {
     return (
@@ -20,17 +23,17 @@ function Footer() {
 
                         <Link to="tel:0704519867">
                             <img className="w-4 bg-white md:w-3 lg:w-5" 
-                                 src="/images/phone.png" alt="phone icon" />
+                                 src={PhoneIcon} alt="phone icon" />
                         </Link>
 
                         <Link to="https://www.facebook.com/profile.php?id=1000078224891871">
                             <img className="w-4 bg-white md:w-3 lg:w-5" 
-                                 src="/images/facebook.png" alt="facebook icon" />
+                                 src={FacebookIcon} alt="facebook icon" />
                         </Link>
 
                         <Link to="http://whatsapp.com/biz/0704519867">
                             <img className="w-4 bg-white md:w-3 lg:w-5" 
-                                 src="/images/whatsapp.png" alt="whatsapp icon" />
+                                 src={WhatsappIcon} alt="whatsapp icon" />
                         </Link>
 
                     </div>
