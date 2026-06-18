@@ -17,7 +17,6 @@ const HomePage =() =>{
 
 
             <Hero />
-            <Starts />
             <NewProducts />
             <AllProducts/>
             <FeedBack />

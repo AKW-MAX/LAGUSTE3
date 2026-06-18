@@ -1,21 +1,18 @@
 import ProductsCard from "../Common/ProductsCard";
 import { Link } from 'react-router-dom';
-import ArrowIcon from "../../assets/arrow.png";
-import AddIcon from "../../assets/add.png";
-import TwixImg from "../../assets/Twix.png";
-import RedRizImg from "../../assets/RedRiz.png";
-import MalinImg from "../../assets/Malin.png";
-import BioenzymeImg from "../../assets/Biozyme100ml.png";
-import HandsprayImg from "../../assets/Handspray2l.png";
-import KelprealImg from "../../assets/Kelpreal.png";
-import FerrariImg from "../../assets/Ferrari1l.png";
+import {assets} from "../../assets/assets.js";
+
 
 export default function NewProducts() {
     return (
         <>
           
 
-            <div className="flex flex-col lg:flex-row items-start lg:items-center p-4 lg:p-4">
+            <div className="flex flex-col lg:flex-row 
+            items-start lg:items-center
+             p-4 lg:p-4 relative mt-40
+             border border-green-700 rounded-lg shadow-md overflow-hidden
+             ">
 
                 {/* Left Text Section */}
                 <div className="flex-1 mb-10 lg:mb-0 lg:mr-0 ml-6 sm:ml-11 text-center sm:text-left">
@@ -32,7 +29,7 @@ export default function NewProducts() {
                         <Link to="NewProducts">
                             <img
                                 className="w-5 lg:w-6 mt-1 lg:mt-0"
-                                src={ArrowIcon}
+                                src={assets.arrow}
                                 alt="arrow icon"
                             />
                         </Link>
@@ -40,91 +37,92 @@ export default function NewProducts() {
                 </div>
 
                 {/* Right Cards Section */}
-                <div className="flex-2 w-full overflow-x-auto overflow-y-hidden hide-scrollbar">
-                    <div className="flex flex-nowrap text-center gap-4 pb-4">
-                        <div classNme="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
+                <div className="flex-2 w-full overflow-x-auto overflow-y-hidden hide-scrollbar ">
+                    <div className="flex flex-nowrap text-center gap-4 pb-4 ">
+                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105 ">
                         <ProductsCard
-                            imgSrc={TwixImg}
+                            imgSrc={assets.twix}
                             imgAlt="capsicum image"
-                            add={AddIcon}
+                            add={assets.add}
                             name="Twix 10g"
                             price="sh600"
                         />
                         </div>
-                        <div classNme="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
+                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
                         <ProductsCard
-                            imgSrc={RedRizImg}
+                            imgSrc={assets.redRiz}
                             imgAlt="capsicum image"
-                            add={AddIcon}
+                            add={assets.add}
                             name="Red Riz 10g"
                             price="sh600"
                         />
                         </div>
 
-                        <div>                        <ProductsCard
-                            imgSrc={MalinImg}
+                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">             
+                            <ProductsCard
+                            imgSrc={assets.malin}
                             imgAlt="capsicum image"
-                            add={AddIcon}
+                            add={assets.add}
                             name="Malin 10g"
                             price="sh600"
                         />
                         </div>
                         
-                        <div classNme="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
+                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
                         <ProductsCard
-                            imgSrc={BioenzymeImg}
+                            imgSrc={assets.bioenzyme}
                             imgAlt="Biozyme image"
-                            add={AddIcon}
+                            add={assets.add}
                             name="Biozyme 100ml"
                             price="sh600"
                         />
                         </div>
 
-                        <div classNme="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
+                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
                         <ProductsCard
-                            imgSrc={HandsprayImg}
+                            imgSrc={assets.handspray}
                             imgAlt="Handspray image"
-                            add={AddIcon}
+                            add={assets.add}
                             name="Handspray 2L"
                             price="sh600"
                         />
                         </div>
 
-                        <div classNme="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
+                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
                         <ProductsCard
-                            imgSrc={KelprealImg}
+                            imgSrc={assets.kelpreal}
                             imgAlt="Kelpreal image"
-                            add={AddIcon}
+                            add={assets.add}
                             name="Kelpreal 10g"
                             price="sh600"
                         />
                         </div>
 
-                        <div classNme="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
+                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
                         <ProductsCard
-                            imgSrc={FerrariImg}
-                            imgAlt="Handspray image"
-                            add={AddIcon}
-                            name="Handspray 2L"
-                            price="sh600"
-                        />
-                        </div>
-
-                        <div classNme="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
-                        <ProductsCard
-                            imgSrc={KelprealImg}
-                            imgAlt="Kelpreal image"
-                            add={AddIcon}
-                            name="Kelpreal 10g"
-                            price="sh600"
-                        />
-                        </div>
-
-                        <div classNme="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
-                        <ProductsCard
-                            imgSrc={FerrariImg}
+                            imgSrc={assets.ferrari}
                             imgAlt="Ferrari image"
-                            add={AddIcon}
+                            add={assets.add}
+                            name="Ferrari 1L"
+                            price="sh600"
+                        />
+                        </div>
+
+                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
+                        <ProductsCard
+                            imgSrc={assets.kelpreal}
+                            imgAlt="Kelpreal image"
+                            add={assets.add}
+                            name="Kelpreal 10g"
+                            price="sh600"
+                        />
+                        </div>
+
+                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
+                        <ProductsCard
+                            imgSrc={assets.ferrari}
+                            imgAlt="Ferrari image"
+                            add={assets.add}
                             name="Ferrari 1L"
                             price="sh600"
                         />
@@ -133,9 +131,9 @@ export default function NewProducts() {
                     
                         <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
                             <ProductsCard
-                            imgSrc={MalinImg}
+                            imgSrc={assets.malin}
                             imgAlt="capsicum image"
-                            add={AddIcon}
+                            add={assets.add}
                             name="Malin 10g"
                             price="sh600"
                             />
@@ -144,9 +142,9 @@ export default function NewProducts() {
                         <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
 
                             <ProductsCard
-                            imgSrc={MalinImg}
+                            imgSrc={assets.malin}
                             imgAlt="capsicum image"
-                            add={AddIcon}
+                            add={assets.add}
                             name="Malin 10g"
                             price="sh600"
                             />
@@ -154,9 +152,9 @@ export default function NewProducts() {
 
                         <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
                             <ProductsCard
-                            imgSrc={MalinImg}
+                            imgSrc={assets.malin}
                             imgAlt="capsicum image"
-                            add={AddIcon}
+                            add={assets.add}
                             name="Malin 10g"
                             price="sh600"
                             />

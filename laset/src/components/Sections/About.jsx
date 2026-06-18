@@ -1,4 +1,4 @@
-import AboutPic from "../../assets/AboutPic.png";
+import { assets } from "../../assets/assets.js";
 
 export default function About() {
     return (
@@ -10,27 +10,27 @@ export default function About() {
                     w-full 
                     py-10 
                     px-4 sm:px-10 lg:px-20 
-                    bg-gradient-to-b from-green-50 to-white
+                    bg-linear-to-b from-green-50 to-white
                     flex flex-col lg:flex-row 
                     items-center lg:items-start 
                     gap-10 mr-11
-                "
-            >
+                    border border-green-700 rounded-lg shadow-md overflow-hidden
+                ">
                 {/* Image */}
-                <div className="flex-shrink-0">
+                    <div className="flex-0">
                     <img
                         className="
                             grayscale-25 shadow-md
                             w-48 sm:w-64 md:w-80 lg:w-130
                             h-auto
                         "
-                        src={AboutPic}
+                        src={assets.AboutUsPic}
                         alt="A happy farmer smiling in the field"
                     />
                 </div>
 
                 {/* Text Content */}
-                <article className="max-w-2xl">
+                <article className="max-w-2xl ">
                     <h1 className="font-extrabold text-2xl sm:text-3xl mb-5 text-green-900">
                         Agriventure Enterprise — A Solution For All Your Farming Needs
                     </h1>

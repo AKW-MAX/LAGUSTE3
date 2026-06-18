@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart, removeFromCart, decreaseCart } from "../../Features/CartSlice";
+import { assets } from "../../assets/assets.js";
 
 export default function Cart() {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,7 +63,7 @@ export default function Cart() {
           {cart.cartItems?.map((item) => (
             <div key={item.id} className="grid grid-cols-4 items-center">
               <div className="w-20 mt-5 mb-5 shadow-lg rounded-md">
-                <img src={item.img} alt={item.name} className="h-20 rounded-md" />
+                <img src={assets[item.img] || item.img} alt={item.name} className="h-20 rounded-md" />
               </div>
               <div>
                 <h3 className="cartitems text-center font-thin text-xs mt-1">{item.name}</h3>

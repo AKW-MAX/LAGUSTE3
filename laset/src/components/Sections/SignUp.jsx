@@ -3,7 +3,7 @@ import Register from "./Register";
 import Login from "./Login";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import SignupPic from "../../assets/SignupPic.png";
+import {assets} from "../../assets/assets.js";
 
 export default function SignUp() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +35,7 @@ export default function SignUp() {
     <>
  
 
-      <div className="bg-green-900 text-white p-6 flex items-center gap-4">
+      <div className="bg-green-900 text-white p-6 flex items-center gap-4 border border-green-700 rounded-lg shadow-md overflow-hidden">
 
         {/* IMAGE - always on the left */}
         <div className="shrink-0">
@@ -48,7 +48,7 @@ export default function SignUp() {
               object-cover 
               rounded-lg
             "
-            src={SignupPic}
+            src={assets.signupPic}
             alt="Signup image"
           />
         </div>

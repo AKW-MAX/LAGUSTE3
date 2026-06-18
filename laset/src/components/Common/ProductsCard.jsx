@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 const ProductsCard = ({ id, imgSrc, add, imgAlt, name, price }) => {
   return (
      
-    <div className="w-44 sm:w-36 xs:w-32 ml-3 sm:ml-2 mt-5 mb-5 shadow-lg rounded-md">
+    <div className="w-44 sm:w-36 xs:w-32 ml-3 sm:ml-2 mt-5 mb-5 shadow-lg rounded-md border border-green-700">
       {/* Product Id */}
       <p className="hidden">{id}</p>
       {/* Product Image */}
       <img 
-        src={imgSrc} 
+        src={imgSrc}
         alt={imgAlt} 
         className="w-full h-48 sm:h-40 xs:h-36 object-cover rounded-md" 
       />

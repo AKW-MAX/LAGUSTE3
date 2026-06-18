@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
-import PhoneIcon from '../../assets/phone.png';
-import FacebookIcon from '../../assets/facebook.png';
-import WhatsappIcon from '../../assets/whatsapp.png';
+import {assets} from '../../assets/assets.js';
+
 
 function Footer() {
     return (
         <footer>
             <div className="font-sans text-white bg-green-950 
-                            p-3 sm:p-3 md:p-3 lg:p-4">
+                            p-3 sm:p-3 md:p-3 lg:p-4
+                            border border-green-700 rounded-lg shadow-md overflow-hidden">
 
                 {/* Top icons and title */}
                 <div className="flex justify-between items-center ml-11 mr-20 flex-wrap 
@@ -23,17 +23,17 @@ function Footer() {
 
                         <Link to="tel:0704519867">
                             <img className="w-4 bg-white md:w-3 lg:w-5" 
-                                 src={PhoneIcon} alt="phone icon" />
+                                 src={assets.phone} alt="phone icon" />
                         </Link>
 
                         <Link to="https://www.facebook.com/profile.php?id=1000078224891871">
                             <img className="w-4 bg-white md:w-3 lg:w-5" 
-                                 src={FacebookIcon} alt="facebook icon" />
+                                 src={assets.facebook} alt="facebook icon" />
                         </Link>
 
                         <Link to="http://whatsapp.com/biz/0704519867">
                             <img className="w-4 bg-white md:w-3 lg:w-5" 
-                                 src={WhatsappIcon} alt="whatsapp icon" />
+                                 src={assets.whatsapp} alt="whatsapp icon" />
                         </Link>
 
                     </div>

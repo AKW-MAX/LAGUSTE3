@@ -1,4 +1,4 @@
-import FeaturesPic from "../../assets/FeaturesPic.png";
+import {assets} from "../../assets/assets.js";
 
 export default function Features() {
     return (
@@ -50,7 +50,7 @@ export default function Features() {
                             transition-transform duration-300 ease-in-out
                             hover:scale-105 hover:shadow-lg
                             cursor-pointer"
-                        src={FeaturesPic}
+                        src={assets.featuresPic}
                         alt="farmers"
                     />
                 </div>
