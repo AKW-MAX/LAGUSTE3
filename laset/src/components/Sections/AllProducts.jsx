@@ -5,7 +5,7 @@ import Cart from "../Sections/Cart";
 import {useGetAllProductsQuery} from '../../Features/ProductsApi';
 import { useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets.js";
-import {product_list} from "../../assets/Assets.js";
+import {product_list} from "../../assets/assets.js";
 
 export default function AllProducts() {
     const dispatch = useDispatch();
