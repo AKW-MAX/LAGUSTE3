@@ -6,20 +6,16 @@ function Navigation() {
   const cart = useSelector((state) => state.cart);
   return (
     <div className="flex justify-between gap-2 text-center font-bold text-white p-4 w-full sticky top-0 z-50
-     shadow-md  bg-green-900
-
+    shadow-md bg bg-green-900
     ">
       <div className="flex justify-between items-center gap-4 w-full ml-11 mr-11 
-                      flex-col "> 
+                      flex-col sm:flex-row"> 
         {/* STACK on small screens */}
 
-        <p className="ml-4
-        sm:
-        
-        ">QualityFirst</p>
+        <p className="ml-4">QualityFirst</p>
 
         <div className="flex justify-between items-center gap-4 ml-11 
-                        flex-col"> 
+                        flex-col sm:flex-row"> 
           {/* STACK on small screens */}
           <input type="text" placeholder="Search Items" className="bg-white text-green-700 border border-green-700 focus:outline-2 focus:outline-offset-1" />
 
