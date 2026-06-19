@@ -1,6 +1,6 @@
 import ProductsCard from "../Common/ProductsCard";
 import { Link } from 'react-router-dom';
-import {assets} from "../../assets/assets.js";
+import { assets } from "../../assets/assets.js";
 
 
 export default function NewProducts() {

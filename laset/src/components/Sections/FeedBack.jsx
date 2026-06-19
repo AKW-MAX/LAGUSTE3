@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import {assets} from "../../assets/assets.js";
+import { assets } from "../../assets/assets.js";
 
 export default function FeedBack() {
     return (

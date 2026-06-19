@@ -1,7 +1,7 @@
 import Header from "../Layout/Header"
 import Buttons from "../Common/Buttons"
 import Navigation from "../Layout/Navigation"
-import {assets} from "../../assets/assets.js"
+import { assets } from "../../assets/assets.js"
 import Starts from "./Starts"
 
 

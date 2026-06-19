@@ -3,7 +3,7 @@ import Register from "./Register";
 import Login from "./Login";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import {assets} from "../../assets/assets.js";
+import { assets } from "../../assets/assets.js";
 
 export default function SignUp() {
   const [isOpen, setIsOpen] = useState(false);
