@@ -96,171 +96,195 @@ assets.Phone = phone;
 export default assets;
 export const product_list = [
     {
-        id: 1,
+        _id: 1,
+        image: assets.Omex500ml,
+         add: "add",
         name: "Omex 500ml",
         description: "foliar fertilizer",
         price: 1000,
-        image: assets.Omex500ml
     },
 
     {
-        id: 2,
+        _id: 2,
+        image: assets.Reaper1l,
+         add: "add",
         name: "Reaper 1L",
         description: "insecticide",
         price: 1500,
-        image: assets.Reaper1l
     },
     {
-        id: "3",
+        _id: "3",
+        image: assets.Actellic,
+         add: "add",
         name: "Actellic 50EC 1L",
         description: "insecticide",
         price: "Ksh 6000",
-        image: assets.Actellic
   },
-    {   id: "4",
-        img: "assets.Atom",
+    {   _id: "4",
+        img: assets.Atom,
+         add: "add",
         name: "Atom 1L",
         price: "Ksh 1800",
         description: "insecticide",
 
   },
-    {  id: "5",
-        img: "assets.Bedlam",
+    {  _id: "5",
+        img: assets.Bedlam,
+         add: "add",
         name: "Bedlam 50ml",
         price: "Ksh 400",
         description: "insecticide",
   },
-    {   id: "6",
-        img: "assets.Biozyme100ml",
+    {   _id: "6",
+        img: assets.Biozyme100ml,
+         add: "add",
         name: "Biozyme 100ml",
         price: "Ksh 600",
         description: "foliar fertilizer"
   },
-    {   id: "7",
-        img: "assets.Dynamo",
+    {   _id: "7",
+        img: assets.Dynamo,
+         add: "add",
         name: "Dynamo 100g", 
         price: "Ksh 500",
         description: "insecticide"
   },
   {
-    id: "8",
-    img: "assets.Fendona",
+    _id: "8",
+    img: assets.Fendona,
+     add: "add",
     name: "Fendona 500ml",
     price: "Ksh 2500",
     description: "public health insecticide"
   },
   {
-    id: "9",
-    img: "assets.Ferrari1l",
+    _id: "9",
+    img: assets.Ferrari1l,
+     add: "add",
     name: "Ferrari 1L",
     price: "Ksh 2000" ,
     description: "foliar fertilizer"
   },
   {
-    id: "10",
-    img: "assets.Handspray2l",
+    _id: "10",
+    img: assets.Handspray2l,
+     add: "add",
     name: "Pressure Sprayer 2L",
     price: "Ksh 600",
     description: "equipment"
   },
   {
-    id: "11",
-    img: "assets.Jamboclean1l",
+    _id: "11",
+    img: assets.Jamboclean1l,
+     add: "add",
     name: "Jamboclean 1L",
     price: "Ksh 2000",
     description: "foliar fertilizer"
   },
   {
-    id: "12",
-    img: "assets.Kayazinon1l",
+    _id: "12",
+    img: assets.Kayazinon1l,
+     add: "add",
     name: "Kayazinon 1L",
     price: "Ksh 3500",
     description: "insecticide"
   },
   {
-    id: "13",
-    img: "Kelpreal",
+    _id: "13",
+    img: assets.Kelpreal,
+     add: "add",
     name: "Kelpreal 1L",
     price: "Ksh 3000"
   },
   {
-    id: "14",
-    img: "assets.Kungunil",
+    _id: "14",
+    img: assets.Kungunil,
+     add: "add",
     name: "Kungunil 1L",  
     price: "Ksh 5500",
     description: "insecticide"
   },
   {
-    id: "15",
-    img: "assets.Lancer", 
+    _id: "15",
+    img: assets.Lancer, 
+     add: "add",
     name: "Lancer 1L",
     price: "Ksh 3000",
     description: "insecticide"
   },
   {
-    id: "16",
-    img: "assets.Lavendertotal1l",
+    _id: "16",
+    img: assets.Lavendertotal1l,
+     add: "add",
     name: "Lavender Total 1L",
     price: "Ksh 1800",
     description: "foliar fertilizer"
 
   },
   {
-    id: "17",
-    img: "assets.Malin",
+    _id: "17",
+    img: assets.Malin,
+     add: "add",
     name: "Malin 5g",
     price: "Ksh 1000",
     description: "seeds"
   },
   {
-    id: "18",
-    img: "assets.Omex500ml",
+    _id: "18",
+    img: assets.Omex500ml,
+     add: "add",
     name: "Omex 500ml",
     name: "Omex 500ml",
     price: "Ksh 1300",
     description: "foliar fertilizer"
   },
   {
-    id: "19",
-    img: "assets.Optimizer",
+    _id: "19",
+    img: assets.Optimizer,
+     add: "add",
     name: "Optimizer 1L",
     price: "Ksh 2500",
     description: "foliar fertilizer"
   },
   {
-    id: "20",
-    img: "assets.RedRiz",
+    _id: "20",
+    img: assets.RedRiz,
+     add: "add",
     name: "Red Riz 10g",
     price: "Ksh 1000",
     description: "seeds"
   },
   {
-    id: "20",
-    img: "assets.Optimizer",
+    _id: "21",
+    img: assets.Optimizer,
+     add: "add",
     name: "Optimizer 1L",
     price: "Ksh 2500",
     description: "foliar fertilizer"
   },
   {
-    id: "20",
-    img: "assets.RedRiz",
+    _id: "22",
+    img: assets.RedRiz,
     name: "Red Riz 10g",
+     add: "add",
     price: "Ksh 1000",
     description: "seeds"
   },
   {
-    id: "21",
-    img: "assets.SpiderPlant",
+    _id: "23",
+    img: assets.SpiderPlant,
+     add: "add",
     name: "Spider Plant 500g",
     price: "Ksh 1500",
     description: "seeds"
   },
   {
-    id: "22",
-    img: "assets.Twix",
+    _id: "24",
+    img:assets.Twix,
+    add: "add",
     name: "Twix 10g",
     price: "Ksh 1000",
-    description: "snack"
+    description: "seeds"
   },
   
   

@@ -58,12 +58,12 @@ export default function AllProducts() {
                     px-2 sm:px-6 md:px-10 
                     mb-10 mt-10
                     ">
-                    {products_list?.map((product,id) => (
-                    <div key={product.id} className="
+                    {product_list?.map((product) => (
+                    <div key={product._id} className="
                         w-[90%] sm:w-full max-w-[260px] 
                         transition-transform duration-300 hover:scale-105 ">
                         <ProductsCard
-                        id={product.id}
+                        id={product._id}
                         imgSrc={assets[product.img] || product.img}
                         imgAlt={product.name}
                         add={assets[product.add] || product.add}

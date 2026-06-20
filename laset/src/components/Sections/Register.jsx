@@ -3,104 +3,159 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-export default function Register({ isOpen = true, setIsOpen = () => {} }) {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
 
-    const navigate = useNavigate();
-    const handleSubmit = (e) =>{
-        e.preventDefault();
-        setErrorMessage("");
+const Register = ({ isOpen = true, setIsOpen }) => {
+  const navigate = useNavigate();
+  const VITE_API_URL = import.meta.env.VITE_API_URL;
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    confirm_password: "",
+  });
 
-        if (password !== confirmPassword) {
-            setErrorMessage("Passwords do not match.");
-            return;
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // handle input change
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // submit form
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.confirm_password) {
+      setErrorMessage("Passwords do not match.");
+      return;
+    }
+
+    axios
+      .post(`${VITE_API_URL}/register`, formData)
+      .then(() => {
+        navigate("/Login");
+        setIsOpen(false);
+      })
+      .catch((error) => {
+        const message =
+          error.response?.data?.message || "failed to Register";
+
+        setErrorMessage(message);
+
+        if (
+          error.response?.status === 409 ||
+          message.toLowerCase().includes("already exists")
+        ) {
+          navigate("/Login");
         }
+      });
+  };
 
-        const formData = {
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            password: password,
-            confirm_password: confirmPassword,
-        };
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className={`fixed inset-0 flex flex-col items-center justify-center text-black bg-white bg-opacity-95 p-6 ${
+        isOpen ? "block" : "hidden"
+      }`}
+    >
+      <h3 className="text-xl font-bold mb-4">Register</h3>
 
-        axios.post("https://agriventure-enterprise-backend.onrender.com/register", formData)
-        .then(response => {
-            navigate("/Login");
-            setIsOpen(false);
-        })
-        .catch(error => {
-            const message = error.response?.data?.message || "Registration failed.";
-            console.error("Registration failed:", message);
-            setErrorMessage(message);
+      {/* First Name */}
+      <div className="w-full max-w-md">
+        <label htmlFor="firstName">First Name</label>
+        <input
+          type="text"
+          id="firstName"
+          name="first_name"
+          placeholder="First Name"
+          className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
+          value={formData.first_name}
+          onChange={handleChange}
+        />
+      </div>
 
-            if (error.response?.status === 409 || message.toLowerCase().includes("already exists")) {
-                navigate("/Login");
-            }
-        });
-    };
+      {/* Last Name */}
+      <div className="w-full max-w-md">
+        <label htmlFor="lastName">Last Name</label>
+        <input
+          type="text"
+          id="lastName"
+          name="last_name"
+          placeholder="Last Name"
+          className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
+          value={formData.last_name}
+          onChange={handleChange}
+        />
+      </div>
 
-    return (
-        <>
-                     {/* Open register Button */}
-    
-    {/* register form */}
-    <form onSubmit={handleSubmit} className={` fixed inset-5 flex-direction: column text-black text-align: center bg-white w-100 ml-0 bg-opacity-50 ${isOpen ? 'block' : 'hidden'}`}>
-       <div>
-            <h3 className="">Register</h3>
-       </div>
-        <div>
-            <label>First Name</label>
-            <input type="text" placeholder="First Name" className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
-               onChange={e => setFirstName(e.target.value)}
-            />
-       </div>
+      {/* Email */}
+      <div className="w-full max-w-md">
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Email"
+          className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
+          value={formData.email}
+          onChange={handleChange}
+        />
+      </div>
 
-        <div>
-            <label>Last Name</label>
-            <input type="text" placeholder="Last Name" className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
-               onChange={e => setLastName(e.target.value)}
-            />
-        </div>
+      {/* Password */}
+      <div className="w-full max-w-md">
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Password"
+          className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
+          value={formData.password}
+          onChange={handleChange}
+        />
+      </div>
 
-        <div>
-            <label>Email</label>
-            <input type="email" placeholder="Email" className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
-               onChange={e => setEmail(e.target.value)}
-            />
-        </div>
+      {/* Confirm Password */}
+      <div className="w-full max-w-md">
+        <label htmlFor="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirm_password"
+          placeholder="Confirm Password"
+          className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
+          value={formData.confirm_password}
+          onChange={handleChange}
+        />
+      </div>
 
-        <div>
-            <label>Password</label>
-            <input type="password" placeholder="Password" className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
-               onChange={e => setPassword(e.target.value)}
-            />
-        </div>
+      {/* Submit button */}
+      <button
+        type="submit"
+        className="bg-green-900 text-white px-6 py-2 w-full max-w-md rounded"
+      >
+        Register
+      </button>
 
-        <div>
-            <label>Confirm Password</label>
-            <input type="password" placeholder="Confirm Password" className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
-               onChange={e => setConfirmPassword(e.target.value)}
-            />
-        </div>
+      {/* Error message */}
+      {errorMessage && (
+        <p className="mt-3 text-red-600 font-medium">{errorMessage}</p>
+      )}
 
-        <div className="flex items-center gap-4">
-            <button type="submit" className="bg-green-900 text-white px-4 py-2 w-50 rounded">Register</button>
-        </div>
-        {errorMessage && (
-            <div className="mt-4 text-red-600 font-medium">{errorMessage}</div>
-        )}
-        <div className="mt-4">
-            <p>Already have an account? <Link to="/Login" className="text-green-900 hover:underline">Login here</Link></p>
-        </div>
+      {/* Login link */}
+      <p className="mt-4">
+        Already have an account?{" "}
+        <Link to="/Login" className="text-green-900 hover:underline">
+          Login here
+        </Link>
+      </p>
     </form>
-    
-                
-    </>
-    );
+  );
 };
+
+export default Register;
