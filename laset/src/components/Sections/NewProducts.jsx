@@ -4,6 +4,80 @@ import { assets } from "../../assets/assets.js";
 
 
 export default function NewProducts() {
+    const newProducts = [
+  {
+    _id: "1",
+    img: assets.twix,
+    name: "Twix 10g",
+    price: 600,
+  },
+  {
+    _id: "2",
+    img: assets.redRiz,
+    name: "Red Riz 10g",
+    price: 600,
+  },
+  {
+    _id: "3",
+    img: assets.malin,
+    name: "Malin 10g",
+    price: 600,
+  },
+  {
+    _id: "4",
+    img: assets.bioenzyme,
+    name: "Biozyme 100ml",
+    price: 600,
+  },
+  {
+    _id: "5",
+    img: assets.handspray,
+    name: "Handspray 2L",
+    price: 600,
+  },
+  {
+    _id: "6",
+    img: assets.kelpreal,
+    name: "Kelpreal 10g",
+    price: 600,
+  },
+  {
+    _id: "7",
+    img: assets.ferrari,
+    name: "Ferrari 1L",
+    price: 600,
+  },
+  {
+    _id: "8",
+    img: assets.kelpreal,
+    name: "Kelpreal 10g",
+    price: 600,
+  },
+  {
+    _id: "9",
+    img: assets.ferrari,
+    name: "Ferrari 1L",
+    price: 600,
+  },
+  {
+    _id: "10",
+    img: assets.malin,
+    name: "Malin 10g",
+    price: 600,
+  },
+  {
+    _id: "11",
+    img: assets.malin,
+    name: "Malin 10g",
+    price: 600,
+  },
+  {
+    _id: "12",
+    img: assets.malin,
+    name: "Malin 10g",
+    price: 600,
+  },
+];
     return (
         <>
           
@@ -39,126 +113,21 @@ export default function NewProducts() {
                 {/* Right Cards Section */}
                 <div className="flex-2 w-full overflow-x-auto overflow-y-hidden hide-scrollbar ">
                     <div className="flex flex-nowrap text-center gap-4 pb-4 ">
-                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105 ">
-                        <ProductsCard
-                            imgSrc={assets.twix}
-                            imgAlt="capsicum image"
-                            add={assets.add}
-                            name="Twix 10g"
-                            price="sh600"
-                        />
-                        </div>
-                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
-                        <ProductsCard
-                            imgSrc={assets.redRiz}
-                            imgAlt="capsicum image"
-                            add={assets.add}
-                            name="Red Riz 10g"
-                            price="sh600"
-                        />
-                        </div>
-
-                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">             
+                         {newProducts.map((product) => (
+                        <div key={product._id} className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105 ">
+                                    
                             <ProductsCard
-                            imgSrc={assets.malin}
-                            imgAlt="capsicum image"
+                            _id={product._id}
+                            imgSrc={product.img}
+                            imgAlt={product.name}
                             add={assets.add}
-                            name="Malin 10g"
-                            price="sh600"
-                        />
+                            name={product.name}
+                            price={product.price}
+                            />
                         </div>
                         
-                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
-                        <ProductsCard
-                            imgSrc={assets.bioenzyme}
-                            imgAlt="Biozyme image"
-                            add={assets.add}
-                            name="Biozyme 100ml"
-                            price="sh600"
-                        />
-                        </div>
-
-                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
-                        <ProductsCard
-                            imgSrc={assets.handspray}
-                            imgAlt="Handspray image"
-                            add={assets.add}
-                            name="Handspray 2L"
-                            price="sh600"
-                        />
-                        </div>
-
-                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
-                        <ProductsCard
-                            imgSrc={assets.kelpreal}
-                            imgAlt="Kelpreal image"
-                            add={assets.add}
-                            name="Kelpreal 10g"
-                            price="sh600"
-                        />
-                        </div>
-
-                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
-                        <ProductsCard
-                            imgSrc={assets.ferrari}
-                            imgAlt="Ferrari image"
-                            add={assets.add}
-                            name="Ferrari 1L"
-                            price="sh600"
-                        />
-                        </div>
-
-                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
-                        <ProductsCard
-                            imgSrc={assets.kelpreal}
-                            imgAlt="Kelpreal image"
-                            add={assets.add}
-                            name="Kelpreal 10g"
-                            price="sh600"
-                        />
-                        </div>
-
-                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
-                        <ProductsCard
-                            imgSrc={assets.ferrari}
-                            imgAlt="Ferrari image"
-                            add={assets.add}
-                            name="Ferrari 1L"
-                            price="sh600"
-                        />
-                        </div>
-
-                    
-                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
-                            <ProductsCard
-                            imgSrc={assets.malin}
-                            imgAlt="capsicum image"
-                            add={assets.add}
-                            name="Malin 10g"
-                            price="sh600"
-                            />
-                        </div>
-
-                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
-
-                            <ProductsCard
-                            imgSrc={assets.malin}
-                            imgAlt="capsicum image"
-                            add={assets.add}
-                            name="Malin 10g"
-                            price="sh600"
-                            />
-                        </div>
-
-                        <div className="cursor-pointer border-radius-2xl transition-transform duration-300 hover:scale-105">
-                            <ProductsCard
-                            imgSrc={assets.malin}
-                            imgAlt="capsicum image"
-                            add={assets.add}
-                            name="Malin 10g"
-                            price="sh600"
-                            />
-                        </div>
+                       ))}
+                        
                     </div>
                 </div>
 

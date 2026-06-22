@@ -1,6 +1,21 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { addToCart } from "../../Features/CartSlice";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 const ProductsCard = ({ _id, imgSrc, add, imgAlt, name, price }) => {
+   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleAddToCart = () => {
+  dispatch(addToCart({
+    _id,
+    img: imgSrc,
+    name,
+    price,
+    }));
+   
+};
   return (
      
     <div className="w-44 sm:w-36 xs:w-32 ml-3 sm:ml-2 mt-5 mb-5 shadow-lg rounded-md border border-green-700">
@@ -14,13 +29,12 @@ const ProductsCard = ({ _id, imgSrc, add, imgAlt, name, price }) => {
       />
 
       {/* Add to cart icon */}
-      <Link to="Cart">
-        <img 
-          src={add} 
-          alt="Add to cart" 
-          className="w-8 sm:w-4 ml-auto mr-3 mt-2 cursor-pointer" 
-        />
-      </Link>
+      <img
+        src={add}
+        alt="Add to cart"
+        onClick={handleAddToCart}
+        className="w-8 sm:w-4 ml-auto mr-3 mt-2 cursor-pointer"
+      />
 
       {/* Product Name */}
       <div>
@@ -29,7 +43,7 @@ const ProductsCard = ({ _id, imgSrc, add, imgAlt, name, price }) => {
 
       {/* Price */}
       <div className="flex justify-center items-center gap-1 mt-1">
-        <p className="font-semibold text-sm">{price}</p>
+        <p className="font-semibold text-sm">Ksh {price}</p>
         <p className="line-through text-xs text-gray-400">{price}</p>
       </div>
     </div>

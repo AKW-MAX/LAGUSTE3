@@ -118,13 +118,13 @@ export const product_list = [
          add: "add",
         name: "Actellic 50EC 1L",
         description: "insecticide",
-        price: "Ksh 6000",
+        price:  6000,
   },
     {   _id: "4",
         img: assets.Atom,
          add: "add",
         name: "Atom 1L",
-        price: "Ksh 1800",
+        price: 1800,
         description: "insecticide",
 
   },
@@ -132,21 +132,21 @@ export const product_list = [
         img: assets.Bedlam,
          add: "add",
         name: "Bedlam 50ml",
-        price: "Ksh 400",
+        price: 400,
         description: "insecticide",
   },
     {   _id: "6",
         img: assets.Biozyme100ml,
          add: "add",
         name: "Biozyme 100ml",
-        price: "Ksh 600",
+        price: 600,
         description: "foliar fertilizer"
   },
     {   _id: "7",
         img: assets.Dynamo,
          add: "add",
         name: "Dynamo 100g", 
-        price: "Ksh 500",
+        price: 500,
         description: "insecticide"
   },
   {
@@ -154,7 +154,7 @@ export const product_list = [
     img: assets.Fendona,
      add: "add",
     name: "Fendona 500ml",
-    price: "Ksh 2500",
+    price: 2500,
     description: "public health insecticide"
   },
   {
@@ -162,7 +162,7 @@ export const product_list = [
     img: assets.Ferrari1l,
      add: "add",
     name: "Ferrari 1L",
-    price: "Ksh 2000" ,
+    price: 2000,
     description: "foliar fertilizer"
   },
   {
@@ -170,7 +170,7 @@ export const product_list = [
     img: assets.Handspray2l,
      add: "add",
     name: "Pressure Sprayer 2L",
-    price: "Ksh 600",
+    price: 600,
     description: "equipment"
   },
   {
@@ -178,7 +178,7 @@ export const product_list = [
     img: assets.Jamboclean1l,
      add: "add",
     name: "Jamboclean 1L",
-    price: "Ksh 2000",
+    price: 2000,
     description: "foliar fertilizer"
   },
   {
@@ -186,7 +186,7 @@ export const product_list = [
     img: assets.Kayazinon1l,
      add: "add",
     name: "Kayazinon 1L",
-    price: "Ksh 3500",
+    price: 3500,
     description: "insecticide"
   },
   {
@@ -194,14 +194,14 @@ export const product_list = [
     img: assets.Kelpreal,
      add: "add",
     name: "Kelpreal 1L",
-    price: "Ksh 3000"
+    price: 3000,
   },
   {
     _id: "14",
     img: assets.Kungunil,
      add: "add",
     name: "Kungunil 1L",  
-    price: "Ksh 5500",
+    price: 5500,
     description: "insecticide"
   },
   {
@@ -209,7 +209,7 @@ export const product_list = [
     img: assets.Lancer, 
      add: "add",
     name: "Lancer 1L",
-    price: "Ksh 3000",
+    price: 3000,
     description: "insecticide"
   },
   {
@@ -217,7 +217,7 @@ export const product_list = [
     img: assets.Lavendertotal1l,
      add: "add",
     name: "Lavender Total 1L",
-    price: "Ksh 1800",
+    price: 1800,
     description: "foliar fertilizer"
 
   },
@@ -226,7 +226,7 @@ export const product_list = [
     img: assets.Malin,
      add: "add",
     name: "Malin 5g",
-    price: "Ksh 1000",
+    price: 1000,
     description: "seeds"
   },
   {
@@ -235,7 +235,7 @@ export const product_list = [
      add: "add",
     name: "Omex 500ml",
     name: "Omex 500ml",
-    price: "Ksh 1300",
+    price: 1300,
     description: "foliar fertilizer"
   },
   {
@@ -243,7 +243,7 @@ export const product_list = [
     img: assets.Optimizer,
      add: "add",
     name: "Optimizer 1L",
-    price: "Ksh 2500",
+    price: 2500,
     description: "foliar fertilizer"
   },
   {
@@ -251,7 +251,7 @@ export const product_list = [
     img: assets.RedRiz,
      add: "add",
     name: "Red Riz 10g",
-    price: "Ksh 1000",
+    price: 1000,
     description: "seeds"
   },
   {
@@ -259,7 +259,7 @@ export const product_list = [
     img: assets.Optimizer,
      add: "add",
     name: "Optimizer 1L",
-    price: "Ksh 2500",
+    price: 2500,
     description: "foliar fertilizer"
   },
   {
@@ -267,7 +267,7 @@ export const product_list = [
     img: assets.RedRiz,
     name: "Red Riz 10g",
      add: "add",
-    price: "Ksh 1000",
+    price: 1000,
     description: "seeds"
   },
   {
@@ -275,7 +275,7 @@ export const product_list = [
     img: assets.SpiderPlant,
      add: "add",
     name: "Spider Plant 500g",
-    price: "Ksh 1500",
+    price: 1500,
     description: "seeds"
   },
   {
@@ -283,7 +283,7 @@ export const product_list = [
     img:assets.Twix,
     add: "add",
     name: "Twix 10g",
-    price: "Ksh 1000",
+    price: 1000,
     description: "seeds"
   },
   

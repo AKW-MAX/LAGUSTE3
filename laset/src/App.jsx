@@ -16,6 +16,8 @@ import Cart from "./components/Sections/Cart"
 import { productsFetch } from "./Features/ProductsSlice"
 import Register from "./components/Sections/Register"
 import Login from "./components/Sections/Login"
+import CheckOut from "./components/Sections/CheckOut"
+import OrdersSuccess from "./components/Sections/OrdersSuccess"
 import "./index.css"
 
 function App() {
@@ -43,6 +45,8 @@ function App() {
           <Route path="Footer" element={<Footer />} />
           <Route path="Register" element={<Register />} />
           <Route path="Login" element={<Login />} />
+          <Route path="CheckOut" element={<CheckOut />} />
+          <Route path="/OrdersSuccess" element={<OrdersSuccess />} />
         </Routes>
       </div>
     </>

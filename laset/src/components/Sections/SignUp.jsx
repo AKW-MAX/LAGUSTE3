@@ -19,7 +19,7 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://agriventure-enterprise-backend.onrender.com/register", {
+      const response = await fetch("VITE_API_URL/register", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ email }),

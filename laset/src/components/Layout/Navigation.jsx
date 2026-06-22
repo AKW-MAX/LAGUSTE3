@@ -42,11 +42,30 @@ function Navigation() {
               Contacts
             </p>
           </Link>
-            <div>
-              <Link to="Cart">
-              <img className="relative hover:bg-green-900 focus:outline-2 focus:outline-offset-1 bg-green-700 active:bg-green-950 transition-15s md:w-4 lg:w-8 h-5 " 
-              src={assets.Cart} alt="Cart icon" />
-              <span className="absolute top-1/2 right-20px bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">{cart?.cartItems?.length || 0}</span>
+            <div className="relative">
+              <Link to="/Cart">
+                <img
+                  className="hover:bg-green-900 bg-green-700 md:w-4 lg:w-8 h-5 cursor-pointer"
+                  src={assets.Cart}
+                  alt="Cart icon"
+                />
+
+                <span className="
+                  absolute 
+                  -top-2 
+                  -right-2 
+                  bg-red-500 
+                  text-white 
+                  rounded-full 
+                  w-5 
+                  h-5 
+                  text-xs 
+                  flex 
+                  items-center 
+                  justify-center
+                ">
+                  {cart?.cartItems?.length || 0}
+                </span>
               </Link>
             </div>
             <div>

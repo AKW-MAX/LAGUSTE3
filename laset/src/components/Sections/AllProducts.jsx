@@ -43,8 +43,6 @@ export default function AllProducts() {
                         Explore our complete range of products, including the latest innovations and timeless classics.
                     </p>
                 </div>
-                
-                <Cart />
 
                 <div
                     className="
@@ -63,7 +61,7 @@ export default function AllProducts() {
                         w-[90%] sm:w-full max-w-[260px] 
                         transition-transform duration-300 hover:scale-105 ">
                         <ProductsCard
-                        id={product._id}
+                         _id={product._id}
                         imgSrc={assets[product.img] || product.img}
                         imgAlt={product.name}
                         add={assets[product.add] || product.add}
