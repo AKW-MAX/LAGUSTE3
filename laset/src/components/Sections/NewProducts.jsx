@@ -84,7 +84,7 @@ export default function NewProducts() {
 
             <div className="flex flex-col lg:flex-row 
             items-start lg:items-center
-             p-4 lg:p-4 relative mt-40
+             p-4 lg:p-4 relative mt-4
              border border-green-700 rounded-lg shadow-md overflow-hidden
              ">
 

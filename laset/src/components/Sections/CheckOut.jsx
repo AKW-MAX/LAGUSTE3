@@ -35,7 +35,7 @@ export default function Checkout() {
         import.meta.env.VITE_API_URL ||
         "https://agriventure-enterprise-backend.onrender.com";
 
-      console.log("Posting to:", `${API_URL}/api/orders`);
+      console.log("Posting to:", `${API_URL}/orders`);
       console.log(orderData);
 
       const res = await axios.post(
@@ -47,7 +47,7 @@ export default function Checkout() {
 
       if (res.data.success) {
         dispatch(clearCart());
-        navigate("/OrderSuccess");
+        navigate("/OrdersSuccess");
       }
     } catch (error) {
       console.error("ORDER ERROR:", error);

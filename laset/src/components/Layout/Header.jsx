@@ -2,15 +2,15 @@ function Header() {
     return (
         <div className="text-center fade-in-scale">
 
-            <h1 className="text-3xl sm:text-5xl font-extrabold p-2">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold p-2">
                 Welcome to The PowerHouse Of
             </h1>
 
-            <h1 className="text-3xl sm:text-5xl font-extrabold p-2 mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold p-2 mb-4">
                 Quality
             </h1>
 
-            <p className="font-bold text-xl sm:text-3xl p-2">
+            <p className="font-bold text-lg sm:text-xl md:text-2xl p-2">
                 Where Quality Meets Expertise and Excellence
             </p>
 
