@@ -35,7 +35,7 @@ export default function AllProducts() {
                     ) : null}
                 </div>
                 
-                <div className="mt-20 px-4 text-center">
+                <div className="mt-4 px-4 text-center">
                     <h2 className="font-extrabold text-2xl text-green-900 mt-10">
                         Check Out Our Range of Products
                     </h2>
