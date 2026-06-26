@@ -6,12 +6,12 @@ function Footer() {
     return (
         <footer>
             <div className="font-sans text-white bg-green-950 
-                            p-3 sm:p-3 md:p-3 lg:p-4
+                            p-3 sm:p-2 md:p-3 lg:p-4
                             border border-green-700 rounded-lg shadow-md overflow-hidden">
 
                 {/* Top icons and title */}
                 <div className="flex justify-between items-center ml-11 mr-20 flex-wrap 
-                                gap-2 sm:gap-2 md:gap-2 lg:gap-4 mt-1">
+                                gap-2 sm:gap-3 md:gap-2 lg:gap-4 mt-1">
 
                     <h3 className="font-bold 
                                    text-sm sm:text-sm md:text-xs lg:text-lg">
@@ -19,10 +19,10 @@ function Footer() {
                     </h3>
 
                     <div className="flex items-center 
-                                    gap-3 sm:gap-2 md:gap-2 lg:gap-4">
+                                    gap-3 sm:gap-3 md:gap-2 lg:gap-4">
 
                         <Link to="tel:0704519867">
-                            <img className="w-4 bg-white md:w-3 lg:w-5" 
+                            <img className="w-4 bg-white md:w-3 lg:w-5 " 
                                  src={assets.phone} alt="phone icon" />
                         </Link>
 
@@ -41,11 +41,11 @@ function Footer() {
 
                 {/* Footer links grid - 5 columns on all screens */}
                 <div className="grid grid-cols-5 
-                                gap-2 sm:gap-2 md:gap-2 lg:gap-4 
+                                gap-2 sm:gap-1 md:gap-2 lg:gap-4 
                                 px-1 sm:px-2 md:px-3 lg:px-6 
                                 mt-3 border-t border-white/20">
 
-                    <div className="text-[10px] sm:text-[11px] md:text-[10px] lg:text-sm">
+                    <div className="text-[10px] sm:text-[8px] md:text-[10px] lg:text-sm">
                         <h5 className="font-semibold mt-3 lg:mt-6">Our Products</h5>
                         <Link to="AllProducts">
                         <p >Inseticides</p>
@@ -55,7 +55,7 @@ function Footer() {
                         </Link>
                     </div>
 
-                    <div className="text-[10px] sm:text-[11px] md:text-[10px] lg:text-sm">
+                    <div className="text-[10px] sm:text-[8px] md:text-[10px] lg:text-sm">
                         <Link to="AllProducts">
                         <h3 className="font-semibold mt-3 lg:mt-6">Our Services</h3>
                         <p>Agricultural Consultancy</p>
@@ -65,7 +65,7 @@ function Footer() {
                         </Link>
                     </div>
 
-                    <div className="text-[10px] sm:text-[11px] md:text-[10px] lg:text-sm">
+                    <div className="text-[10px] sm:text-[8px] md:text-[10px] lg:text-sm">
                         <h3 className="font-semibold mt-3 lg:mt-6">Resources</h3>
                         <p>Product Catalog</p>
                         <p>Popular Products</p>

@@ -26,7 +26,7 @@ export default function AllProducts() {
     
     return (
         <> 
-            <div className="border border-green-700 rounded-lg shadow-md overflow-hidden">
+            <div className="border border-green-700 rounded-lg shadow-md overflow-hidden max-h-">
                 <div>
                 {isLoading ? (
                     <p>Loading products...</p>
@@ -37,7 +37,7 @@ export default function AllProducts() {
                 
                 <div className="mt-4 px-4 text-center">
                     <h2 className="font-extrabold text-2xl text-green-900 mt-10">
-                        Check Out Our Range of Products
+                        Check Out Our Range of Products~
                     </h2>
                     <p className="text-sm">
                         Explore our complete range of products, including the latest innovations and timeless classics.
@@ -46,20 +46,31 @@ export default function AllProducts() {
 
                 <div
                     className="
-                    grid 
-                    grid-cols-1 
-                    sm:grid-cols-2 
-                    md:grid-cols-3 
-                    lg:grid-cols-6
-                    place-items-center
-                    gap-6 
-                    px-2 sm:px-6 md:px-10 
+                    grid
+                    grid-rows-2
+                    grid-flow-col
+                    overflow-x-auto
+                    overflow-y-hidden
+                    gap-2
+                    px-2 sm:px-6 md:px-10
                     mb-10 mt-10
+                    pb-4
+                    scroll-smooth
+                    whitespace-nowrap
+                    max-w-full
                     ">
+
                     {product_list?.map((product) => (
                     <div key={product._id} className="
-                        w-[90%] sm:w-full max-w-[260px] 
-                        transition-transform duration-300 hover:scale-105 ">
+                     w-[100px]
+                     sm:w-[180px]
+                     md:w-[180px]
+                     lg:w-[220px]
+                                    
+                    transition-transform duration-300 hover:scale-105
+                    shrink-0
+    
+       ">
                         <ProductsCard
                          _id={product._id}
                         imgSrc={assets[product.img] || product.img}
@@ -69,8 +80,8 @@ export default function AllProducts() {
                         price={product.price}  
                         />
                         
-                            <div>
-                                <button className="bg-green-900 hover:bg-green-750 text-white font-bold py-2 px-4 rounded ml-5"
+                            <div  className="px-1 sm:px-2 md:px-3 ">
+                                <button className="bg-green-900 hover:bg-green-800 text-white font-bold py-2 px-4 rounded ml-5 sm:ml-2 md:ml-4 "
                                 onClick={() => handleAddToCart(product)}>
                                     Add to Cart
                                 </button>

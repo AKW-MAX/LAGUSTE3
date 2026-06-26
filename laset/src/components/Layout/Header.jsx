@@ -10,7 +10,7 @@ function Header() {
                 Quality
             </h1>
 
-            <p className="font-bold text-lg sm:text-xl md:text-2xl p-2">
+            <p className="font-bold text-lg sm:text-xl md:text-2xl">
                 Where Quality Meets Expertise and Excellence
             </p>
 

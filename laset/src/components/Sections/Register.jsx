@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
-
-const Register = ({ isOpen = true, setIsOpen }) => {
+const Register = ({
+  isOpen = true,
+  setIsOpen = () => {},
+}) => {
   const navigate = useNavigate();
   const VITE_API_URL = import.meta.env.VITE_API_URL;
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -17,15 +19,13 @@ const Register = ({ isOpen = true, setIsOpen }) => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  // handle input change
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
-  // submit form
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -37,12 +37,13 @@ const Register = ({ isOpen = true, setIsOpen }) => {
     axios
       .post(`${VITE_API_URL}/register`, formData)
       .then(() => {
-        navigate("/Login");
         setIsOpen(false);
+        navigate("/Login");
       })
       .catch((error) => {
         const message =
-          error.response?.data?.message || "failed to Register";
+          error.response?.data?.message ||
+          "Failed to register.";
 
         setErrorMessage(message);
 
@@ -55,106 +56,205 @@ const Register = ({ isOpen = true, setIsOpen }) => {
       });
   };
 
+  const handleClose = () => {
+    setIsOpen(false);
+    navigate("/");
+  };
+
+  if (!isOpen) return null;
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={`fixed inset-0 flex flex-col items-center justify-center text-black bg-white bg-opacity-95 p-6 ${
-        isOpen ? "block" : "hidden"
-      }`}
-    >
-      <h3 className="text-xl font-bold mb-4">Register</h3>
-
-      {/* First Name */}
-      <div className="w-full max-w-md">
-        <label htmlFor="firstName">First Name</label>
-        <input
-          type="text"
-          id="firstName"
-          name="first_name"
-          placeholder="First Name"
-          className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
-          value={formData.first_name}
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* Last Name */}
-      <div className="w-full max-w-md">
-        <label htmlFor="lastName">Last Name</label>
-        <input
-          type="text"
-          id="lastName"
-          name="last_name"
-          placeholder="Last Name"
-          className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
-          value={formData.last_name}
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* Email */}
-      <div className="w-full max-w-md">
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Email"
-          className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
-          value={formData.email}
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* Password */}
-      <div className="w-full max-w-md">
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Password"
-          className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
-          value={formData.password}
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* Confirm Password */}
-      <div className="w-full max-w-md">
-        <label htmlFor="confirmPassword">Confirm Password</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirm_password"
-          placeholder="Confirm Password"
-          className="border border-gray-300 rounded px-3 py-2 mb-4 w-full"
-          value={formData.confirm_password}
-          onChange={handleChange}
-        />
-      </div>
-
-      {/* Submit button */}
-      <button
-        type="submit"
-        className="bg-green-900 text-white px-6 py-2 w-full max-w-md rounded"
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4 py-6 overflow-y-auto">
+      <form
+        onSubmit={handleSubmit}
+        className="
+          bg-white
+          text-black
+          rounded-xl
+          shadow-xl
+          p-5 sm:p-6 md:p-8
+          w-full
+          max-w-md
+          flex
+          flex-col
+        "
       >
-        Register
-      </button>
+        <h2 className="text-xl sm:text-2xl font-bold text-center mb-6">
+          Register
+        </h2>
 
-      {/* Error message */}
-      {errorMessage && (
-        <p className="mt-3 text-red-600 font-medium">{errorMessage}</p>
-      )}
+        {/* First Name */}
+        <div className="mb-4">
+          <label className="block mb-2 font-medium">
+            First Name
+          </label>
+          <input
+            type="text"
+            name="first_name"
+            placeholder="First Name"
+            value={formData.first_name}
+            onChange={handleChange}
+            className="
+              w-full
+              border border-gray-300
+              rounded-lg
+              px-3 py-2
+              focus:outline-none
+              focus:ring-2
+              focus:ring-green-700
+            "
+            required
+          />
+        </div>
 
-      {/* Login link */}
-      <p className="mt-4">
-        Already have an account?{" "}
-        <Link to="/Login" className="text-green-900 hover:underline">
-          Login here
-        </Link>
-      </p>
-    </form>
+        {/* Last Name */}
+        <div className="mb-4">
+          <label className="block mb-2 font-medium">
+            Last Name
+          </label>
+          <input
+            type="text"
+            name="last_name"
+            placeholder="Last Name"
+            value={formData.last_name}
+            onChange={handleChange}
+            className="
+              w-full
+              border border-gray-300
+              rounded-lg
+              px-3 py-2
+              focus:outline-none
+              focus:ring-2
+              focus:ring-green-700
+            "
+            required
+          />
+        </div>
+
+        {/* Email */}
+        <div className="mb-4">
+          <label className="block mb-2 font-medium">
+            Email
+          </label>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="
+              w-full
+              border border-gray-300
+              rounded-lg
+              px-3 py-2
+              focus:outline-none
+              focus:ring-2
+              focus:ring-green-700
+            "
+            required
+          />
+        </div>
+
+        {/* Password */}
+        <div className="mb-4">
+          <label className="block mb-2 font-medium">
+            Password
+          </label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            className="
+              w-full
+              border border-gray-300
+              rounded-lg
+              px-3 py-2
+              focus:outline-none
+              focus:ring-2
+              focus:ring-green-700
+            "
+            required
+          />
+        </div>
+
+        {/* Confirm Password */}
+        <div className="mb-4">
+          <label className="block mb-2 font-medium">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            name="confirm_password"
+            placeholder="Confirm Password"
+            value={formData.confirm_password}
+            onChange={handleChange}
+            className="
+              w-full
+              border border-gray-300
+              rounded-lg
+              px-3 py-2
+              focus:outline-none
+              focus:ring-2
+              focus:ring-green-700
+            "
+            required
+          />
+        </div>
+
+        {errorMessage && (
+          <p className="text-red-600 mb-4 text-sm">
+            {errorMessage}
+          </p>
+        )}
+
+        <div className="flex gap-3">
+          <button
+            type="submit"
+            className="
+              flex-1
+              bg-green-900
+              text-white
+              py-2 sm:py-3
+              rounded-lg
+              font-semibold
+              hover:bg-green-800
+              transition
+            "
+          >
+            Register
+          </button>
+
+          <button
+            type="button"
+            onClick={handleClose}
+            className="
+              flex-1
+              bg-green-900
+              py-2 sm:py-3
+              rounded-lg
+              font-semibold
+              hover:bg-green-800
+              transition
+              text-white
+            "
+          >
+            Close
+          </button>
+        </div>
+
+        <p className="mt-5 text-center text-sm">
+          Already have an account?{" "}
+          <Link
+            to="/Login"
+            className="text-green-900 font-semibold hover:underline"
+          >
+            Login here
+          </Link>
+        </p>
+      </form>
+    </div>
   );
 };
 

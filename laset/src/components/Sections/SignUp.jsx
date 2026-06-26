@@ -7,45 +7,30 @@ import { assets } from "../../assets/assets.js";
 
 export default function SignUp() {
   const [isOpen, setIsOpen] = useState(false);
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSubmit(e);
-    }
-  };
 
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("VITE_API_URL/register", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ email }),
-      });
-      const data = await response.json();
-      setMessage(data.message);
-    } catch (error) {
-      setMessage("An error occurred. Please try again.");
-    }
-  };
-  
   return (
     <>
- 
-
-      <div className="bg-green-900 text-white p-6 flex items-center gap-4 border border-green-700 rounded-lg shadow-md overflow-hidden">
-
-        {/* IMAGE - always on the left */}
+      <div
+        className="
+          bg-green-900 text-white
+          p-3 sm:p-4 md:p-6 lg:p-8
+          flex flex-row items-center
+          gap-2 sm:gap-4 md:gap-6
+          border border-green-700
+          rounded-lg shadow-md
+          overflow-x-auto
+          w-full
+        "
+      >
+        {/* IMAGE */}
         <div className="shrink-0">
           <img
             className="
-              w-40 h-32 
-              sm:w-44 sm:h-36 
-              md:w-52 md:h-40 
-              lg:w-120 lg:h-60
-              object-cover 
+              w-20 h-16
+              sm:w-32 sm:h-24
+              md:w-40 md:h-32
+              lg:w-52 lg:h-40
+              object-cover
               rounded-lg
             "
             src={assets.signupPic}
@@ -53,45 +38,73 @@ export default function SignUp() {
           />
         </div>
 
-        {/* TEXT - always on the right */}
-        <div className="grow">
-
-          <h2 className="font-extrabold 
-                         text-lg sm:text-xl md:text-2xl 
-                         mb-2">
+        {/* TEXT */}
+        <div className="flex-1 min-w-0">
+          <h2
+            className="
+              font-extrabold
+              text-base sm:text-lg md:text-2xl lg:text-3xl
+              mb-2
+            "
+          >
             Sign Up for Exclusive Offers
           </h2>
 
-          <p className="font-semibold text-sm sm:text-base">
-            Join our community and stay updated on the latest products <br />
-            and promotions!
+          <p
+            className="
+              font-semibold
+              text-sm sm:text-sm md:text-base lg:text-lg
+            "
+          >
+            Join our community and stay updated on the latest
+            products and promotions!
           </p>
 
-          {/* Email + Button */}
-          <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
-              <Link to="/Login">
+          {/* Buttons */}
+          <div className="mt-3 flex flex-wrap items-center gap-2 sm:gap-3">
+            <Link to="/Login">
               <button
                 type="button"
-                className="border border-solid rounded-lg bg-green-950
-                     pr-7 pl-7 pb-2 mr-4 mt-10 font-sans
-                    text-white font-semibold">
-                 Login
+                className="
+                  bg-green-950
+                  px-3 py-1
+                  sm:px-4 sm:py-2
+                  md:px-5 md:py-2
+                  rounded-lg
+                  text-xs sm:text-sm md:text-base
+                  font-semibold
+                  hover:bg-green-800
+                  transition
+                "
+              >
+                Login
               </button>
-              </Link>
-              <Link to="/Register">
+            </Link>
+
+            <Link to="/Register">
               <button
                 type="button"
-                className="border border-solid rounded-lg bg-green-950
-                            pr-7 pl-7 pb-2 mr-4 mt-10 font-sans
-                            text-white font-semibold">
+                className="
+                  bg-green-950
+                  px-3 py-1
+                  sm:px-4 sm:py-2
+                  md:px-5 md:py-2
+                  rounded-lg
+                  text-xs sm:text-sm md:text-base
+                  font-semibold
+                  hover:bg-green-800
+                  transition
+                "
+              >
                 Register
               </button>
-              </Link>
-              <Buttons />
-              <Register isOpen={isOpen} setIsOpen={setIsOpen} />
-              <Login isOpen={isOpen} setIsOpen={setIsOpen} />
+            </Link>
+
+            <Buttons />
           </div>
 
+          <Register isOpen={isOpen} setIsOpen={setIsOpen} />
+          <Login isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
       </div>
     </>

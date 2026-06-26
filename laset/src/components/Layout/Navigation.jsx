@@ -12,7 +12,9 @@ function Navigation() {
       className="
         flex justify-between items-center
         text-center font-bold text-white
-        p-4 w-full sticky top-0 z-50
+        fixed top-0 left-0
+        w-full
+        z-50
         shadow-md bg-green-900
       "
     >
@@ -30,7 +32,7 @@ function Navigation() {
             min-w-0
             "
           />
-          <div className="relative flex flex-2 gap-2 md:hidden text-3xl ig:hidden">
+          <div className="relative flex flex-2 gap-2 md:hidden text-3xl 1g:hidden">
             <div className="relative">
               <Link to="/Cart">
                 <img
