@@ -26,7 +26,7 @@ export default function AllProducts() {
     
     return (
         <> 
-            <div className="border border-green-700 rounded-lg shadow-md overflow-hidden max-h-">
+            <div className="border border-green-700 rounded-lg shadow-md overflow-hidden">
                 <div>
                 {isLoading ? (
                     <p>Loading products...</p>
@@ -52,6 +52,9 @@ export default function AllProducts() {
                     overflow-x-auto
                     overflow-y-hidden
                     gap-2
+                    sm:gap-5
+                    md:gap-4
+                    lg:gap-4
                     px-2 sm:px-6 md:px-10
                     mb-10 mt-10
                     pb-4
@@ -80,7 +83,7 @@ export default function AllProducts() {
                         price={product.price}  
                         />
                         
-                            <div  className="px-1 sm:px-2 md:px-3 ">
+                            <div  className="px-1 sm:px-2 md:px-3">
                                 <button className="bg-green-900 hover:bg-green-800 text-white font-bold py-2 px-4 rounded ml-5 sm:ml-2 md:ml-4 "
                                 onClick={() => handleAddToCart(product)}>
                                     Add to Cart

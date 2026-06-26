@@ -16,6 +16,7 @@ function Navigation() {
         w-full
         z-50
         shadow-md bg-green-900
+        p-2
       "
     >
       <div className="flex justify-between items-center w-full px-4 sm:px-8">
