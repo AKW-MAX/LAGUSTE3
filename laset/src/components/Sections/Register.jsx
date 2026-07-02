@@ -2,12 +2,20 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
+const getApiBaseUrl = () => {
+  if (window.location.hostname === "localhost") {
+    return "http://localhost:5000";
+  }
+
+  return import.meta.env.VITE_API_URL || "https://agriventure-enterprise-backend.onrender.com";
+};
+
 const Register = ({
   isOpen = true,
   setIsOpen = () => {},
 }) => {
   const navigate = useNavigate();
-  const VITE_API_URL = import.meta.env.VITE_API_URL;
+  const VITE_API_URL = getApiBaseUrl();
 
   const [formData, setFormData] = useState({
     first_name: "",

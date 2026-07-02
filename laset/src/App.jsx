@@ -18,6 +18,7 @@ import Register from "./components/Sections/Register"
 import Login from "./components/Sections/Login"
 import CheckOut from "./components/Sections/CheckOut"
 import OrdersSuccess from "./components/Sections/OrdersSuccess"
+import MyOrders from "./components/Sections/MyOrders"
 import "./index.css"
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route path="Login" element={<Login />} />
           <Route path="CheckOut" element={<CheckOut />} />
           <Route path="/OrdersSuccess" element={<OrdersSuccess />} />
+          <Route path="/MyOrders" element={<MyOrders />} />
         </Routes>
       </div>
     </>

@@ -1,9 +1,17 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
+const getApiBaseUrl = () => {
+    if (window.location.hostname === 'localhost') {
+        return 'http://localhost:5000';
+    }
+
+    return import.meta.env.VITE_API_URL || 'https://agriventure-enterprise-backend.onrender.com';
+};
+
 export const ProductsApi = createApi({
     reducerPath: 'productsApi',
     baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_URL,
+    baseUrl: getApiBaseUrl(),
      }),
     endpoints: (builder) => ({
         getAllProducts: builder.query({

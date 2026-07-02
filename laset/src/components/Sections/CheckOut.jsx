@@ -2,7 +2,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { clearCart } from "../../Features/CartSlice";
 
 export default function Checkout() {
@@ -15,39 +15,83 @@ export default function Checkout() {
     phone: "",
     address: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    try {
+      const savedUser = localStorage.getItem("user");
+      const storedUser = savedUser ? JSON.parse(savedUser) : null;
+
+      if (!storedUser) {
+        navigate("/Login", { state: { from: "/CheckOut" } });
+        return;
+      }
+
+      setCustomer((prev) => ({
+        ...prev,
+        name: `${storedUser.first_name || ""} ${storedUser.last_name || ""}`.trim(),
+      }));
+    } catch {
+      navigate("/Login", { state: { from: "/CheckOut" } });
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setCustomer({
       ...customer,
       [e.target.name]: e.target.value,
     });
+    if (errorMessage) setErrorMessage("");
   };
 
   const handlePlaceOrder = async () => {
+    setErrorMessage("");
+
     try {
+      const savedUser = localStorage.getItem("user");
+      const storedUser = savedUser ? JSON.parse(savedUser) : null;
+
+      if (!storedUser) {
+        navigate("/Login", { state: { from: "/CheckOut" } });
+        return;
+      }
+
       const orderData = {
         customer,
         orderItems: cart.cartItems,
         totalAmount: cart.cartTotalAmount,
+        user: {
+          id: storedUser.id || storedUser._id || null,
+          name: `${storedUser.first_name || ""} ${storedUser.last_name || ""}`.trim(),
+          email: storedUser.email || "",
+        },
       };
 
       const API_URL =
-        import.meta.env.VITE_API_URL ||
-        "https://agriventure-enterprise-backend.onrender.com";
+        window.location.hostname === "localhost"
+          ? "http://localhost:5000"
+          : import.meta.env.VITE_API_URL ||
+            "https://agriventure-enterprise-backend.onrender.com";
 
-      console.log("Posting to:", `${API_URL}/orders`);
+      const orderUrl = new URL("/api/orders", API_URL.endsWith("/") ? API_URL : `${API_URL}/`).toString();
+
+      console.log("Posting to:", orderUrl);
       console.log(orderData);
 
-      const res = await axios.post(
-        `${API_URL}/api/orders`,
-        orderData
-      );
+      const res = await axios.post(orderUrl, orderData);
 
       console.log(res.data);
 
-      if (res.data.success) {
+      if (res?.data?.success || res?.status >= 200 && res?.status < 300) {
         dispatch(clearCart());
-        navigate("/OrdersSuccess");
+        navigate("/OrdersSuccess", {
+          state: {
+            order: res?.data?.order || null,
+            message: res?.data?.message || "Order placed successfully",
+          },
+        });
+      } else {
+        setErrorMessage("Your order could not be placed. Please try again.");
       }
     } catch (error) {
       console.error("ORDER ERROR:", error);
@@ -56,6 +100,14 @@ export default function Checkout() {
         console.log("Status:", error.response.status);
         console.log("Data:", error.response.data);
       }
+
+      const message =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.message ||
+        "Your order could not be placed. Please try again.";
+
+      setErrorMessage(message);
     }
   };
 
@@ -94,6 +146,11 @@ export default function Checkout() {
 
       {/* Customer Details */}
       <div className="bg-green-800 p-4 rounded-lg">
+        {errorMessage && (
+          <div className="mb-4 rounded border border-red-300 bg-red-100 px-3 py-2 text-sm font-medium text-red-700">
+            {errorMessage}
+          </div>
+        )}
         <h2 className="text-xl font-semibold mb-4">
           Customer Details
         </h2>

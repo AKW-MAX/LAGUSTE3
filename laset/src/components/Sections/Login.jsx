@@ -1,13 +1,22 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+
+const getApiBaseUrl = () => {
+  if (window.location.hostname === "localhost") {
+    return "http://localhost:5000";
+  }
+
+  return import.meta.env.VITE_API_URL || "https://agriventure-enterprise-backend.onrender.com";
+};
 
 export default function Login({
   isOpen = true,
   setIsOpen = () => {},
 }) {
   const navigate = useNavigate();
-  const VITE_API_URL = import.meta.env.VITE_API_URL;
+  const location = useLocation();
+  const VITE_API_URL = getApiBaseUrl();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,14 +30,21 @@ export default function Login({
     };
 
     axios
-      .post(`${VITE_API_URL}/Login`, formData)
+      .post(`${VITE_API_URL}/login`, formData)
       .then((response) => {
         console.log("Login successful:", response.data);
 
-        if (response.data.message === "Login successful") {
-          setIsOpen(false);
-          navigate("/");
-        }
+       if (response.data.message === "Login successful") {
+        // Save logged-in user
+        localStorage.setItem(
+          "user",
+          JSON.stringify(response.data.user)
+        );
+
+        setIsOpen(false);
+        const redirectTo = location.state?.from || "/";
+        navigate(redirectTo);
+      }
       })
       .catch((error) => {
         const message =
@@ -44,7 +60,8 @@ export default function Login({
 
   const handleClose = () => {
     setIsOpen(false);
-    navigate("/");
+    const redirectTo = location.state?.from || "/";
+    navigate(redirectTo);
   };
 
   if (!isOpen) return null;
