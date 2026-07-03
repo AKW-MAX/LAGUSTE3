@@ -1,24 +1,36 @@
+import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../Features/CartSlice";
 import ProductsCard from "../Common/ProductsCard";
 import Cart from "../Sections/Cart";
-import {useGetAllProductsQuery} from '../../Features/ProductsApi';
-import { useNavigate } from "react-router-dom";
+import { useGetAllProductsQuery } from '../../Features/ProductsApi';
+import { useLocation, useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets.js";
-import {product_list} from "../../assets/assets.js";
+import { product_list } from "../../assets/assets.js";
 
 export default function AllProducts() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const {data, error, isLoading} = useGetAllProductsQuery();
     const products = Array.isArray(data) ? data : data?.value || [];
-    const products_list = products.length > 0 ? products : product_list;
+    const searchParams = new URLSearchParams(location.search);
+    const query = searchParams.get("q")?.toLowerCase().trim() || "";
+
+    const products_list = useMemo(() => {
+        const source = products.length > 0 ? products : product_list;
+        if (!query) return source;
+        return source.filter((product) => {
+            const text = `${product.name || ""} ${product.category || ""}`.toLowerCase();
+            return text.includes(query);
+        });
+    }, [products, query]);
 
     const handleAddToCart = (product) => {
         const payload = {
             ...product,
-            img: assets[product.img] || product.img,
+            img: assets[product.img] || assets[product.image] || product.img || product.image,
             add: assets[product.add] || product.add,
         };
         dispatch(addToCart(payload));
@@ -63,7 +75,7 @@ export default function AllProducts() {
                     max-w-full
                     ">
 
-                    {product_list?.map((product) => (
+                    {products_list?.map((product) => (
                     <div key={product._id} className="
                      w-[100px]
                      sm:w-[180px]
@@ -76,7 +88,7 @@ export default function AllProducts() {
        ">
                         <ProductsCard
                          _id={product._id}
-                        imgSrc={assets[product.img] || product.img}
+                        imgSrc={assets[product.img] || assets[product.image] || product.img || product.image}
                         imgAlt={product.name}
                         add={assets[product.add] || product.add}
                         name={product.name}

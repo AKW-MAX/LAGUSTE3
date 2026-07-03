@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useEffect, useRef } from "react";
@@ -14,11 +14,65 @@ const getInitials = (userData) => {
   return initials || userData.email?.[0]?.toUpperCase() || "U";
 };
 
+const categories = [
+  { label: "Foliar Feed", href: "/category/foliar-feed" },
+  { label: "Insecticides", href: "/category/insecticide" },
+  { label: "Public Health Insecticides", href: "/category/public-health-insecticide" },
+  { label: "Equipment", href: "/category/equipment" },
+  { label: "Seeds", href: "/category/seeds" },
+];
+
+const nestedCategories = [
+  {
+    label: "Fertilizer",
+    items: [
+      { label: "Foliar Feed", href: "/category/foliar-feed" },
+      { label: "Planting Fertilisers", href: "/category/fertilizer/planting-fertilisers" },
+      { label: "Top-Dressing Fertilisers", href: "/category/fertilizer/top-dressing-fertilisers" },
+      { label: "Compound Fertilisers", href: "/category/fertilizer/compound-fertilisers" },
+    ],
+  },
+  {
+    label: "Vet Products",
+    items: [
+      { label: "Dewormers", href: "/category/vet-products/dewormers" },
+      { label: "Supplements", href: "/category/vet-products/supplements" },
+      { label: "Ethicals", href: "/category/vet-products/ethicals" },
+      { label: "Disinfectants", href: "/category/vet-products/disinfectants" },
+      { label: "Acaricides", href: "/category/vet-products/acaricides" },
+      { label: "Intramammary", href: "/category/vet-products/intramammary" },
+      { label: "Pet shampoos", href: "/category/vet-products/pet-shampoos" },
+    ],
+  },
+  {
+    label: "Equipments",
+    items: [
+      { label: "Pigs", href: "/category/equipments/pigs" },
+      { label: "Chicken", href: "/category/equipments/chicken" },
+      { label: "Cattle", href: "/category/equipments/cattle" },
+      { label: "Pets", href: "/category/equipments/pets" },
+      { label: "Fumigation", href: "/category/equipments/fumigation" },
+      { label: "Farm", href: "/category/equipments/farm" },
+    ],
+  },
+];
+
 function Navigation() {
   const cart = useSelector((state) => state.cart);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
   const menuRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+  const buttonRef = useRef(null);
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    const trimmed = searchTerm.trim();
+    const query = trimmed ? `?q=${encodeURIComponent(trimmed)}` : "";
+    navigate(`/AllProducts${query}`);
+  };
 
   useEffect(() => {
     try {
@@ -30,18 +84,32 @@ function Navigation() {
   }, []);
 
   useEffect(() => {
-  const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setMenuOpen(false);
-    }
-  };
+    const handleClickOutside = (event) => {
+      if (
+        categoriesOpen &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        !buttonRef.current?.contains(event.target)
+      ) {
+        setCategoriesOpen(false);
+      }
 
-  document.addEventListener("mousedown", handleClickOutside);
+      if (
+        mobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target) &&
+        !buttonRef.current?.contains(event.target)
+      ) {
+        setMobileMenuOpen(false);
+      }
+    };
 
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, []);
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [categoriesOpen, mobileMenuOpen]);
 
   return (
     <div
@@ -55,21 +123,32 @@ function Navigation() {
         p-2
       "
     >
-      <div className="flex justify-between items-center w-full px-4 sm:px-8">
-        {/* Logo */}
-        <p className="text-l whitespace-nowrap">QualityFirst</p>
+      <div className="flex flex-col gap-2 w-full px-4 sm:px-8">
+        <div className="flex items-center justify-between w-full gap-2">
+          {/* Logo */}
+          <p className="text-l whitespace-nowrap">QualityFirst</p>
 
-          <input type="text"
+          <input
+            type="text"
             placeholder="Search Items"
-            className="
-            bg-white text-green-700 border border-green-700
-            focus:outline-2 focus:outline-offset-1
-            px-2 py-1 rounded 
-            flex-1 mx-2
-            min-w-0
+            className="hidden sm:block
+              bg-white text-green-700 border border-green-700
+              focus:outline-2 focus:outline-offset-1
+              px-2 py-1 rounded
+              flex-1 mx-2
+              min-w-0
             "
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleSearch();
+              }
+            }}
           />
-          <div className="relative flex flex-2 gap-2 md:hidden text-3xl 1g:hidden">
+
+          <div className="relative flex gap-2 lg:hidden text-3xl">
             <div className="relative">
               <Link to="/Cart">
                 <img
@@ -84,41 +163,63 @@ function Navigation() {
                     bg-red-500 text-white rounded-full
                     w-5 h-5 text-xs flex
                     items-center justify-center
-                  ">
+                  "
+                >
                   {cart?.cartItems?.length || 0}
                 </span>
               </Link>
             </div>
 
             <div>
-          
-            <Link to={user ? "/MyOrders" : "/Register"}>
-              {user ? (
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-bold text-green-900">
-                  {getInitials(user)}
-                </div>
-              ) : (
-                <img
-                  src={assets.register}
-                  alt="Register"
-                  className="w-10 h-10"
-                />
-              )}
-            </Link>
+              <Link to={user ? "/MyOrders" : "/Register"}>
+                {user ? (
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-bold text-green-900">
+                    {getInitials(user)}
+                  </div>
+                ) : (
+                  <img
+                    src={assets.register}
+                    alt="Register"
+                    className="w-10 h-10"
+                  />
+                )}
+              </Link>
             </div>
           </div>
 
-        {/* Hamburger Menu Button */}
-        <button
-          className="sm:hidden md:hidden text-3xl"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? "✕" : "☰"}
-        </button>
+          <button
+            type="button"
+            ref={buttonRef}
+            className="sm:hidden text-3xl"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {mobileMenuOpen ? "✕" : "☰"}
+          </button>
+        </div>
 
-        {/* Desktop Menu */}
+        <div className="w-full sm:hidden">
+          <input
+            type="text"
+            placeholder="Search Items"
+            className="
+              w-full
+              bg-white text-green-700 border border-green-700
+              focus:outline-2 focus:outline-offset-1
+              px-2 py-1 rounded
+            "
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleSearch();
+              }
+            }}
+          />
+        </div>
+
         <div className="hidden sm:flex justify-between items-center gap-4">
-
           <Link to="/">
             <p className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">
               Home
@@ -133,77 +234,38 @@ function Navigation() {
 
           <div ref={menuRef} className="hidden lg:block relative">
             <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded text-white" >
+              onClick={() => setCategoriesOpen((prev) => !prev)}
+              className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded text-white"
+            >
               Categories
             </button>
 
-            {menuOpen && (
-              <div className="absolute top-full left-0 mt-2 w-45 bg-white shadow-lg rounded-md z-50">
+            {categoriesOpen && (
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-md z-50">
                 <ul className="py-2 text-green-900">
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Pesticides
-                  </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Fungicides
-                  </li>
-                  <li  className=" group relative px-4 py-2 hover:bg-gray-100 cursor-pointer ">
-                    Fertilizer
-                    <ul className="absolute top-0 left-full text-left
-                        w-48 bg-white shadow-lg rounded-md
-                        hidden group-hover:block z-50">
-                      <li className="px-4 py-2 hover:bg-gray-100">Foliar Feed</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">Planting Fertilisers</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">Top-Dressing Fertilisers</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">compound fertilisers</li>
-                    </ul>
+                  {categories.map((category) => (
+                    <li key={category.label} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                      <Link to={category.href}>{category.label}</Link>
+                    </li>
+                  ))}
 
-                  </li>
-                  <li className="group relative px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Vet Products
-                    <ul className="absolute top-0 left-full text-left
-                        w-48 bg-white shadow-lg rounded-md
-                        hidden group-hover:block z-50">
-                      <li className="px-4 py-2 hover:bg-gray-100">Dewormers</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">Suppliments</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">Ethicals</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">Disinfectants</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">Acaricides</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">Intramammary</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">Pet shampoos</li>
-                    </ul>
-                  </li>
-
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Organic Products
-                  </li>
-                  <li className="group relative px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Equipments
-                    <ul className="absolute top-0 left-full text-left
-                        w-48 bg-white shadow-lg rounded-md
-                        hidden group-hover:block z-50">
-                      <li className="px-4 py-2 hover:bg-gray-100">Pigs</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">Chicken</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">Cattle</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">Pets</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">Fumigation</li>
-                      <li className="px-4 py-2 hover:bg-gray-100">Farm</li>
-                    </ul>
-                  </li>
-
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Agronomist Services
-                  </li>
-
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Vet Services
-                  </li>
-
+                  {nestedCategories.map((category) => (
+                    <li key={category.label} className="group relative px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                      <span className="flex items-center justify-between">
+                        {category.label}
+                      </span>
+                      <ul className="absolute top-0 left-full text-left w-48 bg-white shadow-lg rounded-md hidden group-hover:block z-50">
+                        {category.items.map((item) => (
+                          <li key={item.label} className="px-4 py-2 hover:bg-gray-100">
+                            <Link to={item.href}>{item.label}</Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                  ))}
                 </ul>
               </div>
-    
             )}
-        
           </div>
 
           <Link to="/Features">
@@ -223,7 +285,6 @@ function Navigation() {
               My Orders
             </p>
           </Link>
-          
 
           <div className="relative">
             <Link to="/Cart">
@@ -265,54 +326,55 @@ function Navigation() {
       </div>
 
       {/* Mobile Dropdown Menu */}
-      
-      {menuOpen && (
+      {mobileMenuOpen && (
         <div
-            className="
+          ref={mobileMenuRef}
+          className="
             absolute top-full right-0
-            w-30 bg-green-900
-            flex flex-col items-left
+            w-48 bg-green-900
+            flex flex-col items-start
             gap-1 py-4 sm:hidden
-            shadow-lg">
+            shadow-lg"
+        >
+          <Link to="/" onClick={() => setMobileMenuOpen(false)}>
+            <p className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">
+              Home
+            </p>
+          </Link>
 
-            <Link to="/" onClick={() => setMenuOpen(false)}>
+          <Link to="/About" onClick={() => setMobileMenuOpen(false)}>
+            <p className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">
+              About
+            </p>
+          </Link>
+
+          <Link to="/Features" onClick={() => setMobileMenuOpen(false)}>
+            <p className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">
+              Features
+            </p>
+          </Link>
+
+          {categories.map((category) => (
+            <Link key={category.label} to={category.href} onClick={() => setMobileMenuOpen(false)}>
               <p className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">
-                Home
+                {category.label}
               </p>
             </Link>
+          ))}
 
-            <Link to="/About" onClick={() => setMenuOpen(false)}>
-              <p className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">
-                About
-              </p>
-            </Link>
+          <Link to="/AllContacts" onClick={() => setMobileMenuOpen(false)}>
+            <p className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">
+              Contacts
+            </p>
+          </Link>
 
-            <Link to="/Features" onClick={() => setMenuOpen(false)}>
-              <p className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">
-                Features
-              </p>
-            </Link>
-
-            <Link to="/AllContacts" onClick={() => setMenuOpen(false)}>
-              <p className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">
-                Contacts
-              </p>
-            </Link>
-
-            <Link to="/Register" onClick={() => setMenuOpen(false)}>
-              <button className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">
-                Login/Register
-              </button>
-            </Link>
-
+          <Link to="/Register" onClick={() => setMobileMenuOpen(false)}>
             <button className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">
-                Categories
+              Login/Register
             </button>
-
+          </Link>
         </div>
-         
       )}
-      
     </div>
   );
 }
