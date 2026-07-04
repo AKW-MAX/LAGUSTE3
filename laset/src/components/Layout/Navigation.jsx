@@ -14,6 +14,29 @@ const getInitials = (userData) => {
   return initials || userData.email?.[0]?.toUpperCase() || "U";
 };
 
+const getApiBaseUrl = () => {
+  if (window.location.hostname === "localhost") {
+    return "http://localhost:5000";
+  }
+
+  return import.meta.env.VITE_API_URL || "https://agriventure-enterprise-backend.onrender.com";
+};
+
+const getAvatarUrl = (userData) => {
+  const image = userData?.profileImage || userData?.profile_image || userData?.avatar || userData?.image || "";
+
+  if (!image || typeof image !== "string") return null;
+
+  const trimmed = image.trim();
+  if (!trimmed) return null;
+
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith("data:")) {
+    return trimmed;
+  }
+
+  return `${getApiBaseUrl()}${trimmed.startsWith("/") ? "" : "/"}${trimmed}`;
+};
+
 const categories = [
   { label: "Foliar Feed", href: "/category/foliar-feed" },
   { label: "Insecticides", href: "/category/insecticide" },
@@ -61,17 +84,25 @@ function Navigation() {
   const cart = useSelector((state) => state.cart);
   const [searchTerm, setSearchTerm] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
+  const [openMobileCategoryGroup, setOpenMobileCategoryGroup] = useState(null);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const menuRef = useRef(null);
   const mobileMenuRef = useRef(null);
+  const mobileCategoriesRef = useRef(null);
   const buttonRef = useRef(null);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const avatarUrl = getAvatarUrl(user);
 
   const handleSearch = () => {
     const trimmed = searchTerm.trim();
     const query = trimmed ? `?q=${encodeURIComponent(trimmed)}` : "";
     navigate(`/AllProducts${query}`);
+  };
+
+  const toggleMobileCategoryGroup = (label) => {
+    setOpenMobileCategoryGroup((prev) => (prev === label ? null : label));
   };
 
   useEffect(() => {
@@ -123,20 +154,20 @@ function Navigation() {
         p-2
       "
     >
-      <div className="flex flex-col gap-2 w-full px-4 sm:px-8">
-        <div className="flex items-center justify-between w-full gap-2">
+      <div className="flex flex-col gap-2 w-full px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between w-full gap-2 flex-wrap md:flex-nowrap">
           {/* Logo */}
           <p className="text-l whitespace-nowrap">QualityFirst</p>
 
           <input
             type="text"
             placeholder="Search Items"
-            className="hidden sm:block
+            className="hidden md:block
               bg-white text-green-700 border border-green-700
               focus:outline-2 focus:outline-offset-1
               px-2 py-1 rounded
               flex-1 mx-2
-              min-w-0
+              w-full
             "
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -148,7 +179,18 @@ function Navigation() {
             }}
           />
 
-          <div className="relative flex gap-2 lg:hidden text-3xl">
+          <div className="relative flex items-center gap-2 md:hidden text-3xl">
+            <button
+              type="button"
+              onClick={() => {
+                setMobileCategoriesOpen((prev) => !prev);
+                setMobileMenuOpen(false);
+              }}
+              className="hover:bg-green-800 bg-green-700 px-2 py-1 rounded text-sm font-bold text-white"
+            >
+              Categories
+            </button>
+
             <div className="relative">
               <Link to="/Cart">
                 <img
@@ -173,9 +215,17 @@ function Navigation() {
             <div>
               <Link to={user ? "/MyOrders" : "/Register"}>
                 {user ? (
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-bold text-green-900">
-                    {getInitials(user)}
-                  </div>
+                  avatarUrl ? (
+                    <img
+                      src={avatarUrl}
+                      alt="User avatar"
+                      className="h-10 w-10 rounded-full object-cover border border-white"
+                    />
+                  ) : (
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-bold text-green-900">
+                      {getInitials(user)}
+                    </div>
+                  )
                 ) : (
                   <img
                     src={assets.register}
@@ -190,7 +240,7 @@ function Navigation() {
           <button
             type="button"
             ref={buttonRef}
-            className="sm:hidden text-3xl"
+            className="md:hidden text-3xl"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -198,7 +248,7 @@ function Navigation() {
           </button>
         </div>
 
-        <div className="w-full sm:hidden">
+        <div className="w-full md:hidden">
           <input
             type="text"
             placeholder="Search Items"
@@ -219,7 +269,63 @@ function Navigation() {
           />
         </div>
 
-        <div className="hidden sm:flex justify-between items-center gap-4">
+        {mobileCategoriesOpen && (
+          <div
+            ref={mobileCategoriesRef}
+            className="w-full md:hidden mt-2 rounded bg-green-800 p-2 shadow-md"
+          >
+            <div className="flex flex-col gap-1">
+              {categories.map((category) => (
+                <Link
+                  key={category.label}
+                  to={category.href}
+                  onClick={() => {
+                    setMobileCategoriesOpen(false);
+                    setOpenMobileCategoryGroup(null);
+                  }}
+                >
+                  <p className="hover:bg-green-700 bg-green-900 px-3 py-1 rounded text-sm">
+                    {category.label}
+                  </p>
+                </Link>
+              ))}
+
+              {nestedCategories.map((category) => (
+                <div key={category.label} className="w-full">
+                  <button
+                    type="button"
+                    onClick={() => toggleMobileCategoryGroup(category.label)}
+                    className="w-full flex items-center justify-between hover:bg-green-700 bg-green-900 px-3 py-1 rounded text-left text-sm"
+                  >
+                    <span>{category.label}</span>
+                    <span>{openMobileCategoryGroup === category.label ? "−" : "+"}</span>
+                  </button>
+
+                  {openMobileCategoryGroup === category.label && (
+                    <div className="mt-1 flex flex-col gap-1 pl-3">
+                      {category.items.map((item) => (
+                        <Link
+                          key={item.label}
+                          to={item.href}
+                          onClick={() => {
+                            setMobileCategoriesOpen(false);
+                            setOpenMobileCategoryGroup(null);
+                          }}
+                        >
+                          <p className="hover:bg-green-700 bg-green-900 px-3 py-1 rounded text-xs">
+                            {item.label}
+                          </p>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="hidden md:flex justify-between items-center gap-2 lg:gap-4 flex-wrap">
           <Link to="/">
             <p className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">
               Home
@@ -232,10 +338,10 @@ function Navigation() {
             </p>
           </Link>
 
-          <div ref={menuRef} className="hidden lg:block relative">
+          <div ref={menuRef} className="hidden md:block relative">
             <button
               onClick={() => setCategoriesOpen((prev) => !prev)}
-              className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded text-white"
+              className="hover:bg-green-800 bg-green-700 px-2 lg:px-3 py-1 rounded text-white text-sm lg:text-base"
             >
               Categories
             </button>
@@ -310,9 +416,17 @@ function Navigation() {
           <div>
             <Link to={user ? "/MyOrders" : "/Register"}>
               {user ? (
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-sm font-bold text-green-900">
-                  {getInitials(user)}
-                </div>
+                avatarUrl ? (
+                  <img
+                    src={avatarUrl}
+                    alt="User avatar"
+                    className="h-8 w-8 rounded-full object-cover border border-white"
+                  />
+                ) : (
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-sm font-bold text-green-900">
+                    {getInitials(user)}
+                  </div>
+                )
               ) : (
                 <img
                   className="hover:bg-green-800 bg-green-700 w-8 h-8 p-1 rounded cursor-pointer"
@@ -333,7 +447,7 @@ function Navigation() {
             absolute top-full right-0
             w-48 bg-green-900
             flex flex-col items-start
-            gap-1 py-4 sm:hidden
+            gap-1 py-4 md:hidden
             shadow-lg"
         >
           <Link to="/" onClick={() => setMobileMenuOpen(false)}>
@@ -353,14 +467,6 @@ function Navigation() {
               Features
             </p>
           </Link>
-
-          {categories.map((category) => (
-            <Link key={category.label} to={category.href} onClick={() => setMobileMenuOpen(false)}>
-              <p className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">
-                {category.label}
-              </p>
-            </Link>
-          ))}
 
           <Link to="/AllContacts" onClick={() => setMobileMenuOpen(false)}>
             <p className="hover:bg-green-800 bg-green-700 px-3 py-1 rounded">

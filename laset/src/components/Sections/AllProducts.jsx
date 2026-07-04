@@ -49,7 +49,7 @@ export default function AllProducts() {
                 
                 <div className="mt-4 px-4 text-center">
                     <h2 className="font-extrabold text-2xl text-green-900 mt-10">
-                        Check Out Our Range of Products~
+                        Check Out Our Range of Products
                     </h2>
                     <p className="text-sm">
                         Explore our complete range of products, including the latest innovations and timeless classics.
