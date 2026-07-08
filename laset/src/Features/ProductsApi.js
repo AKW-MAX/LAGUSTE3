@@ -1,7 +1,8 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 const getApiBaseUrl = () => {
-    if (window.location.hostname === 'localhost') {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
         return 'http://localhost:5000';
     }
 

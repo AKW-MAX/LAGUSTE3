@@ -7,7 +7,10 @@ const getApiBaseUrl = () => {
     return "http://localhost:5000";
   }
 
-  return import.meta.env.VITE_API_URL || "https://agriventure-enterprise-backend.onrender.com";
+  return (
+    import.meta.env.VITE_API_URL ||
+    "https://agriventure-enterprise-backend.onrender.com"
+  );
 };
 
 export default function Login({
@@ -16,146 +19,103 @@ export default function Login({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const VITE_API_URL = getApiBaseUrl();
+  const API_URL = getApiBaseUrl();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = {
-      email,
-      password,
-    };
+    setError("");
 
-    axios
-      .post(`${VITE_API_URL}/login`, formData)
-      .then((response) => {
-        console.log("Login successful:", response.data);
+    try {
+      const response = await axios.post(`${API_URL}/login`, {
+        email,
+        password,
+      });
 
-       if (response.data.message === "Login successful") {
-        // Save logged-in user
+      if (response.data.message === "Login successful") {
+        // Save the logged-in user
         localStorage.setItem(
           "user",
           JSON.stringify(response.data.user)
         );
 
-        setIsOpen(false);
-        const redirectTo = location.state?.from || "/";
-        navigate(redirectTo);
-      }
-      })
-      .catch((error) => {
-        const message =
-          error.response?.data?.message || error.message;
+        // Optional token if your backend returns one
+        if (response.data.token) {
+          localStorage.setItem("token", response.data.token);
+        }
 
-        console.error(
-          "Login failed:",
-          error.response?.status,
-          message
-        );
-      });
+        setIsOpen(false);
+
+        navigate(location.state?.from || "/");
+      }
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Invalid email or password."
+      );
+    }
   };
 
   const handleClose = () => {
     setIsOpen(false);
-    const redirectTo = location.state?.from || "/";
-    navigate(redirectTo);
+    navigate(location.state?.from || "/");
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50 px-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
       <form
         onSubmit={handleSubmit}
-        className="
-          bg-white text-black
-          rounded-xl shadow-xl
-          p-4 sm:p-6 md:p-8
-          w-full max-w-md
-          flex flex-col
-        "
+        className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl"
       >
-        {/* Title */}
-        <h2 className="text-xl sm:text-2xl font-bold text-center mb-6">
-          Login
+        <h2 className="mb-6 text-center text-2xl font-bold">
+          Customer Login
         </h2>
 
-        {/* Email */}
-        <div className="w-full mb-4">
-          <label
-            htmlFor="email"
-            className="block mb-2 font-semibold text-sm sm:text-base"
-          >
+        {error && (
+          <div className="mb-4 rounded bg-red-100 p-3 text-red-700">
+            {error}
+          </div>
+        )}
+
+        <div className="mb-4">
+          <label className="mb-2 block font-semibold">
             Email
           </label>
 
           <input
-            id="email"
             type="email"
-            value={email}
-            placeholder="Enter your email"
-            className="
-              border border-gray-300
-              rounded-lg
-              px-3 py-2
-              w-full
-              text-sm sm:text-base
-              focus:outline-none
-              focus:ring-2
-              focus:ring-green-700
-            "
-            onChange={(e) => setEmail(e.target.value)}
             required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            className="w-full rounded border p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
           />
         </div>
 
-        {/* Password */}
-        <div className="w-full mb-6">
-          <label
-            htmlFor="password"
-            className="block mb-2 font-semibold text-sm sm:text-base"
-          >
+        <div className="mb-6">
+          <label className="mb-2 block font-semibold">
             Password
           </label>
 
           <input
-            id="password"
             type="password"
-            value={password}
-            placeholder="Enter your password"
-            className="
-              border border-gray-300
-              rounded-lg
-              px-3 py-2
-              w-full
-              text-sm sm:text-base
-              focus:outline-none
-              focus:ring-2
-              focus:ring-green-700
-            "
-            onChange={(e) => setPassword(e.target.value)}
             required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            className="w-full rounded border p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
           />
         </div>
 
-        {/* Buttons */}
         <div className="flex gap-3">
           <button
             type="submit"
-            className="
-              flex-1
-              bg-green-900
-              text-white
-              py-2 sm:py-3
-              rounded-lg
-              font-semibold
-              text-sm sm:text-base
-              hover:bg-green-800
-              transition
-            "
+            className="flex-1 rounded bg-green-900 py-3 font-semibold text-white hover:bg-green-800"
           >
             Login
           </button>
@@ -163,19 +123,9 @@ export default function Login({
           <button
             type="button"
             onClick={handleClose}
-            className="
-              flex-1
-              bg-green-700
-              text-white
-              py-2 sm:py-3
-              rounded-lg
-              font-semibold
-              text-sm sm:text-base
-              hover:bg-green-600
-              transition
-            "
+            className="flex-1 rounded bg-gray-500 py-3 font-semibold text-white hover:bg-gray-600"
           >
-            Close
+            Cancel
           </button>
         </div>
       </form>

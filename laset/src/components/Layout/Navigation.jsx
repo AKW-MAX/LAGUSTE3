@@ -38,7 +38,6 @@ const getAvatarUrl = (userData) => {
 };
 
 const categories = [
-  { label: "Foliar Feed", href: "/category/foliar-feed" },
   { label: "Insecticides", href: "/category/insecticide" },
   { label: "Public Health Insecticides", href: "/category/public-health-insecticide" },
   { label: "Equipment", href: "/category/equipment" },
@@ -230,7 +229,7 @@ function Navigation() {
                   <img
                     src={assets.register}
                     alt="Register"
-                    className="w-10 h-10"
+                    className="hover:bg-green-800 bg-green-700 w-10 h-10 p-1 rounded cursor-pointer"
                   />
                 )}
               </Link>
@@ -430,8 +429,8 @@ function Navigation() {
               ) : (
                 <img
                   className="hover:bg-green-800 bg-green-700 w-8 h-8 p-1 rounded cursor-pointer"
-                  src={assets.WomanImage}
-                  alt="woman image"
+                  src={assets.register}
+                  alt="Register"
                 />
               )}
             </Link>

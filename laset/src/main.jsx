@@ -6,7 +6,6 @@ import App from './App.jsx'
 
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import ProductsReducer, { productsFetch } from './Features/ProductsSlice';
 import { ProductsApi } from './Features/ProductsApi';
 import CartReducer from './Features/CartSlice';
 import  { ToastContainer } from 'react-toastify'
@@ -14,7 +13,6 @@ import 'react-toastify/dist/ReactToastify.css'
 
 export const store = configureStore({
   reducer: {
-    products: ProductsReducer,
     cart: CartReducer,
     [ProductsApi.reducerPath]: ProductsApi.reducer,
   },

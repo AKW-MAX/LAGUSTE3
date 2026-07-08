@@ -8,16 +8,19 @@ const ProductsCard = ({ _id, imgSrc, add, imgAlt, name, price }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleAddToCart = () => {
-  dispatch(addToCart({
-    _id,
-    img: imgSrc,
-    name,
-    price,
+    dispatch(addToCart({
+      _id,
+      img: imgSrc,
+      name,
+      price,
     }));
-   
-};
+  };
+
+  const handleImageClick = () => {
+    navigate(`/product/${_id}`);
+  };
+
   return (
-     
     <div className="w-full sm:w-36 xs:w-32 ml-3 sm:ml-2 mt-5 mb-5 shadow-lg rounded-md border border-green-700">
       {/* Product Id */}
       <p className="hidden">{_id}</p>
@@ -25,7 +28,8 @@ const ProductsCard = ({ _id, imgSrc, add, imgAlt, name, price }) => {
       <img 
         src={imgSrc}
         alt={imgAlt} 
-        className="w-full h-48 sm:h-40 xs:h-36 object-cover rounded-md" 
+        onClick={handleImageClick}
+        className="w-full h-48 sm:h-40 xs:h-36 object-cover rounded-md cursor-pointer" 
       />
 
       {/* Add to cart icon */}

@@ -14,7 +14,7 @@ export default function AllProducts() {
     const location = useLocation();
 
     const {data, error, isLoading} = useGetAllProductsQuery();
-    const products = Array.isArray(data) ? data : data?.value || [];
+    const products = Array.isArray(data) ? data : data?.value || product_list;
     const searchParams = new URLSearchParams(location.search);
     const query = searchParams.get("q")?.toLowerCase().trim() || "";
 
@@ -43,7 +43,7 @@ export default function AllProducts() {
                 {isLoading ? (
                     <p>Loading products...</p>
                     ) : error ? (
-                        <p>Failed to load products: {error?.data?.message || error?.message || 'Unknown error'}</p>
+                        <p className="text-red-600">Failed to load products from the API. Showing local data instead.</p>
                     ) : null}
                 </div>
                 

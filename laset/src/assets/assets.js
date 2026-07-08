@@ -88,6 +88,7 @@ assets.arrow = Arrow;
 assets.arrow2 = Arrow2;
 assets.womanImage = WomanImage;
 assets.signupPic = SignupPic;
+assets.register = SignupPic;
 assets.cart = Cart;
 assets.spiderPlant = SpiderPlant;
 assets.actellic = Actellic;

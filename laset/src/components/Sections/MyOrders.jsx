@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 const getApiBaseUrl = () => {
   if (window.location.hostname === "localhost") {
@@ -21,11 +22,33 @@ const isFulfilled = (status = "") => {
 };
 
 export default function MyOrders() {
+  const navigate = useNavigate();
   const [lookup, setLookup] = useState("");
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+
+    setOrders([]);
+    setLookup("");
+    setMessage("");
+    setError("");
+
+    navigate("/");
+  };
+  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+    useEffect(() => {
+    if (!loggedInUser) {
+      navigate("/login");
+    }
+  }, [loggedInUser, navigate]);
+  
+  if (!loggedInUser) {
+  return null;
+}
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -78,6 +101,14 @@ export default function MyOrders() {
           <Link to="/">
             <button className="rounded bg-black px-4 py-2 font-semibold">Back Home</button>
           </Link>
+        </div>
+        <div>
+          <button
+          onClick={handleLogout}
+          className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded"
+        >
+          Logout
+        </button>
         </div>
 
         <form onSubmit={handleSearch} className="mb-6 rounded-lg bg-green-700/70 p-4">
