@@ -15,11 +15,11 @@ export default function Hero() {
 				  object-cover"
 			src = {assets.HeroPic} alt = "Tomatoes being harvested" />
 			<Navigation />
-			<div className="text-center relative text-white justify-center mt-10 sm:mt-0 md:mt-10">
+			<div className="text-center relative text-white justify-center mt-15 sm:mt-5 md:mt-10">
 			  <Header />
 			  <Buttons />	
 			</div>
-			<div className="absolute bottom-0 left-0 right-0 w-full
+			<div className="absolute bottom-0 left-0 right-0 w-full sm:mt-10
 			">
 				<Starts />
 			</div>
