@@ -1,42 +1,77 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Products() {
+  const navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
 
-  const API_URL = import.meta.env.VITE_API_URL;
-
-  const fetchProducts = async () => {
-    try {
-      const res = await axios.get(`${API_URL}/admin/products`);
-      setProducts(res.data);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      alert("Failed to fetch products.");
-    }
-  };
+  const API_URL =
+    import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   useEffect(() => {
+    const token = localStorage.getItem("adminToken");
+
+    if (!token) {
+      navigate("/admin/login");
+      return;
+    }
+
     fetchProducts();
   }, []);
 
-  const deleteProduct = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this product?"
-    );
+  const fetchProducts = async () => {
+    try {
+      const token = localStorage.getItem("adminToken");
 
-    if (!confirmDelete) return;
+      const res = await axios.get(`${API_URL}/admin/products`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setProducts(res.data.products);
+
+    } catch (error) {
+      console.error(error);
+
+      if (error.response?.status === 401) {
+        localStorage.removeItem("adminToken");
+        navigate("/admin/login");
+      } else {
+        alert("Failed to fetch products.");
+      }
+    }
+  };
+
+  const deleteProduct = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) {
+      return;
+    }
 
     try {
-      await axios.delete(`${API_URL}/admin/products/${id}`);
+      const token = localStorage.getItem("adminToken");
+
+      await axios.delete(`${API_URL}/admin/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setProducts(products.filter((product) => product._id !== id));
 
-      alert("Product deleted successfully.");
+      alert("Product deleted successfully!");
+
     } catch (error) {
-      console.error("Error deleting product:", error);
-      alert("Failed to delete product.");
+      console.error(error);
+
+      if (error.response?.status === 401) {
+        localStorage.removeItem("adminToken");
+        navigate("/admin/login");
+      } else {
+        alert("Failed to delete product.");
+      }
     }
   };
 
@@ -110,6 +145,7 @@ export default function Products() {
                 </tr>
               ))}
             </tbody>
+
           </table>
         </div>
       )}

@@ -6,7 +6,6 @@ export default function Buttons() {
       <Link to="AllProducts">
         <button
       className="
-      lg:mt-20
     bg-green-950
 			pl-4
       pr-4

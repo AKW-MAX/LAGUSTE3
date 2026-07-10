@@ -15,7 +15,7 @@ export default function Hero() {
 				  object-cover"
 			src = {assets.HeroPic} alt = "Tomatoes being harvested" />
 			<Navigation />
-			<div className="text-center relative text-white justify-center mt-15 sm:mt-5 md:mt-10">
+			<div className="text-center relative text-white justify-center p-5 sm:mt-5 md:mt-10">
 			  <Header />
 			  <Buttons />	
 			</div>

@@ -1,6 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
+const getApiBaseUrl = () => {
+  if (window.location.hostname === "localhost") {
+    return "http://localhost:5000";
+  }
+
+  return (
+    import.meta.env.VITE_API_URL ||
+    "https://agriventure-enterprise-backend.onrender.com"
+  );
+};
 
 export default function AddProduct() {
   const navigate = useNavigate();
@@ -13,6 +24,14 @@ export default function AddProduct() {
     img: "",
   });
 
+  useEffect(() => {
+    const token = localStorage.getItem("adminToken");
+
+    if (!token) {
+      navigate("/admin/login");
+    }
+  }, [navigate]);
+
   const handleChange = (e) => {
     setProduct({
       ...product,
@@ -24,9 +43,16 @@ export default function AddProduct() {
     e.preventDefault();
 
     try {
+      const token = localStorage.getItem("adminToken");
+
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/admin/products`,
-        product
+        `${getApiBaseUrl()}/admin/products`,
+        product,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       alert("Product added successfully!");
@@ -42,22 +68,33 @@ export default function AddProduct() {
       navigate("/admin/products");
     } catch (error) {
       console.error(error);
-      alert("Failed to add product.");
+
+      if (error.response?.status === 401) {
+        alert("Session expired. Please login again.");
+
+        localStorage.removeItem("adminToken");
+        navigate("/admin/login");
+      } else {
+        alert(error.response?.data?.message || "Failed to add product.");
+      }
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow rounded">
-      <h1 className="text-3xl font-bold mb-6">Add Product</h1>
+    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded shadow-lg">
+      <h1 className="text-3xl font-bold mb-6">
+        Add Product
+      </h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
+
         <input
           type="text"
           name="name"
           placeholder="Product Name"
           value={product.name}
           onChange={handleChange}
-          className="w-full border p-3 rounded"
+          className="w-full border rounded p-3"
           required
         />
 
@@ -67,7 +104,7 @@ export default function AddProduct() {
           placeholder="Category"
           value={product.category}
           onChange={handleChange}
-          className="w-full border p-3 rounded"
+          className="w-full border rounded p-3"
           required
         />
 
@@ -76,8 +113,8 @@ export default function AddProduct() {
           placeholder="Description"
           value={product.description}
           onChange={handleChange}
-          className="w-full border p-3 rounded"
           rows="4"
+          className="w-full border rounded p-3"
           required
         />
 
@@ -87,7 +124,7 @@ export default function AddProduct() {
           placeholder="Price"
           value={product.price}
           onChange={handleChange}
-          className="w-full border p-3 rounded"
+          className="w-full border rounded p-3"
           required
         />
 
@@ -97,13 +134,13 @@ export default function AddProduct() {
           placeholder="Image URL"
           value={product.img}
           onChange={handleChange}
-          className="w-full border p-3 rounded"
+          className="w-full border rounded p-3"
           required
         />
 
         <button
           type="submit"
-          className="w-full bg-green-700 hover:bg-green-800 text-white p-3 rounded font-bold"
+          className="w-full bg-green-700 hover:bg-green-800 text-white font-bold p-3 rounded"
         >
           Add Product
         </button>
