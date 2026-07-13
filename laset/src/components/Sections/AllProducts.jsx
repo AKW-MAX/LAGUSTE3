@@ -77,10 +77,10 @@ export default function AllProducts() {
 
                     {products_list?.map((product) => (
                     <div key={product._id} className="
-                     w-[100px]
-                     sm:w-[180px]
-                     md:w-[180px]
-                     lg:w-[220px]
+                     w-[160 px]
+                     sm:w-[180 px]
+                     md:w-[180 px]
+                     lg:w-[220 px]
                                     
                     transition-transform duration-300 hover:scale-105
                     shrink-0

@@ -8,14 +8,14 @@ import Starts from "./Starts"
 export default function Hero() {
 	return (
 		<>
-	    <div className="relative h-[400px] sm:h-[450px] md:h-[600px] lg:h-[650px]  border border-green-700">
+	    <div className="relative min-h-[400px] sm:min-h-[500px] md:min-h-[600px] lg:min-h-[650px] border border-green-700 mt-5">
 			<img className="
 			      w-full absolute h-full saturate-70
 				  grayscale-25
 				  object-cover"
 			src = {assets.HeroPic} alt = "Tomatoes being harvested" />
 			<Navigation />
-			<div className="text-center relative text-white justify-center p-5 sm:mt-5 md:mt-10">
+			<div className="relative z-20 flex flex-col items-center justify-center h-full text-white px-4">
 			  <Header />
 			  <Buttons />	
 			</div>

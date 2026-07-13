@@ -61,7 +61,7 @@ export default function SignUp() {
           </p>
 
           {/* Buttons */}
-          <div className="mt-3 flex flex-wrap items-center gap-2 sm:gap-3">
+          <div className="mt-3 flex  items-center gap-2 sm:gap-2">
             <Link to="/Login">
               <button
                 type="button"

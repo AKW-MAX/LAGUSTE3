@@ -153,7 +153,7 @@ function Navigation() {
         p-2
       "
     >
-      <div className="flex flex-col gap-2 w-full px-3 sm:px-6 lg:px-8">
+      <div className="flex flex-col gap-2 w-full px-3 sm:px-2 lg:px-8">
         <div className="flex items-center justify-between w-full gap-2 flex-wrap md:flex-nowrap">
           {/* Logo */}
           <p className="text-l whitespace-nowrap">QualityFirst</p>
@@ -165,7 +165,7 @@ function Navigation() {
               bg-white text-green-700 border border-green-700
               focus:outline-2 focus:outline-offset-1
               px-2 py-1 rounded
-              flex-1 mx-2
+              flex-1 mx-1
               w-full
             "
             value={searchTerm}
