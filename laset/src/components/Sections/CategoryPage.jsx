@@ -18,7 +18,11 @@ export default function CategoryPage() {
   const categorySlug = toSlug(rawSlug);
   const categoryName = normalizeSlug(rawSlug);
   const { data, error, isLoading } = useGetAllProductsQuery();
-  const products = Array.isArray(data) ? data : data?.value || product_list;
+  const products = Array.isArray(data)
+    ? data
+    : Array.isArray(data?.products)
+      ? data.products
+      : data?.value || product_list;
   const filteredProducts = products.filter(
     (product) => product.category && toSlug(product.category) === categorySlug
   );

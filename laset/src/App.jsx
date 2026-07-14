@@ -19,10 +19,15 @@ import CheckOut from "./components/Sections/CheckOut"
 import OrdersSuccess from "./components/Sections/OrdersSuccess"
 import MyOrders from "./components/Sections/MyOrders"
 import AdminLogin from "./components/Admin/AdminLogin";
+import AdminForgotPassword from "./components/Admin/AdminForgotPassword";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import Orders from "./components/Admin/Orders";
 import Products from "./components/Admin/Products";
 import AddProduct from "./components/Admin/AddProduct";
+import AddAdmin from "./components/Admin/AddAdmin";
+import AdminActivity from "./components/Admin/AdminActivity";
+import AdminPermissions from "./components/Admin/AdminPermissions";
+import AdminAuditLogs from "./components/Admin/AdminAuditLogs";
 import ProtectedRoute from "./components/Common/ProtectedRoute";
 import LoginSelection from "./components/Sections/LoginSelection";
 import "./index.css"
@@ -52,10 +57,15 @@ function App() {
           <Route path="/login" element={<LoginSelection />} />
           <Route path="/login/customer" element={<Login />} />
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
           <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
           <Route path="/admin/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
           <Route path="/admin/add-product" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
+          <Route path="/admin/add-admin" element={<ProtectedRoute><AddAdmin /></ProtectedRoute>} />
+          <Route path="/admin/admin-permissions" element={<ProtectedRoute><AdminPermissions /></ProtectedRoute>} />
+          <Route path="/admin/admin-activity" element={<ProtectedRoute><AdminActivity /></ProtectedRoute>} />
+          <Route path="/admin/audit-logs" element={<ProtectedRoute><AdminAuditLogs /></ProtectedRoute>} />
           <Route path="/myorders" element={ <ProtectedRoute><MyOrders /></ProtectedRoute>}/>
         </Routes>
       </div>

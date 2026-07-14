@@ -6,10 +6,20 @@ export default function Orders() {
   const navigate = useNavigate();
 
   const [orders, setOrders] = useState([]);
+  const [updatingOrderId, setUpdatingOrderId] = useState(null);
 
-  const API_URL =
-    import.meta.env.VITE_API_URL ||
-    "http://localhost:5000";
+  const getApiBaseUrl = () => {
+    const hostname = window.location.hostname;
+
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return "http://localhost:5000";
+    }
+
+    return (
+      import.meta.env.VITE_API_URL ||
+      "https://agriventure-enterprise-backend.onrender.com"
+    );
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
@@ -26,7 +36,7 @@ export default function Orders() {
     try {
       const token = localStorage.getItem("adminToken");
 
-      const res = await axios.get(`${API_URL}/admin/orders`, {
+      const res = await axios.get(`${getApiBaseUrl()}/admin/orders`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -45,11 +55,18 @@ export default function Orders() {
   };
 
   const updateStatus = async (id, status) => {
+    if (!["Approved", "Rejected", "Pending"].includes(status)) {
+      alert("Invalid status update requested.");
+      return;
+    }
+
     try {
       const token = localStorage.getItem("adminToken");
 
+      setUpdatingOrderId(id);
+
       await axios.put(
-        `${API_URL}/admin/orders/${id}`,
+        `${getApiBaseUrl()}/admin/orders/${id}`,
         { status },
         {
           headers: {
@@ -58,11 +75,39 @@ export default function Orders() {
         }
       );
 
+      // Update local state immediately for a snappier UX, then sync from server.
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === id
+            ? {
+                ...order,
+                status,
+                approvedBy: status === "Approved" ? order.approvedBy : null,
+              }
+            : order
+        )
+      );
+
       fetchOrders();
 
     } catch (error) {
       console.error(error);
-      alert("Failed to update order.");
+
+      if (error.response?.status === 401) {
+        localStorage.removeItem("adminToken");
+        localStorage.removeItem("admin");
+        navigate("/admin/login");
+        return;
+      }
+
+      const message =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Failed to update order.";
+
+      alert(message);
+    } finally {
+      setUpdatingOrderId(null);
     }
   };
 
@@ -87,13 +132,17 @@ export default function Orders() {
 
               <p>
                 <strong>Customer:</strong>{" "}
-                {order.customer?.first_name}{" "}
-                {order.customer?.last_name}
+                {order.customer?.name || order.user?.name || "N/A"}
               </p>
 
               <p>
                 <strong>Email:</strong>{" "}
-                {order.customer?.email}
+                {order.customer?.email || order.user?.email || "N/A"}
+              </p>
+
+              <p>
+                <strong>Phone:</strong>{" "}
+                {order.customer?.phone || "N/A"}
               </p>
 
               <p>
@@ -145,7 +194,8 @@ export default function Orders() {
                   onClick={() =>
                     updateStatus(order._id, "Approved")
                   }
-                  className="bg-green-700 text-white px-4 py-2 rounded"
+                  disabled={updatingOrderId === order._id}
+                  className="bg-green-700 text-white px-4 py-2 rounded disabled:opacity-60"
                 >
                   Approve
                 </button>
@@ -154,7 +204,8 @@ export default function Orders() {
                   onClick={() =>
                     updateStatus(order._id, "Rejected")
                   }
-                  className="bg-red-700 text-white px-4 py-2 rounded"
+                  disabled={updatingOrderId === order._id}
+                  className="bg-red-700 text-white px-4 py-2 rounded disabled:opacity-60"
                 >
                   Reject
                 </button>
@@ -163,7 +214,8 @@ export default function Orders() {
                   onClick={() =>
                     updateStatus(order._id, "Pending")
                   }
-                  className="bg-yellow-500 text-white px-4 py-2 rounded"
+                  disabled={updatingOrderId === order._id}
+                  className="bg-yellow-500 text-white px-4 py-2 rounded disabled:opacity-60"
                 >
                   Pending
                 </button>

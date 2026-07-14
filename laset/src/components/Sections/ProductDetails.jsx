@@ -8,7 +8,11 @@ export default function ProductDetails() {
   const { productId } = useParams();
   const dispatch = useDispatch();
   const { data, error, isLoading } = useGetAllProductsQuery();
-  const products = Array.isArray(data) ? data : data?.value || [];
+  const products = Array.isArray(data)
+    ? data
+    : Array.isArray(data?.products)
+      ? data.products
+      : data?.value || [];
   const product = products.find(
     (item) => item._id?.toString() === productId?.toString()
   );

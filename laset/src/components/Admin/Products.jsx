@@ -1,14 +1,25 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { assets } from "../../assets/assets.js";
 
 export default function Products() {
   const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
 
-  const API_URL =
-    import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const getApiBaseUrl = () => {
+    const hostname = window.location.hostname;
+
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return "http://localhost:5000";
+    }
+
+    return (
+      import.meta.env.VITE_API_URL ||
+      "https://agriventure-enterprise-backend.onrender.com"
+    );
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
@@ -25,7 +36,7 @@ export default function Products() {
     try {
       const token = localStorage.getItem("adminToken");
 
-      const res = await axios.get(`${API_URL}/admin/products`, {
+      const res = await axios.get(`${getApiBaseUrl()}/admin/products`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -53,7 +64,7 @@ export default function Products() {
     try {
       const token = localStorage.getItem("adminToken");
 
-      await axios.delete(`${API_URL}/admin/products/${id}`, {
+      await axios.delete(`${getApiBaseUrl()}/admin/products/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -109,7 +120,7 @@ export default function Products() {
                 <tr key={product._id}>
                   <td className="border p-2">
                     <img
-                      src={product.img}
+                      src={assets[product.img] || assets[product.image] || product.img || product.image}
                       alt={product.name}
                       className="w-16 h-16 object-cover rounded"
                     />

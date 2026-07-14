@@ -129,9 +129,11 @@ export default function AllProducts() {
               />
               <button
                 onClick={() => handleAddToCart(product)}
-                className="hidden"
+                className="mt-2 w-full sm:w-36 xs:w-32 ml-3 sm:ml-2 rounded bg-green-900 px-2 py-2 text-sm font-semibold text-white hover:bg-green-800"
                 aria-label={`Add ${product.name} to cart`}
-              />
+              >
+                Add to Cart
+              </button>
             </div>
           ))
         ) : (

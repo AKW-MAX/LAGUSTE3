@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useEffect, useRef } from "react";
-import { assets } from "../../assets/assets.js";
+import assets from "../../assets/assets.js";
 
 const getInitials = (userData) => {
   if (!userData) return "U";
@@ -23,7 +23,12 @@ const getApiBaseUrl = () => {
 };
 
 const getAvatarUrl = (userData) => {
-  const image = userData?.profileImage || userData?.profile_image || userData?.avatar || userData?.image || "";
+  const image =
+    userData?.profileImage ||
+    userData?.profile_image ||
+    userData?.avatar ||
+    userData?.image ||
+    "";
 
   if (!image || typeof image !== "string") return null;
 
@@ -34,7 +39,9 @@ const getAvatarUrl = (userData) => {
     return trimmed;
   }
 
-  return `${getApiBaseUrl()}${trimmed.startsWith("/") ? "" : "/"}${trimmed}`;
+  // supports values like "/uploads/x.png", "uploads/x.png", "images/x.png"
+  const base = getApiBaseUrl();
+  return `${base}${trimmed.startsWith("/") ? "" : "/"}${trimmed}`;
 };
 
 const categories = [
@@ -195,7 +202,7 @@ function Navigation() {
               <Link to="/Cart">
                 <img
                   className="hover:bg-green-800 bg-green-700 w-8 h-8 p-1 rounded cursor-pointer"
-                  src={assets.Cart}
+                  src={assets.Cart || assets.cart}
                   alt="Cart icon"
                 />
 
@@ -228,7 +235,7 @@ function Navigation() {
                   )
                 ) : (
                   <img
-                    src={assets.register}
+                    src={assets.register || assets.SignupPic}
                     alt="Register"
                     className="hover:bg-green-800 bg-green-700 w-10 h-10 p-1 rounded cursor-pointer"
                   />
@@ -396,7 +403,7 @@ function Navigation() {
             <Link to="/Cart">
               <img
                 className="hover:bg-green-800 bg-green-700 w-8 h-8 p-1 rounded cursor-pointer"
-                src={assets.Cart}
+                src={assets.Cart || assets.cart}
                 alt="Cart icon"
               />
 
@@ -430,7 +437,7 @@ function Navigation() {
               ) : (
                 <img
                   className="hover:bg-green-800 bg-green-700 w-8 h-8 p-1 rounded cursor-pointer"
-                  src={assets.register}
+                  src={assets.register || assets.SignupPic}
                   alt="Register"
                 />
               )}

@@ -70,8 +70,19 @@ export const assets = {
     Twix,
     whatsapp,
     WomanImage,
-    SpiderPlant
-}
+    SpiderPlant,
+
+    // FIX: keep these local imported assets, not /images URLs
+    Reaper1L: Reaper1l,
+    add_icon_green: add,
+    add_icon: add,
+
+    // API filename support
+    "Reaper1L.png": Reaper1l,
+    "Reaper1l.png": Reaper1l,
+    "Omex500ml.png": Omex500ml,
+    "add.png": add,
+};
 
 // lowercase aliases for components that reference assets with lowercased keys
 assets.aboutPic = AboutPic;
@@ -292,4 +303,10 @@ export const product_list = [
   
 
 ];
+
+// Optional normalization so product_list icons always work:
+product_list.forEach((p) => {
+    if (p.add === "add") p.add = assets.add;
+    if (p.image && !p.img) p.img = p.image;
+});
 

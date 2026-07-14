@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -8,14 +8,22 @@ export default function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const API_URL =
-    import.meta.env.VITE_API_URL || "http://localhost:5000";
-    
-    console.log(import.meta.env.VITE_API_URL);
+  const getApiBaseUrl = () => {
+    const hostname = window.location.hostname;
+
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return "http://localhost:5000";
+    }
+
+    return (
+      import.meta.env.VITE_API_URL ||
+      "https://agriventure-enterprise-backend.onrender.com"
+    );
+  };
 
   async function login() {
     try {
-      const res = await axios.post(`${API_URL}/admin/login`, {
+      const res = await axios.post(`${getApiBaseUrl()}/admin/login`, {
         username,
         password,
       });
@@ -71,6 +79,12 @@ export default function AdminLogin() {
       >
         Login
       </button>
+
+      <div className="mt-4 text-center">
+        <Link to="/admin/forgot-password" className="text-blue-700 underline text-sm">
+          Forgot password?
+        </Link>
+      </div>
     </div>
   );
 }
