@@ -7,6 +7,7 @@ import CheckOut from "./CheckOut.jsx";
 
 export default function Cart() {
   const cart = useSelector((state) => state.cart);
+  const totalQuantity = cart?.cartTotalQuantity ?? cart?.cartTotalQuanty ?? 0;
   const dispatch = useDispatch();
 
   const handleRemoveFromCart = (cartItem) => {
@@ -25,7 +26,7 @@ export default function Cart() {
         {cart.cartItems.length === 0 ? (
           <p className="text-center mt-5 text-gray-500">Your cart is empty</p>
         ) : (
-          <p className="text-center mt-5 text-gray-500">You have {cart.cartItems.length} items in your cart</p>
+          <p className="text-center mt-5 text-gray-500">You have {totalQuantity} items in your cart</p>
         )}
       </div>
 

@@ -81,6 +81,7 @@ const nestedCategories = [
 
 function Navigation() {
   const cart = useSelector((state) => state.cart);
+  const totalQuantity = cart?.cartTotalQuantity ?? cart?.cartTotalQuanty ?? 0;
   const [searchTerm, setSearchTerm] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
@@ -206,7 +207,7 @@ function Navigation() {
                     items-center justify-center
                   "
                 >
-                  {cart?.cartItems?.length || 0}
+                  {totalQuantity}
                 </span>
               </Link>
             </div>
@@ -407,7 +408,7 @@ function Navigation() {
                   items-center justify-center
                 "
               >
-                {cart?.cartItems?.length || 0}
+                {totalQuantity}
               </span>
             </Link>
           </div>

@@ -1,17 +1,17 @@
 import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { addToCart } from "../../Features/CartSlice";
 import { useGetAllProductsQuery } from "../../Features/ProductsApi";
+import { product_list, assets } from "../../assets/assets";
 import ProductsCard from "../Common/ProductsCard";
-import { assets, product_list } from "../../assets/assets.js";
+import { addToCart } from "../../Features/CartSlice";
 
 export default function AllProducts() {
   const dispatch = useDispatch();
   const location = useLocation();
 
   const {
-    data: products = [],
+    data: apiData,
     error,
     isLoading,
     isFetching,
@@ -21,32 +21,55 @@ export default function AllProducts() {
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("q")?.toLowerCase().trim() || "";
 
-  // Use API products if available, otherwise use local products
-  const source =
-    !isLoading && !error && products.length > 0 ? products : product_list;
+  const apiProducts = useMemo(() => {
+    if (Array.isArray(apiData)) return apiData;
+    if (Array.isArray(apiData?.products)) return apiData.products;
+    return [];
+  }, [apiData]);
 
-  const products_list = useMemo(() => {
-    if (!query) return source;
+  const source = apiProducts.length > 0 ? apiProducts : product_list;
 
-    return source.filter((product) => {
-      const text = `${product.name || ""} ${product.category || ""}`.toLowerCase();
-      return text.includes(query);
+  const productsList = useMemo(() => {
+    const normalized = source.map((p) => ({
+      _id: p._id || p.id,
+      name: p.name || "",
+      price: p.price ?? 0,
+      imgSrc: assets[p.img] || assets[p.image] || p.img || p.image || "",
+      add: assets[p.add] || p.add || "",
+      category: p.category || "",
+    }));
+
+    if (!query) return normalized;
+
+    return normalized.filter((p) => {
+      const name = p.name.toLowerCase();
+      const category = p.category.toLowerCase();
+      return name.includes(query) || category.includes(query);
     });
   }, [source, query]);
 
   const handleAddToCart = (product) => {
     dispatch(
       addToCart({
-        ...product,
-        img:
-          assets[product.img] ||
-          assets[product.image] ||
-          product.img ||
-          product.image,
-        add: assets[product.add] || product.add,
+        _id: product._id,
+        img: product.imgSrc,
+        name: product.name,
+        price: product.price,
       })
     );
   };
+
+  if (isLoading) return <p className="text-center mt-8">Loading products...</p>;
+  if (error && apiProducts.length === 0) {
+    return (
+      <div className="text-center mt-8">
+        <p>Failed to load products.</p>
+        <button onClick={refetch} className="mt-2 px-3 py-1 border rounded">
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="border border-green-700 rounded-lg shadow-md overflow-hidden">
@@ -89,71 +112,32 @@ export default function AllProducts() {
         )}
       </div>
 
-      <div
-        className="
-          grid
-          grid-rows-2
-          grid-flow-col
-          overflow-x-auto
-          overflow-y-hidden
-          gap-3
-          sm:gap-5
-          md:gap-4
-          lg:gap-4
-          px-2
-          sm:px-6
-          md:px-10
-          mt-10
-          mb-10
-          pb-4
-          scroll-smooth
-        "
-      >
-        {products_list.length > 0 ? (
-          products_list.map((product) => (
+      <div className="grid grid-rows-2 grid-flow-col overflow-x-auto overflow-y-hidden gap-3 sm:gap-5 md:gap-4 lg:gap-4 px-2 sm:px-6 md:px-10 mt-6 mb-10 pb-4 scroll-smooth">
+        {productsList.length > 0 ? (
+          productsList.map((product) => (
             <div
-              key={product._id || product.id}
-              className="
-                w-[160px]
-                sm:w-[180px]
-                md:w-[180px]
-                lg:w-[220px]
-                shrink-0
-                transition-transform
-                duration-300
-                hover:scale-105
-              "
+              key={product._id}
+              className="w-[160px] sm:w-[180px] md:w-[180px] lg:w-[220px] shrink-0 transition-transform duration-300 hover:scale-105"
             >
               <ProductsCard
                 _id={product._id}
-                imgSrc={
-                  assets[product.img] ||
-                  assets[product.image] ||
-                  product.img ||
-                  product.image
-                }
+                imgSrc={product.imgSrc}
                 imgAlt={product.name}
-                add={assets[product.add] || product.add}
+                add={product.add}
                 name={product.name}
                 price={product.price}
               />
-
-              <div className="px-2 mt-2">
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  className="w-full bg-green-900 hover:bg-green-800 text-white font-bold py-2 rounded"
-                >
-                  Add to Cart
-                </button>
-              </div>
+              <button
+                onClick={() => handleAddToCart(product)}
+                className="hidden"
+                aria-label={`Add ${product.name} to cart`}
+              />
             </div>
           ))
         ) : (
-          <div className="w-full text-center py-10">
-            <p className="text-gray-500 text-lg">
-              No products found.
-            </p>
-          </div>
+          <p className="col-span-full text-center text-gray-500">
+            No products found.
+          </p>
         )}
       </div>
     </div>

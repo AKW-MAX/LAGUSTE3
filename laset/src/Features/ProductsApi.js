@@ -15,61 +15,68 @@ const getApiBaseUrl = () => {
 
 export const ProductsApi = createApi({
   reducerPath: "productsApi",
+  tagTypes: ["Products"],
+  keepUnusedDataFor: 60,
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
 
   baseQuery: fetchBaseQuery({
     baseUrl: getApiBaseUrl(),
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("adminToken");
-
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-
+      if (token) headers.set("Authorization", `Bearer ${token}`);
       return headers;
     },
   }),
 
-  tagTypes: ["Products"],
-
   endpoints: (builder) => ({
-    // Get all products
     getAllProducts: builder.query({
+      // NOTE: confirm if your backend expects "/Products" or "/products"
       query: () => "/Products",
-      providesTags: ["Products"],
+      providesTags: (result) => {
+        const list = Array.isArray(result) ? result : result?.products || [];
+        return [
+          { type: "Products", id: "LIST" },
+          ...list.map((p) => ({ type: "Products", id: p._id || p.id })),
+        ];
+      },
     }),
 
-    // Get one product
     getProductById: builder.query({
       query: (id) => `/Products/${id}`,
+      providesTags: (_result, _error, id) => [{ type: "Products", id }],
     }),
 
-    // Add product
     addProduct: builder.mutation({
       query: (product) => ({
         url: "/admin/products",
         method: "POST",
         body: product,
       }),
-      invalidatesTags: ["Products"],
+      invalidatesTags: [{ type: "Products", id: "LIST" }],
     }),
 
-    // Update product
     updateProduct: builder.mutation({
       query: ({ id, ...product }) => ({
         url: `/admin/products/${id}`,
         method: "PUT",
         body: product,
       }),
-      invalidatesTags: ["Products"],
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Products", id: "LIST" },
+        { type: "Products", id },
+      ],
     }),
 
-    // Delete product
     deleteProduct: builder.mutation({
       query: (id) => ({
         url: `/admin/products/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Products"],
+      invalidatesTags: (_result, _error, id) => [
+        { type: "Products", id: "LIST" },
+        { type: "Products", id },
+      ],
     }),
   }),
 });

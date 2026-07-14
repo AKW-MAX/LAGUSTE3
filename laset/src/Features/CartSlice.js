@@ -10,11 +10,11 @@ const calculateTotals = (cartItems) =>
     cartItems.reduce(
         (totals, item) => {
             const quantity = Number(item.cartQuantity) || 0;
-            totals.cartTotalQuanty += quantity;
+            totals.cartTotalQuantity += quantity;
             totals.cartTotalAmount += Number(item.price) * quantity;
             return totals;
         },
-        { cartTotalQuanty: 0, cartTotalAmount: 0 }
+        { cartTotalQuantity: 0, cartTotalAmount: 0 }
     );
 
 const initialCartItems = getInitialCartItems();
@@ -22,7 +22,9 @@ const initialTotals = calculateTotals(initialCartItems);
 
 const initialState = {
     cartItems: initialCartItems,
-    cartTotalQuanty: initialTotals.cartTotalQuanty,
+    cartTotalQuantity: initialTotals.cartTotalQuantity,
+    // Keep legacy key for backward compatibility with older persisted state/UI usage.
+    cartTotalQuanty: initialTotals.cartTotalQuantity,
     cartTotalAmount: initialTotals.cartTotalAmount,
 };
 
@@ -49,7 +51,8 @@ const CartSlice = createSlice({
                 });
             }
             const totals = calculateTotals(state.cartItems);
-            state.cartTotalQuanty = totals.cartTotalQuanty;
+            state.cartTotalQuantity = totals.cartTotalQuantity;
+            state.cartTotalQuanty = totals.cartTotalQuantity;
             state.cartTotalAmount = totals.cartTotalAmount;
             localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
         },
@@ -62,7 +65,8 @@ const CartSlice = createSlice({
             }
             state.cartItems = state.cartItems.filter((cartItem) => cartItem._id !== action.payload._id);
             const totals = calculateTotals(state.cartItems);
-            state.cartTotalQuanty = totals.cartTotalQuanty;
+            state.cartTotalQuantity = totals.cartTotalQuantity;
+            state.cartTotalQuanty = totals.cartTotalQuantity;
             state.cartTotalAmount = totals.cartTotalAmount;
             localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
 
@@ -92,7 +96,8 @@ const CartSlice = createSlice({
                 });
             }
             const totals = calculateTotals(state.cartItems);
-            state.cartTotalQuanty = totals.cartTotalQuanty;
+            state.cartTotalQuantity = totals.cartTotalQuantity;
+            state.cartTotalQuanty = totals.cartTotalQuantity;
             state.cartTotalAmount = totals.cartTotalAmount;
             localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
         },
@@ -100,6 +105,7 @@ const CartSlice = createSlice({
         clearCart: (state) => {
         state.cartItems = [];
         state.cartTotalAmount = 0;
+        state.cartTotalQuantity = 0;
         state.cartTotalQuanty = 0;
         localStorage.removeItem("cartItems");
         }
