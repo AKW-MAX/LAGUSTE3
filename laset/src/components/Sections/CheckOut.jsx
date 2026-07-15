@@ -4,6 +4,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { clearCart } from "../../Features/CartSlice";
+import { buildApiUrl } from "../../utils/api";
 
 export default function Checkout() {
   const cart = useSelector((state) => state.cart);
@@ -23,7 +24,7 @@ export default function Checkout() {
       const storedUser = savedUser ? JSON.parse(savedUser) : null;
 
       if (!storedUser) {
-        navigate("/Login", { state: { from: "/CheckOut" } });
+        navigate("/login/customer", { state: { from: "/CheckOut" } });
         return;
       }
 
@@ -32,7 +33,7 @@ export default function Checkout() {
         name: `${storedUser.first_name || ""} ${storedUser.last_name || ""}`.trim(),
       }));
     } catch {
-      navigate("/Login", { state: { from: "/CheckOut" } });
+      navigate("/login/customer", { state: { from: "/CheckOut" } });
     }
   }, [navigate]);
 
@@ -52,7 +53,7 @@ export default function Checkout() {
       const storedUser = savedUser ? JSON.parse(savedUser) : null;
 
       if (!storedUser) {
-        navigate("/Login", { state: { from: "/CheckOut" } });
+        navigate("/login/customer", { state: { from: "/CheckOut" } });
         return;
       }
 
@@ -67,13 +68,7 @@ export default function Checkout() {
         },
       };
 
-      const API_URL =
-        window.location.hostname === "localhost"
-          ? "http://localhost:5000"
-          : import.meta.env.VITE_API_URL ||
-            "https://agriventure-enterprise-backend.onrender.com";
-
-      const orderUrl = new URL("/api/orders", API_URL.endsWith("/") ? API_URL : `${API_URL}/`).toString();
+      const orderUrl = buildApiUrl("/api/orders");
 
       console.log("Posting to:", orderUrl);
       console.log(orderData);

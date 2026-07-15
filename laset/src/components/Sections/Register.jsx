@@ -1,14 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-
-const getApiBaseUrl = () => {
-  if (window.location.hostname === "localhost") {
-    return "http://localhost:5000";
-  }
-
-  return import.meta.env.VITE_API_URL || "https://agriventure-enterprise-backend.onrender.com";
-};
+import { getApiBaseUrl } from "../../utils/api";
 
 const Register = ({
   isOpen = true,
@@ -46,7 +39,7 @@ const Register = ({
       .post(`${VITE_API_URL}/register`, formData)
       .then(() => {
         setIsOpen(false);
-        navigate("/Login");
+        navigate("/login/customer");
       })
       .catch((error) => {
         const message =
@@ -59,7 +52,7 @@ const Register = ({
           error.response?.status === 409 ||
           message.toLowerCase().includes("already exists")
         ) {
-          navigate("/Login");
+          navigate("/login/customer");
         }
       });
   };
@@ -255,7 +248,7 @@ const Register = ({
         <p className="mt-5 text-center text-sm">
           Already have an account?{" "}
           <Link
-            to="/Login"
+            to="/login/customer"
             className="text-green-900 font-semibold hover:underline"
           >
             Login here

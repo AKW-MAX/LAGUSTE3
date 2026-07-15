@@ -2,17 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
-const getApiBaseUrl = () => {
-  if (window.location.hostname === "localhost") {
-    return "http://localhost:5000";
-  }
-
-  return (
-    import.meta.env.VITE_API_URL ||
-    "https://agriventure-enterprise-backend.onrender.com"
-  );
-};
+import { getApiBaseUrl } from "../../utils/api";
 
 export default function Login({
   isOpen = true,

@@ -1,26 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getApiBaseUrl } from "../../utils/api";
 
 export default function Orders() {
   const navigate = useNavigate();
 
   const [orders, setOrders] = useState([]);
   const [updatingOrderId, setUpdatingOrderId] = useState(null);
-
-  const getApiBaseUrl = () => {
-    const hostname = window.location.hostname;
-
-    if (hostname === "localhost" || hostname === "127.0.0.1") {
-      return "http://localhost:5000";
-    }
-
-    return (
-      import.meta.env.VITE_API_URL ||
-      "https://agriventure-enterprise-backend.onrender.com"
-    );
-  };
-
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
 

@@ -1,26 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { getApiBaseUrl } from "../../utils/api";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const getApiBaseUrl = () => {
-    const hostname = window.location.hostname;
-
-    if (hostname === "localhost" || hostname === "127.0.0.1") {
-      return "http://localhost:5000";
-    }
-
-    return (
-      import.meta.env.VITE_API_URL ||
-      "https://agriventure-enterprise-backend.onrender.com"
-    );
-  };
-
   async function login() {
     const normalizedUsername = username.trim();
     const normalizedPassword = password;

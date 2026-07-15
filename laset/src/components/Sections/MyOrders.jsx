@@ -1,15 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-
-
-const getApiBaseUrl = () => {
-  if (window.location.hostname === "localhost") {
-    return "http://localhost:5000";
-  }
-
-  return import.meta.env.VITE_API_URL || "https://agriventure-enterprise-backend.onrender.com";
-};
+import { getApiBaseUrl } from "../../utils/api";
 
 const formatDate = (value) => {
   if (!value) return "—";
@@ -42,7 +34,7 @@ export default function MyOrders() {
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
     useEffect(() => {
     if (!loggedInUser) {
-      navigate("/login");
+      navigate("/login/customer");
     }
   }, [loggedInUser, navigate]);
   
