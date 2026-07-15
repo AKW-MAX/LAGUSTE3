@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { addToCart } from "../../Features/CartSlice";
 import { useDispatch } from "react-redux";
-import { assets } from "../../assets/assets.js";
+import { assets, resolveImageSource } from "../../assets/assets.js";
 
 const FALLBACK_PLUS_ICON =
   "data:image/svg+xml;utf8," +
@@ -32,17 +32,19 @@ const ProductsCard = ({ _id, imgSrc, add, imgAlt, name, price }) => {
   };
 
   const addIconSrc =
-    (typeof add === "string" && add.trim()) ||
+    resolveImageSource((typeof add === "string" && add.trim()) || "") ||
     assets?.add_icon_green ||
     assets?.add_icon ||
     FALLBACK_PLUS_ICON;
+
+  const safeImageSrc = resolveImageSource(imgSrc || "");
 
   return (
     <div className="w-full sm:w-36 xs:w-32 ml-3 sm:ml-2 mt-5 mb-5 shadow-lg rounded-md border border-green-700">
       <p className="hidden">{_id}</p>
 
       <img
-        src={imgSrc}
+        src={safeImageSrc}
         alt={imgAlt}
         onClick={handleImageClick}
         className="w-full h-48 sm:h-40 xs:h-36 object-cover rounded-md cursor-pointer"
