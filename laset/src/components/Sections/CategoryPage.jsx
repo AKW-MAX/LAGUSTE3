@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../Features/ProductsApi";
 import ProductsCard from "../Common/ProductsCard";
-import { assets, product_list } from "../../assets/assets.js";
+import { assets, product_list, resolveImageSource } from "../../assets/assets.js";
 
 const normalizeSlug = (slug) => slug.replace(/-/g, " ").toLowerCase();
 const toSlug = (value) =>
@@ -54,7 +54,7 @@ export default function CategoryPage() {
                 <div key={product._id} className="rounded-lg border border-green-700 p-2 shadow-sm">
                   <ProductsCard
                     _id={product._id}
-                    imgSrc={assets[product.img] || assets[product.image] || product.img || product.image}
+                    imgSrc={resolveImageSource(product.img || product.image || "")}
                     imgAlt={product.name}
                     add={assets[product.add] || product.add}
                     name={product.name}

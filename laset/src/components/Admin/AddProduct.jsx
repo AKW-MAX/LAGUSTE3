@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { assets } from "../../assets/assets";
+import { resolveImageSource } from "../../assets/assets";
 
 const getApiBaseUrl = () => {
   if (window.location.hostname === "localhost") {
@@ -27,7 +27,7 @@ export default function AddProduct() {
     img: "",
   });
 
-  const imagePreview = assets[product.img] || product.img;
+  const imagePreview = resolveImageSource(product.img || "");
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");

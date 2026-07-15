@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../Features/ProductsApi";
-import { product_list, assets } from "../../assets/assets";
+import { product_list, assets, resolveImageSource } from "../../assets/assets";
 import ProductsCard from "../Common/ProductsCard";
 import { addToCart } from "../../Features/CartSlice";
 
@@ -34,7 +34,7 @@ export default function AllProducts() {
       _id: p._id || p.id,
       name: p.name || "",
       price: p.price ?? 0,
-      imgSrc: assets[p.img] || assets[p.image] || p.img || p.image || "",
+      imgSrc: resolveImageSource(p.img || p.image || ""),
       add: assets[p.add] || p.add || "",
       category: p.category || "",
     }));

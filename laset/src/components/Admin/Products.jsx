@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { assets } from "../../assets/assets.js";
+import { assets, resolveImageSource } from "../../assets/assets.js";
 
 export default function Products() {
   const navigate = useNavigate();
@@ -195,9 +195,9 @@ export default function Products() {
           continue;
         }
 
-        const localAssetUrl = assets[keyOrUrl];
+        const localAssetUrl = resolveImageSource(keyOrUrl);
 
-        if (!localAssetUrl || typeof localAssetUrl !== "string") {
+        if (!localAssetUrl || typeof localAssetUrl !== "string" || localAssetUrl === keyOrUrl) {
           skipped.push({ productId: product._id, reason: "Asset key not found in assets map", image: keyOrUrl });
           continue;
         }
@@ -404,7 +404,7 @@ export default function Products() {
                 <tr key={product._id}>
                   <td className="border p-2">
                     <img
-                      src={assets[product.img] || assets[product.image] || product.img || product.image}
+                      src={resolveImageSource(product.img || product.image || "")}
                       alt={product.name}
                       className="w-16 h-16 object-cover rounded"
                     />

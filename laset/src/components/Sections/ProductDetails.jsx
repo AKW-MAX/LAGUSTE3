@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../Features/ProductsApi";
-import { assets } from "../../assets/assets.js";
+import { resolveImageSource } from "../../assets/assets.js";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../Features/CartSlice";
 
@@ -22,7 +22,7 @@ export default function ProductDetails() {
     dispatch(
       addToCart({
         _id: product._id,
-        img: assets[product.img] || assets[product.image] || product.img || product.image,
+        img: resolveImageSource(product.img || product.image || ""),
         name: product.name,
         price: product.price,
       })
@@ -41,7 +41,7 @@ export default function ProductDetails() {
     return <p className="p-6 text-red-600">Product not found.</p>;
   }
 
-  const imageSrc = assets[product.img] || assets[product.image] || product.img || product.image;
+  const imageSrc = resolveImageSource(product.img || product.image || "");
 
   return (
     <div className="px-4 py-6 sm:px-8">

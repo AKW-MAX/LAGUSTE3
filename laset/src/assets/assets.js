@@ -144,6 +144,64 @@ Object.entries(assets).forEach(([key, value]) => {
   makeImageAliases(key, value);
 });
 
+export const resolveImageSource = (value) => {
+  const input = String(value || "").trim();
+  if (!input) return "";
+
+  const candidates = new Set([input]);
+
+  const addVariants = (rawValue) => {
+    const raw = String(rawValue || "").trim();
+    if (!raw) return;
+
+    const lower = raw.toLowerCase();
+    const noExt = raw.replace(/\.[^/.]+$/, "");
+    const noExtLower = noExt.toLowerCase();
+
+    [
+      raw,
+      lower,
+      noExt,
+      noExtLower,
+      `${noExt}.png`,
+      `${noExtLower}.png`,
+      `/images/${raw}`,
+      `/images/${lower}`,
+      `/images/${noExt}.png`,
+      `/images/${noExtLower}.png`,
+      `images/${raw}`,
+      `images/${lower}`,
+      `images/${noExt}.png`,
+      `images/${noExtLower}.png`,
+    ].forEach((item) => candidates.add(item));
+  };
+
+  if (/^https?:\/\//i.test(input)) {
+    try {
+      const parsed = new URL(input);
+      addVariants(parsed.pathname);
+      const baseName = parsed.pathname.split("/").filter(Boolean).pop() || "";
+      addVariants(baseName);
+    } catch {
+      // Ignore parse failures and keep fallback behavior.
+    }
+  } else {
+    addVariants(input);
+    const withoutLeadingSlash = input.replace(/^\/+/, "");
+    addVariants(withoutLeadingSlash);
+    const baseName = withoutLeadingSlash.split("/").filter(Boolean).pop() || "";
+    addVariants(baseName);
+  }
+
+  for (const candidate of candidates) {
+    if (assets[candidate]) {
+      return assets[candidate];
+    }
+  }
+
+  return input;
+};
+
 export default assets;
 export const productImageKeys = [
   "Omex500ml",

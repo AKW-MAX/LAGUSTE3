@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { assets } from "../../assets/assets";
+import { resolveImageSource } from "../../assets/assets";
 
 const getApiBaseUrl = () => {
   if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
@@ -30,7 +30,7 @@ export default function EditProduct() {
     img: "",
   });
 
-  const imagePreview = assets[product.img] || product.img;
+  const imagePreview = resolveImageSource(product.img || "");
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
