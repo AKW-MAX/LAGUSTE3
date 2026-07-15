@@ -22,10 +22,18 @@ export default function AdminLogin() {
   };
 
   async function login() {
+    const normalizedUsername = username.trim();
+    const normalizedPassword = password;
+
+    if (!normalizedUsername || !normalizedPassword) {
+      alert("Please enter username and password.");
+      return;
+    }
+
     try {
       const res = await axios.post(`${getApiBaseUrl()}/admin/login`, {
-        username,
-        password,
+        username: normalizedUsername,
+        password: normalizedPassword,
       });
 
       if (res.data.success) {
