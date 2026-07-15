@@ -123,6 +123,14 @@ const makeImageAliases = (key, value) => {
     noExtLower,
     `${noExt}.png`,
     `${noExtLower}.png`,
+    `/images/${raw}`,
+    `/images/${lower}`,
+    `/images/${noExt}.png`,
+    `/images/${noExtLower}.png`,
+    `images/${raw}`,
+    `images/${lower}`,
+    `images/${noExt}.png`,
+    `images/${noExtLower}.png`,
   ]);
 
   aliases.forEach((alias) => {
