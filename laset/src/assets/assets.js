@@ -105,6 +105,37 @@ assets.spiderPlant = SpiderPlant;
 assets.actellic = Actellic;
 assets.Phone = phone;
 
+// Build tolerant aliases so API image values resolve in production too.
+const makeImageAliases = (key, value) => {
+  if (typeof value !== "string") return;
+
+  const raw = String(key || "").trim();
+  if (!raw) return;
+
+  const lower = raw.toLowerCase();
+  const noExt = raw.replace(/\.[^/.]+$/, "");
+  const noExtLower = noExt.toLowerCase();
+
+  const aliases = new Set([
+    raw,
+    lower,
+    noExt,
+    noExtLower,
+    `${noExt}.png`,
+    `${noExtLower}.png`,
+  ]);
+
+  aliases.forEach((alias) => {
+    if (!assets[alias]) {
+      assets[alias] = value;
+    }
+  });
+};
+
+Object.entries(assets).forEach(([key, value]) => {
+  makeImageAliases(key, value);
+});
+
 export default assets;
 export const productImageKeys = [
   "Omex500ml",
