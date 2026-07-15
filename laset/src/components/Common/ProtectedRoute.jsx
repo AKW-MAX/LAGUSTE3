@@ -33,6 +33,10 @@ export default function ProtectedRoute({ children }) {
       return children;
     }
 
+    if (path.startsWith("/admin/edit-product") && permissions.includes("manage_products")) {
+      return children;
+    }
+
     if (path.startsWith("/admin/add-product") && permissions.includes("add_product")) {
       return children;
     }

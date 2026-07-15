@@ -106,6 +106,30 @@ assets.actellic = Actellic;
 assets.Phone = phone;
 
 export default assets;
+export const productImageKeys = [
+  "Omex500ml",
+  "Reaper1l",
+  "Actellic",
+  "Atom",
+  "Bedlam",
+  "Biozyme100ml",
+  "Dynamo",
+  "Fendona",
+  "Ferrari1l",
+  "Handspray2l",
+  "Jamboclean1l",
+  "Kayazinon1l",
+  "Kelpreal",
+  "Kungunil",
+  "Lancer",
+  "Lavendertotal1l",
+  "Malin",
+  "Optimizer",
+  "RedRiz",
+  "SpiderPlant",
+  "Twix",
+];
+
 export const product_list = [
     {
         _id: 1,

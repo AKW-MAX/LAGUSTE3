@@ -15,6 +15,7 @@ import AllContacts from "./components/Sections/Contacts/AllContacts"
 import Cart from "./components/Sections/Cart"
 import Register from "./components/Sections/Register"
 import Login from "./components/Sections/Login"
+import CustomerForgotPassword from "./components/Sections/CustomerForgotPassword"
 import CheckOut from "./components/Sections/CheckOut"
 import OrdersSuccess from "./components/Sections/OrdersSuccess"
 import MyOrders from "./components/Sections/MyOrders"
@@ -24,6 +25,7 @@ import AdminDashboard from "./components/Admin/AdminDashboard";
 import Orders from "./components/Admin/Orders";
 import Products from "./components/Admin/Products";
 import AddProduct from "./components/Admin/AddProduct";
+import EditProduct from "./components/Admin/EditProduct";
 import AddAdmin from "./components/Admin/AddAdmin";
 import AdminActivity from "./components/Admin/AdminActivity";
 import AdminPermissions from "./components/Admin/AdminPermissions";
@@ -56,12 +58,14 @@ function App() {
           <Route path="/OrdersSuccess" element={<OrdersSuccess />} />
           <Route path="/login" element={<LoginSelection />} />
           <Route path="/login/customer" element={<Login />} />
+          <Route path="/forgot-password/customer" element={<CustomerForgotPassword />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
           <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
           <Route path="/admin/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
           <Route path="/admin/add-product" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
+          <Route path="/admin/edit-product/:id" element={<ProtectedRoute><EditProduct /></ProtectedRoute>} />
           <Route path="/admin/add-admin" element={<ProtectedRoute><AddAdmin /></ProtectedRoute>} />
           <Route path="/admin/admin-permissions" element={<ProtectedRoute><AdminPermissions /></ProtectedRoute>} />
           <Route path="/admin/admin-activity" element={<ProtectedRoute><AdminActivity /></ProtectedRoute>} />

@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { assets } from "../../assets/assets";
 
 const getApiBaseUrl = () => {
-  if (window.location.hostname === "localhost") {
+  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
     return "http://localhost:5000";
   }
 
@@ -14,11 +14,14 @@ const getApiBaseUrl = () => {
   );
 };
 
-export default function AddProduct() {
+export default function EditProduct() {
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [selectedFileName, setSelectedFileName] = useState("");
   const [isUploadingImage, setIsUploadingImage] = useState(false);
-
   const [product, setProduct] = useState({
     name: "",
     category: "",
@@ -34,14 +37,40 @@ export default function AddProduct() {
 
     if (!token) {
       navigate("/admin/login");
+      return;
     }
-  }, [navigate]);
+
+    const fetchProduct = async () => {
+      try {
+        setIsLoading(true);
+
+        const response = await axios.get(`${getApiBaseUrl()}/products/${id}`);
+        const data = response.data || {};
+
+        setProduct({
+          name: data.name || "",
+          category: data.category || "",
+          description: data.description || "",
+          price: data.price ?? "",
+          img: data.img || data.image || "",
+        });
+      } catch (error) {
+        console.error(error);
+        alert("Failed to load product details.");
+        navigate("/admin/products");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id, navigate]);
 
   const handleChange = (e) => {
-    setProduct({
-      ...product,
+    setProduct((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
   const handleImageFileChange = (e) => {
@@ -145,11 +174,15 @@ export default function AddProduct() {
     }
 
     try {
+      setIsSaving(true);
       const token = localStorage.getItem("adminToken");
 
-      await axios.post(
-        `${getApiBaseUrl()}/admin/products`,
-        product,
+      await axios.put(
+        `${getApiBaseUrl()}/admin/products/${id}`,
+        {
+          ...product,
+          price: Number(product.price),
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -157,40 +190,32 @@ export default function AddProduct() {
         }
       );
 
-      alert("Product added successfully!");
-
-      setProduct({
-        name: "",
-        category: "",
-        description: "",
-        price: "",
-        img: "",
-      });
-      setSelectedFileName("");
-
+      alert("Product updated successfully!");
       navigate("/admin/products");
     } catch (error) {
       console.error(error);
 
       if (error.response?.status === 401) {
         alert("Session expired. Please login again.");
-
         localStorage.removeItem("adminToken");
         navigate("/admin/login");
       } else {
-        alert(error.response?.data?.message || "Failed to add product.");
+        alert(error.response?.data?.message || "Failed to update product.");
       }
+    } finally {
+      setIsSaving(false);
     }
   };
 
+  if (isLoading) {
+    return <div className="max-w-2xl mx-auto mt-10 p-6">Loading product...</div>;
+  }
+
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded shadow-lg">
-      <h1 className="text-3xl font-bold mb-6">
-        Add Product
-      </h1>
+      <h1 className="text-3xl font-bold mb-6">Edit Product</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-
         <input
           type="text"
           name="name"
@@ -233,7 +258,7 @@ export default function AddProduct() {
 
         <div className="rounded border p-3">
           <label htmlFor="product-image-file" className="mb-2 block text-sm font-medium text-gray-700">
-            Upload image to Cloudinary
+            Replace image (uploads to Cloudinary)
           </label>
           <input
             id="product-image-file"
@@ -244,10 +269,7 @@ export default function AddProduct() {
             className="w-full border rounded p-3"
           />
           <p className="mt-2 text-sm text-gray-600">
-            The selected file is uploaded to Cloudinary using a backend-generated signature, and only the returned public URL is saved in MongoDB.
-          </p>
-          <p className="mt-1 text-sm text-gray-600">
-            Uploaded images are automatically normalized to the product card format (480x600, center-cropped).
+            Uploaded images are normalized to the product card format (480x600, center-cropped).
           </p>
           {isUploadingImage ? (
             <p className="mt-1 text-sm text-blue-700">Uploading image...</p>
@@ -270,9 +292,10 @@ export default function AddProduct() {
 
         <button
           type="submit"
-          className="w-full bg-green-700 hover:bg-green-800 text-white font-bold p-3 rounded"
+          disabled={isSaving || isUploadingImage}
+          className="w-full bg-blue-700 hover:bg-blue-800 disabled:bg-blue-400 text-white font-bold p-3 rounded"
         >
-          Add Product
+          {isSaving ? "Saving..." : "Save Changes"}
         </button>
       </form>
     </div>

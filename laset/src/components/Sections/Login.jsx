@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const getApiBaseUrl = () => {
@@ -110,6 +111,12 @@ export default function Login({
             placeholder="Enter your password"
             className="w-full rounded border p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
           />
+        </div>
+
+        <div className="mb-6 text-right">
+          <Link to="/forgot-password/customer" className="text-sm text-blue-700 underline">
+            Forgot password?
+          </Link>
         </div>
 
         <div className="flex gap-3">

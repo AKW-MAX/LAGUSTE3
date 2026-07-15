@@ -15,8 +15,7 @@ const getApiBaseUrl = () => {
   );
 };
 
-export default function AdminForgotPassword() {
-  const [username, setUsername] = useState("");
+export default function CustomerForgotPassword() {
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -28,8 +27,7 @@ export default function AdminForgotPassword() {
     setMessage("");
 
     try {
-      const res = await axios.post(`${getApiBaseUrl()}/admin/forgot-password/request`, {
-        username,
+      const res = await axios.post(`${getApiBaseUrl()}/forgot-password/request`, {
         email,
       });
 
@@ -58,8 +56,8 @@ export default function AdminForgotPassword() {
     }
 
     try {
-      const res = await axios.post(`${getApiBaseUrl()}/admin/forgot-password/reset`, {
-        username,
+      const res = await axios.post(`${getApiBaseUrl()}/forgot-password/reset`, {
+        email,
         token,
         newPassword,
       });
@@ -76,19 +74,10 @@ export default function AdminForgotPassword() {
 
   return (
     <div className="max-w-xl mx-auto mt-16 bg-white rounded-lg shadow-lg p-8 space-y-8">
-      <h1 className="text-2xl font-bold text-center">Admin Forgot Password</h1>
+      <h1 className="text-2xl font-bold text-center">Customer Forgot Password</h1>
 
       <form onSubmit={handleRequestToken} className="space-y-3">
         <h2 className="font-semibold">1. Request Reset Token</h2>
-
-        <input
-          type="text"
-          placeholder="Username"
-          className="w-full border p-3 rounded"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
 
         <input
           type="email"
@@ -105,8 +94,9 @@ export default function AdminForgotPassword() {
         >
           Request Token
         </button>
+
         <p className="text-xs text-gray-600">
-          A reset token will be sent to the admin email if the account exists.
+          A reset token will be sent to your email if the account exists.
         </p>
       </form>
 
@@ -155,8 +145,8 @@ export default function AdminForgotPassword() {
       {message && <p className="text-sm text-center text-gray-700">{message}</p>}
 
       <div className="text-center text-sm">
-        <Link className="text-blue-700 underline" to="/admin/login">
-          Back to Admin Login
+        <Link className="text-blue-700 underline" to="/login/customer">
+          Back to Customer Login
         </Link>
       </div>
     </div>
