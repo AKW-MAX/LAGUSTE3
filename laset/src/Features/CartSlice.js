@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from 'react-toastify';
+import { parseStoredJson } from "../utils/storage";
 
 const getInitialCartItems = () => {
-    const stored = localStorage.getItem("cartItems");
-    return stored ? JSON.parse(stored) : [];
+    const parsedItems = parseStoredJson("cartItems", []);
+    return Array.isArray(parsedItems) ? parsedItems : [];
 };
 
 const calculateTotals = (cartItems) =>

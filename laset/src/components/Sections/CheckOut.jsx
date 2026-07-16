@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { clearCart } from "../../Features/CartSlice";
 import { buildApiUrl } from "../../utils/api";
+import { parseStoredJson } from "../../utils/storage";
 
 export default function Checkout() {
   const cart = useSelector((state) => state.cart);
@@ -19,22 +20,17 @@ export default function Checkout() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem("user");
-      const storedUser = savedUser ? JSON.parse(savedUser) : null;
+    const storedUser = parseStoredJson("user", null);
 
-      if (!storedUser) {
-        navigate("/login/customer", { state: { from: "/CheckOut" } });
-        return;
-      }
-
-      setCustomer((prev) => ({
-        ...prev,
-        name: `${storedUser.first_name || ""} ${storedUser.last_name || ""}`.trim(),
-      }));
-    } catch {
-      navigate("/login/customer", { state: { from: "/CheckOut" } });
+    if (!storedUser) {
+      navigate("/login", { state: { from: "/CheckOut" } });
+      return;
     }
+
+    setCustomer((prev) => ({
+      ...prev,
+      name: `${storedUser.first_name || ""} ${storedUser.last_name || ""}`.trim(),
+    }));
   }, [navigate]);
 
   const handleChange = (e) => {
@@ -49,11 +45,10 @@ export default function Checkout() {
     setErrorMessage("");
 
     try {
-      const savedUser = localStorage.getItem("user");
-      const storedUser = savedUser ? JSON.parse(savedUser) : null;
+      const storedUser = parseStoredJson("user", null);
 
       if (!storedUser) {
-        navigate("/login/customer", { state: { from: "/CheckOut" } });
+        navigate("/login", { state: { from: "/CheckOut" } });
         return;
       }
 

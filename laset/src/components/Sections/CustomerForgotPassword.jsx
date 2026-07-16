@@ -145,8 +145,8 @@ export default function CustomerForgotPassword() {
       {message && <p className="text-sm text-center text-gray-700">{message}</p>}
 
       <div className="text-center text-sm">
-        <Link className="text-blue-700 underline" to="/login/customer">
-          Back to Customer Login
+        <Link className="text-blue-700 underline" to="/login">
+          Back to Login Selection
         </Link>
       </div>
     </div>

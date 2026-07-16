@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useEffect, useRef } from "react";
 import assets from "../../assets/assets.js";
+import { parseStoredJson } from "../../utils/storage";
 
 const getInitials = (userData) => {
   if (!userData) return "U";
@@ -113,12 +114,7 @@ function Navigation() {
   };
 
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem("user");
-      setUser(savedUser ? JSON.parse(savedUser) : null);
-    } catch {
-      setUser(null);
-    }
+    setUser(parseStoredJson("user", null));
   }, []);
 
   useEffect(() => {

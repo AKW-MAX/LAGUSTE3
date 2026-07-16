@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { parseStoredJson } from "../../utils/storage";
 
 const ALL_ADMIN_PERMISSIONS = [
   { key: "manage_orders", label: "Manage Orders" },
@@ -30,7 +31,7 @@ export default function AdminPermissions() {
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
-    const admin = JSON.parse(localStorage.getItem("admin") || "null");
+    const admin = parseStoredJson("admin", null);
 
     if (!token) {
       navigate("/admin/login");
@@ -118,7 +119,8 @@ export default function AdminPermissions() {
       );
 
       alert(res.data?.message || "Admin updated successfully.");
-      if (admin.id === JSON.parse(localStorage.getItem("admin") || "null")?.id) {
+      const currentAdmin = parseStoredJson("admin", null);
+      if (admin.id === currentAdmin?.id) {
         localStorage.setItem("admin", JSON.stringify(res.data.admin));
       }
     } catch (error) {

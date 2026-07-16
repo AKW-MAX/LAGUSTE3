@@ -39,7 +39,7 @@ const Register = ({
       .post(`${VITE_API_URL}/register`, formData)
       .then(() => {
         setIsOpen(false);
-        navigate("/login/customer");
+        navigate("/login");
       })
       .catch((error) => {
         const message =
@@ -52,7 +52,7 @@ const Register = ({
           error.response?.status === 409 ||
           message.toLowerCase().includes("already exists")
         ) {
-          navigate("/login/customer");
+          navigate("/login");
         }
       });
   };
@@ -248,7 +248,7 @@ const Register = ({
         <p className="mt-5 text-center text-sm">
           Already have an account?{" "}
           <Link
-            to="/login/customer"
+            to="/login"
             className="text-green-900 font-semibold hover:underline"
           >
             Login here

@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+import { parseStoredJson } from "../../utils/storage";
 
 export default function AdminDashboard(){
-    const admin = JSON.parse(localStorage.getItem("admin") || "null");
+    const admin = parseStoredJson("admin", null);
     const isSuperAdmin = admin?.role === "superadmin";
     const permissions = Array.isArray(admin?.permissions) ? admin.permissions : [];
 

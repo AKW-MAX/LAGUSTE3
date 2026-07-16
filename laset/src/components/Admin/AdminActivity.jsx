@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { parseStoredJson } from "../../utils/storage";
 
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
@@ -22,7 +23,7 @@ export default function AdminActivity() {
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
-    const admin = JSON.parse(localStorage.getItem("admin") || "null");
+    const admin = parseStoredJson("admin", null);
 
     if (!token) {
       navigate("/admin/login");

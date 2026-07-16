@@ -1,9 +1,10 @@
 import { Navigate, useLocation } from "react-router-dom";
+import { parseStoredJson } from "../../utils/storage";
 
 export default function ProtectedRoute({ children }) {
   const location = useLocation();
-  const user = JSON.parse(localStorage.getItem("user"));
-  const admin = JSON.parse(localStorage.getItem("admin") || "null");
+  const user = parseStoredJson("user", null);
+  const admin = parseStoredJson("admin", null);
   const adminToken = localStorage.getItem("adminToken");
   const isAdminRoute = location.pathname.startsWith("/admin");
 
@@ -53,5 +54,5 @@ export default function ProtectedRoute({ children }) {
     return <Navigate to="/admin/dashboard" replace />;
   }
 
-  return user ? children : <Navigate to="/login/customer" replace />;
+  return user ? children : <Navigate to="/login" replace />;
 }

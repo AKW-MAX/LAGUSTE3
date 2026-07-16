@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { getApiBaseUrl } from "../../utils/api";
+import { parseStoredJson } from "../../utils/storage";
 
 const formatDate = (value) => {
   if (!value) return "—";
@@ -31,16 +32,16 @@ export default function MyOrders() {
 
     navigate("/");
   };
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    useEffect(() => {
+  const loggedInUser = parseStoredJson("user", null);
+  useEffect(() => {
     if (!loggedInUser) {
-      navigate("/login/customer");
+      navigate("/login");
     }
   }, [loggedInUser, navigate]);
-  
+
   if (!loggedInUser) {
-  return null;
-}
+    return null;
+  }
 
   const handleSearch = async (e) => {
     e.preventDefault();
