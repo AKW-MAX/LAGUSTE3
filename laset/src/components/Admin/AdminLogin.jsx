@@ -40,6 +40,11 @@ export default function AdminLogin() {
     } catch (error) {
       console.error(error);
 
+      if (error.response?.status === 404) {
+        alert("Admin login endpoint is not available on the deployed backend. Redeploy backend with admin routes enabled.");
+        return;
+      }
+
       alert(
         error.response?.data?.message || "Invalid username or password."
       );
