@@ -60,9 +60,28 @@ const buildReceiptHtml = (invoice) => {
 export default function AdminReceipts() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [postingReceipt, setPostingReceipt] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
   const [invoices, setInvoices] = useState([]);
+  const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
+  const [draftReceipt, setDraftReceipt] = useState({
+    invoiceNumber: "",
+    customer: {
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+    },
+    items: [
+      {
+        productId: "",
+        name: "",
+        quantity: 1,
+        unitPrice: 0,
+      },
+    ],
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
@@ -72,22 +91,47 @@ export default function AdminReceipts() {
       return;
     }
 
-    fetchReceipts();
+    fetchReceiptsData();
   }, [navigate]);
 
-  const fetchReceipts = async () => {
+  const fetchReceiptsData = async () => {
     try {
       setLoading(true);
       setWarningMessage("");
       const token = localStorage.getItem("adminToken");
-      const response = await axios.get(`${getApiBaseUrl()}/admin/invoices`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const [productsResponse, invoicesResponse] = await Promise.allSettled([
+        axios.get(`${getApiBaseUrl()}/admin/products`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+        axios.get(`${getApiBaseUrl()}/admin/invoices`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+      ]);
 
-      const nextInvoices = Array.isArray(response.data?.invoices) ? response.data.invoices : [];
-      setInvoices(nextInvoices);
+      if (productsResponse.status === "fulfilled") {
+        setProducts(Array.isArray(productsResponse.value.data?.products) ? productsResponse.value.data.products : []);
+      } else if (productsResponse.reason?.response?.status === 401) {
+        throw productsResponse.reason;
+      }
+
+      if (invoicesResponse.status === "fulfilled") {
+        const nextInvoices = Array.isArray(invoicesResponse.value.data?.invoices) ? invoicesResponse.value.data.invoices : [];
+        setInvoices(nextInvoices);
+      } else {
+        setInvoices([]);
+
+        if (invoicesResponse.reason?.response?.status === 404) {
+          setWarningMessage("The backend does not have invoices endpoint yet. Redeploy backend to enable customer sale receipts.");
+        } else if (invoicesResponse.reason?.response?.status === 401) {
+          throw invoicesResponse.reason;
+        } else {
+          setWarningMessage(invoicesResponse.reason?.response?.data?.message || "Failed to load customer sale receipts.");
+        }
+      }
     } catch (error) {
       console.error(error);
 
@@ -98,13 +142,151 @@ export default function AdminReceipts() {
         return;
       }
 
-      if (error.response?.status === 404) {
-        setWarningMessage("The backend does not have invoices endpoint yet. Redeploy backend to enable customer sale receipts.");
-      } else {
-        setWarningMessage(error.response?.data?.message || "Failed to load customer sale receipts.");
-      }
+      setWarningMessage(error.response?.data?.message || "Failed to load customer sale receipts.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const updateDraftReceipt = (updater) => {
+    setDraftReceipt((prev) => ({
+      ...prev,
+      ...updater(prev),
+    }));
+  };
+
+  const handleCustomerChange = (field, value) => {
+    setDraftReceipt((prev) => ({
+      ...prev,
+      customer: {
+        ...prev.customer,
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleItemChange = (index, field, value) => {
+    setDraftReceipt((prev) => {
+      const nextItems = prev.items.map((item, itemIndex) => {
+        if (itemIndex !== index) {
+          return item;
+        }
+
+        if (field === "productId") {
+          const selectedProduct = products.find((product) => product._id === value);
+          return {
+            ...item,
+            productId: value,
+            name: selectedProduct?.name || "",
+            unitPrice: Number(selectedProduct?.price || 0),
+          };
+        }
+
+        return {
+          ...item,
+          [field]: field === "quantity" || field === "unitPrice" ? Number(value || 0) : value,
+        };
+      });
+
+      return {
+        ...prev,
+        items: nextItems,
+      };
+    });
+  };
+
+  const addItemRow = () => {
+    setDraftReceipt((prev) => ({
+      ...prev,
+      items: [
+        ...prev.items,
+        {
+          productId: "",
+          name: "",
+          quantity: 1,
+          unitPrice: 0,
+        },
+      ],
+    }));
+  };
+
+  const removeItemRow = (index) => {
+    setDraftReceipt((prev) => ({
+      ...prev,
+      items: prev.items.filter((_, itemIndex) => itemIndex !== index),
+    }));
+  };
+
+  const resetDraftReceipt = () => {
+    setDraftReceipt({
+      invoiceNumber: "",
+      customer: {
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+      },
+      items: [
+        {
+          productId: "",
+          name: "",
+          quantity: 1,
+          unitPrice: 0,
+        },
+      ],
+    });
+  };
+
+  const postCashSaleReceipt = async () => {
+    try {
+      const token = localStorage.getItem("adminToken");
+      setPostingReceipt(true);
+
+      const normalizedItems = draftReceipt.items
+        .filter((item) => item.productId)
+        .map((item) => ({
+          productId: item.productId,
+          name: item.name,
+          quantity: Number(item.quantity || 0),
+          unitPrice: Number(item.unitPrice || 0),
+        }))
+        .filter((item) => item.quantity > 0);
+
+      if (normalizedItems.length === 0) {
+        alert("Add at least one ordered item before posting a cash sale receipt.");
+        return;
+      }
+
+      const response = await axios.post(
+        `${getApiBaseUrl()}/admin/invoices`,
+        {
+          invoiceNumber: draftReceipt.invoiceNumber,
+          customer: draftReceipt.customer,
+          items: normalizedItems,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      resetDraftReceipt();
+      await fetchReceiptsData();
+      alert(response.data?.message || "Cash sale receipt posted successfully.");
+    } catch (error) {
+      console.error(error);
+
+      if (error.response?.status === 401) {
+        localStorage.removeItem("adminToken");
+        localStorage.removeItem("admin");
+        navigate("/admin/login");
+        return;
+      }
+
+      alert(error.response?.data?.message || "Failed to post cash sale receipt.");
+    } finally {
+      setPostingReceipt(false);
     }
   };
 
@@ -163,6 +345,16 @@ export default function AdminReceipts() {
     });
   }, [invoices, search]);
 
+  const draftTotalQuantity = draftReceipt.items.reduce(
+    (sum, item) => sum + Number(item.quantity || 0),
+    0
+  );
+
+  const draftTotalAmount = draftReceipt.items.reduce(
+    (sum, item) => sum + Number(item.quantity || 0) * Number(item.unitPrice || 0),
+    0
+  );
+
   if (loading) {
     return <div className="p-8">Loading customer sale receipts...</div>;
   }
@@ -175,6 +367,155 @@ export default function AdminReceipts() {
           View all posted receipt records and print or download receipt files.
         </p>
       </div>
+
+      <section className="space-y-4 rounded-lg border bg-white p-6 shadow-sm">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-semibold">Post Cash Sale Receipt</h2>
+          <button
+            type="button"
+            onClick={resetDraftReceipt}
+            disabled={postingReceipt}
+            className="rounded bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-800"
+          >
+            Clear Form
+          </button>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label className="mb-2 block font-medium">Invoice Number (Optional)</label>
+            <input
+              type="text"
+              value={draftReceipt.invoiceNumber}
+              onChange={(event) => updateDraftReceipt(() => ({ invoiceNumber: event.target.value }))}
+              placeholder="Leave blank to auto-generate"
+              className="w-full rounded border px-3 py-2"
+            />
+          </div>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label className="mb-2 block font-medium">Customer Name</label>
+            <input
+              type="text"
+              value={draftReceipt.customer.name}
+              onChange={(event) => handleCustomerChange("name", event.target.value)}
+              className="w-full rounded border px-3 py-2"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block font-medium">Customer Email</label>
+            <input
+              type="email"
+              value={draftReceipt.customer.email}
+              onChange={(event) => handleCustomerChange("email", event.target.value)}
+              className="w-full rounded border px-3 py-2"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block font-medium">Customer Phone</label>
+            <input
+              type="text"
+              value={draftReceipt.customer.phone}
+              onChange={(event) => handleCustomerChange("phone", event.target.value)}
+              className="w-full rounded border px-3 py-2"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block font-medium">Customer Address</label>
+            <input
+              type="text"
+              value={draftReceipt.customer.address}
+              onChange={(event) => handleCustomerChange("address", event.target.value)}
+              className="w-full rounded border px-3 py-2"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-semibold">Ordered Items</h3>
+            <button
+              type="button"
+              onClick={addItemRow}
+              className="rounded bg-slate-800 px-4 py-2 text-white"
+            >
+              Add Item
+            </button>
+          </div>
+
+          {draftReceipt.items.map((item, index) => (
+            <div key={`cash-sale-item-${index}`} className="grid gap-3 rounded border p-4 md:grid-cols-[2fr,1fr,1fr,auto] md:items-end">
+              <div>
+                <label className="mb-2 block text-sm font-medium">Product</label>
+                <select
+                  value={item.productId}
+                  onChange={(event) => handleItemChange(index, "productId", event.target.value)}
+                  className="w-full rounded border px-3 py-2"
+                >
+                  <option value="">Select product</option>
+                  {products.map((product) => (
+                    <option key={product._id} value={product._id}>
+                      {product.name} (Stock: {product.stock ?? 0})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium">Quantity</label>
+                <input
+                  type="number"
+                  min="1"
+                  value={item.quantity}
+                  onChange={(event) => handleItemChange(index, "quantity", event.target.value)}
+                  className="w-full rounded border px-3 py-2"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium">Unit Price</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={item.unitPrice}
+                  onChange={(event) => handleItemChange(index, "unitPrice", event.target.value)}
+                  className="w-full rounded border px-3 py-2"
+                />
+              </div>
+
+              <button
+                type="button"
+                onClick={() => removeItemRow(index)}
+                disabled={draftReceipt.items.length === 1}
+                className="rounded bg-red-600 px-4 py-2 text-white disabled:opacity-50"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <div className="rounded bg-slate-100 p-4 text-sm text-slate-700">
+          <p><strong>Total Quantity:</strong> {draftTotalQuantity}</p>
+          <p><strong>Total Amount:</strong> KSh {draftTotalAmount}</p>
+        </div>
+
+        <div>
+          <button
+            type="button"
+            onClick={postCashSaleReceipt}
+            disabled={postingReceipt}
+            className="rounded bg-indigo-700 px-5 py-3 font-semibold text-white disabled:opacity-60"
+          >
+            {postingReceipt ? "Posting Cash Sale Receipt..." : "Post Cash Sale Receipt"}
+          </button>
+        </div>
+      </section>
 
       {warningMessage ? (
         <div className="rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
