@@ -1,4 +1,5 @@
 const LOCAL_API_URL = "http://localhost:5000";
+const REMOTE_API_URL = "https://agriventure-enterprise-backend.onrender.com";
 
 export const getApiBaseUrl = () => {
   const configuredApiUrl = (import.meta.env.VITE_API_URL || "")
@@ -16,10 +17,10 @@ export const getApiBaseUrl = () => {
       return configuredApiUrl;
     }
 
-    return window.location.origin;
+    return REMOTE_API_URL;
   }
 
-  return configuredApiUrl || LOCAL_API_URL;
+  return configuredApiUrl || REMOTE_API_URL || LOCAL_API_URL;
 };
 
 export const buildApiUrl = (path = "") => {
