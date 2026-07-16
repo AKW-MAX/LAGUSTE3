@@ -117,7 +117,7 @@ export default function AllProducts() {
           productsList.map((product) => (
             <div
               key={product._id}
-              className="w-[160px] sm:w-[180px] md:w-[180px] lg:w-[220px] shrink-0 transition-transform duration-300 hover:scale-105"
+              className="w-[w-40] sm:w-[180px] md:w-[180px] lg:w-[220px] shrink-0 transition-transform duration-300 hover:scale-105"
             >
               <ProductsCard
                 _id={product._id}

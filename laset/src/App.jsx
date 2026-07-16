@@ -23,6 +23,8 @@ import AdminLogin from "./components/Admin/AdminLogin";
 import AdminForgotPassword from "./components/Admin/AdminForgotPassword";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import Orders from "./components/Admin/Orders";
+import AdminInvoices from "./components/Admin/AdminInvoices";
+import AdminReceipts from "./components/Admin/AdminReceipts";
 import Products from "./components/Admin/Products";
 import AddProduct from "./components/Admin/AddProduct";
 import EditProduct from "./components/Admin/EditProduct";
@@ -63,6 +65,8 @@ function App() {
           <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
           <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+          <Route path="/admin/invoices" element={<ProtectedRoute><AdminInvoices /></ProtectedRoute>} />
+          <Route path="/admin/receipts" element={<ProtectedRoute><AdminReceipts /></ProtectedRoute>} />
           <Route path="/admin/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
           <Route path="/admin/add-product" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
           <Route path="/admin/edit-product/:id" element={<ProtectedRoute><EditProduct /></ProtectedRoute>} />

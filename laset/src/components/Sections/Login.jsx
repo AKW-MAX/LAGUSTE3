@@ -103,7 +103,7 @@ export default function Login({
           />
         </div>
 
-        <div className="mb-6 text-right">
+        <div className="mb-6 text-center">
           <Link to="/forgot-password/customer" className="text-sm text-blue-700 underline">
             Forgot password?
           </Link>

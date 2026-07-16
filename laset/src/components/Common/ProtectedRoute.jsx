@@ -30,6 +30,14 @@ export default function ProtectedRoute({ children }) {
       return children;
     }
 
+    if (path.startsWith("/admin/invoices") && permissions.includes("manage_orders")) {
+      return children;
+    }
+
+    if (path.startsWith("/admin/receipts") && permissions.includes("manage_orders")) {
+      return children;
+    }
+
     if (path.startsWith("/admin/products") && permissions.includes("manage_products")) {
       return children;
     }

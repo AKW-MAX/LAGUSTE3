@@ -27,6 +27,7 @@ export default function EditProduct() {
     category: "",
     description: "",
     price: "",
+    stock: "",
     img: "",
   });
 
@@ -52,6 +53,7 @@ export default function EditProduct() {
           category: data.category || "",
           description: data.description || "",
           price: data.price ?? "",
+          stock: data.stock ?? data.quantity ?? "",
           img: data.img || data.image || "",
         });
       } catch (error) {
@@ -182,6 +184,7 @@ export default function EditProduct() {
         {
           ...product,
           price: Number(product.price),
+          stock: Number(product.stock || 0),
         },
         {
           headers: {
@@ -253,6 +256,17 @@ export default function EditProduct() {
           value={product.price}
           onChange={handleChange}
           className="w-full border rounded p-3"
+          required
+        />
+
+        <input
+          type="number"
+          name="stock"
+          placeholder="Quantity"
+          value={product.stock}
+          onChange={handleChange}
+          className="w-full border rounded p-3"
+          min="0"
           required
         />
 

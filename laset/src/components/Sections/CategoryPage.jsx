@@ -33,8 +33,8 @@ export default function CategoryPage() {
         {categoryName ? `${categoryName.charAt(0).toUpperCase()}${categoryName.slice(1)}` : "Category"}
       </h1>
       <div className="text-sm text-gray-600 mb-3">
-        <p>Raw slug: {rawSlug || "(empty)"}</p>
-        <p>Category slug: {categorySlug || "(empty)"}</p>
+        <p>Main cartegoy : {rawSlug || "(empty)"}</p>
+        <p>Category: {categorySlug || "(empty)"}</p>
         <p>Products count: {products.length}</p>
         <p>Filtered count: {filteredProducts.length}</p>
       </div>

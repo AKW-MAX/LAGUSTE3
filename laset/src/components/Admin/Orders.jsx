@@ -164,7 +164,7 @@ export default function Orders() {
                       </td>
 
                       <td className="border p-2">
-                        {item.quantity}
+                        {item.cartQuantity ?? item.quantity ?? 0}
                       </td>
 
                       <td className="border p-2">

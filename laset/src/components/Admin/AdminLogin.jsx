@@ -80,11 +80,19 @@ export default function AdminLogin() {
         Login
       </button>
 
-      <div className="mt-4 text-center">
+      <div className="mt-4 text-center flex flex-col gap-2">
         <Link to="/admin/forgot-password" className="text-blue-700 underline text-sm">
           Forgot password?
         </Link>
+      
+        <Link to="/" className="text-blue-700 underline text-sm">
+          Back to Home
+        </Link>
       </div>
+
+
+
+      
     </div>
   );
 }

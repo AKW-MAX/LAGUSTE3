@@ -24,6 +24,7 @@ export default function AddProduct() {
     category: "",
     description: "",
     price: "",
+    stock: "",
     img: "",
   });
 
@@ -149,7 +150,11 @@ export default function AddProduct() {
 
       await axios.post(
         `${getApiBaseUrl()}/admin/products`,
-        product,
+        {
+          ...product,
+          price: Number(product.price),
+          stock: Number(product.stock || 0),
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -164,6 +169,7 @@ export default function AddProduct() {
         category: "",
         description: "",
         price: "",
+        stock: "",
         img: "",
       });
       setSelectedFileName("");
@@ -228,6 +234,17 @@ export default function AddProduct() {
           value={product.price}
           onChange={handleChange}
           className="w-full border rounded p-3"
+          required
+        />
+
+        <input
+          type="number"
+          name="stock"
+          placeholder="Quantity"
+          value={product.stock}
+          onChange={handleChange}
+          className="w-full border rounded p-3"
+          min="0"
           required
         />
 

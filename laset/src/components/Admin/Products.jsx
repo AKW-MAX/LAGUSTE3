@@ -394,6 +394,7 @@ export default function Products() {
                 <th className="border p-3">Name</th>
                 <th className="border p-3">Category</th>
                 <th className="border p-3">Price</th>
+                <th className="border p-3">Quantity</th>
                 <th className="border p-3">Description</th>
                 <th className="border p-3">Actions</th>
               </tr>
@@ -416,6 +417,10 @@ export default function Products() {
 
                   <td className="border p-2">
                     KSh {product.price}
+                  </td>
+
+                  <td className="border p-2">
+                    {Number(product.stock ?? product.quantity ?? 0)}
                   </td>
 
                   <td className="border p-2">

@@ -28,6 +28,22 @@ export default function AdminDashboard(){
                 </Link>
                 )}
 
+                {canManageOrders && (
+                <Link to="/admin/invoices">
+                <button className="bg-emerald-800 text-white px-6 py-3 rounded">
+                    Post Invoices
+                </button>
+                </Link>
+                )}
+
+                {canManageOrders && (
+                <Link to="/admin/receipts">
+                <button className="bg-emerald-600 text-white px-6 py-3 rounded">
+                    Customer Sale Receipts
+                </button>
+                </Link>
+                )}
+
                 <br/>
 
                 {canManageProducts && (

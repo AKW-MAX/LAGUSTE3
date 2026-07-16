@@ -19,6 +19,7 @@ export default function MyOrders() {
   const [lookup, setLookup] = useState("");
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [deletingOrderId, setDeletingOrderId] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const handleLogout = () => {
@@ -79,6 +80,41 @@ export default function MyOrders() {
     }
   };
 
+  const handleDeleteOrder = async (orderId) => {
+    if (!loggedInUser?.email) {
+      setError("Unable to verify your account. Please login again.");
+      return;
+    }
+
+    if (!window.confirm("Delete this pending order? This action cannot be undone.")) {
+      return;
+    }
+
+    try {
+      setDeletingOrderId(orderId);
+      setError("");
+      setMessage("");
+
+      const response = await axios.delete(`${getApiBaseUrl()}/api/orders/${orderId}`, {
+        data: {
+          email: loggedInUser.email,
+        },
+      });
+
+      const remainingOrders = orders.filter((order) => order._id !== orderId);
+      setOrders(remainingOrders);
+      setMessage(
+        remainingOrders.length > 0
+          ? response.data?.message || "Order deleted successfully."
+          : "Order deleted successfully. No orders remain for this search."
+      );
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to delete order.");
+    } finally {
+      setDeletingOrderId("");
+    }
+  };
+
   const pendingOrders = orders.filter((order) => !isFulfilled(order.status));
   const fulfilledOrders = orders.filter((order) => isFulfilled(order.status));
 
@@ -94,14 +130,13 @@ export default function MyOrders() {
           <Link to="/">
             <button className="rounded bg-black px-4 py-2 font-semibold">Back Home</button>
           </Link>
-        </div>
-        <div>
-          <button
-          onClick={handleLogout}
-          className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded"
-        >
-          Logout
-        </button>
+          <div>
+            <button
+            onClick={handleLogout}
+            className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded">
+            Logout
+            </button>
+          </div>
         </div>
 
         <form onSubmit={handleSearch} className="mb-6 rounded-lg bg-green-700/70 p-4">
@@ -156,6 +191,14 @@ export default function MyOrders() {
                         </li>
                       ))}
                     </ul>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteOrder(order._id)}
+                      disabled={deletingOrderId === order._id}
+                      className="mt-3 rounded bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      {deletingOrderId === order._id ? "Deleting..." : "Delete Order"}
+                    </button>
                   </div>
                 ))
               ) : (
