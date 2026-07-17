@@ -120,7 +120,7 @@ export default function AdminReceipts() {
 
       if (invoicesResponse.status === "fulfilled") {
         const nextInvoices = Array.isArray(invoicesResponse.value.data?.invoices) ? invoicesResponse.value.data.invoices : [];
-        setInvoices(nextInvoices);
+        setInvoices(nextInvoices.filter((invoice) => invoice.sourceType !== "supplier"));
       } else {
         setInvoices([]);
 
@@ -364,13 +364,13 @@ export default function AdminReceipts() {
       <div>
         <h1 className="text-3xl font-bold">Customer Sale Receipts</h1>
         <p className="mt-2 text-gray-600">
-          View all posted receipt records and print or download receipt files.
+          Track customer purchases with sold products, total quantity, and total amount.
         </p>
       </div>
 
       <section className="space-y-4 rounded-lg border bg-white p-6 shadow-sm">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold">Post Cash Sale Receipt</h2>
+          <h2 className="text-2xl font-semibold">Post Customer Receipt</h2>
           <button
             type="button"
             onClick={resetDraftReceipt}
@@ -512,7 +512,7 @@ export default function AdminReceipts() {
             disabled={postingReceipt}
             className="rounded bg-indigo-700 px-5 py-3 font-semibold text-white disabled:opacity-60"
           >
-            {postingReceipt ? "Posting Cash Sale Receipt..." : "Post Cash Sale Receipt"}
+            {postingReceipt ? "Posting Customer Receipt..." : "Post Customer Receipt"}
           </button>
         </div>
       </section>
@@ -545,6 +545,7 @@ export default function AdminReceipts() {
                 <p><strong>Customer:</strong> {invoice.customer?.name || "N/A"}</p>
                 <p><strong>Email:</strong> {invoice.customer?.email || "N/A"}</p>
                 <p><strong>Phone:</strong> {invoice.customer?.phone || "N/A"}</p>
+                <p><strong>Total Quantity:</strong> {invoice.totalQuantity ?? 0}</p>
                 <p><strong>Total Amount:</strong> KSh {invoice.totalAmount ?? 0}</p>
               </div>
 
