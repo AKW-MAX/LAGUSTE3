@@ -34,6 +34,7 @@ import whatsapp from "./whatsapp.png";
 import WomanImage from "./WomanImage.png";
 import SpiderPlant from "./SpiderPlant.png";
 import Actellic from "./Actellic.png";
+import AgriventureLogo from "./AgriventureLogo.png";
 
 export const assets = {
     AboutUsPic: AboutPic,
@@ -71,6 +72,7 @@ export const assets = {
     whatsapp,
     WomanImage,
     SpiderPlant,
+    AgriventureLogo,
 
     // FIX: keep these local imported assets, not /images URLs
     Reaper1L: Reaper1l,
@@ -104,6 +106,7 @@ assets.cart = Cart;
 assets.spiderPlant = SpiderPlant;
 assets.actellic = Actellic;
 assets.Phone = phone;
+assets.AgriventureLogo = AgriventureLogo;
 
 // Build tolerant aliases so API image values resolve in production too.
 const makeImageAliases = (key, value) => {

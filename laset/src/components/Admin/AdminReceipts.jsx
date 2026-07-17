@@ -449,7 +449,7 @@ export default function AdminReceipts() {
           </div>
 
           {draftReceipt.items.map((item, index) => (
-            <div key={`cash-sale-item-${index}`} className="grid gap-3 rounded border p-4 md:grid-cols-[2fr,1fr,1fr,auto] md:items-end">
+            <div key={`cash-sale-item-${index}`} className="flex flex-row gap-3 rounded border p-4 md:grid-cols-[2fr,1fr,1fr,auto] md:items-end">
               <div>
                 <label className="mb-2 block text-sm font-medium">Product</label>
                 <select
@@ -487,6 +487,8 @@ export default function AdminReceipts() {
                   className="w-full rounded border px-3 py-2"
                 />
               </div>
+
+              
 
               <button
                 type="button"
@@ -537,10 +539,14 @@ export default function AdminReceipts() {
         <div className="space-y-4">
           {filteredReceipts.map((invoice) => (
             <div key={invoice._id} className="rounded-lg border bg-slate-50 p-5 shadow-sm">
+
               <div className="grid gap-2 md:grid-cols-2">
+                <h1>AGRIVENTUTE ENTREPRISES</h1>
+                <p className="m-1">P.O. Box 100, Nairobi, Kenya</p>
+                <p className="m-1">Phone: +254 704519867</p>
+                <p className="m-1">Email: info@agriventure.com</p>
                 <p><strong>Receipt Number:</strong> {invoice.receipt?.receiptNumber || "—"}</p>
                 <p><strong>Issued At:</strong> {formatDateTime(invoice.receipt?.issuedAt)}</p>
-                <p><strong>Invoice Number:</strong> {invoice.invoiceNumber || "—"}</p>
                 <p><strong>Posted At:</strong> {formatDateTime(invoice.postedAt)}</p>
                 <p><strong>Customer:</strong> {invoice.customer?.name || "N/A"}</p>
                 <p><strong>Email:</strong> {invoice.customer?.email || "N/A"}</p>

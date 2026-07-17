@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getApiBaseUrl } from "../../utils/api";
+import AgriventureLogo from "../../assets/AgriventureLogo.png";
 
 const formatDateTime = (value) => {
   if (!value) return "—";
@@ -27,9 +28,16 @@ const buildSupplierInvoiceHtml = (invoice) => {
     <meta charset="utf-8" />
     <title>Supplier Invoice ${invoice.invoiceNumber || ""}</title>
   </head>
+  <img class="hover:bg-green-800 bg-black w-20 h-15 p-1 rounded cursor-pointer"
+            src="${AgriventureLogo || AgriventureLogo}"
+            alt="company logo" />
   <body style="font-family: Arial, sans-serif; color: #0f172a; padding: 24px;">
     <div style="max-width: 900px; margin: 0 auto;">
-      <h1 style="margin-bottom: 8px;">Supplier Stock-In Invoice</h1>
+      <h1>AGRIVENTUTE ENTREPRISES</h1>
+      <p style="margin: 4px 0;">P.O. Box 100, Nairobi, Kenya</p>
+      <p style="margin: 4px 0;">Phone: +254 704519867</p>
+      <p style="margin: 4px 0;">Email: info@agriventure.com</p>
+      <h2 style="margin-bottom: 8px;">Supplier Stock-In Invoice</h2>
       <p style="margin: 4px 0;"><strong>Invoice Number:</strong> ${invoice.invoiceNumber || "—"}</p>
       <p style="margin: 4px 0;"><strong>Invoice Date:</strong> ${formatDateTime(invoice.invoiceDate || invoice.postedAt)}</p>
       <p style="margin: 4px 0;"><strong>Supplier Name:</strong> ${invoice.supplier?.name || "N/A"}</p>
@@ -426,7 +434,7 @@ export default function AdminInvoices() {
           </div>
 
           {draftInvoice.items.map((item, index) => (
-            <div key={`supplier-item-${index}`} className="grid gap-3 rounded border p-4 md:grid-cols-[2fr,1fr,1fr,auto] md:items-end">
+            <div key={`supplier-item-${index}`} className="flex flex-row gap-3 rounded border p-4 md:grid-cols-[2fr,1fr,1fr,auto] md:items-end">
               <div>
                 <label className="mb-2 block text-sm font-medium">Product</label>
                 <select

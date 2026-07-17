@@ -160,7 +160,10 @@ function Navigation() {
       <div className="flex flex-col gap-2 w-full px-3 sm:px-2 lg:px-8">
         <div className="flex items-center justify-between w-full gap-2 flex-wrap md:flex-nowrap">
           {/* Logo */}
-          <p className="text-l whitespace-nowrap">QualityFirst</p>
+          <img className="hover:bg-green-800 bg-black w-20 h-15 p-1 rounded cursor-pointer"
+          src={assets.AgriventureLogo || assets.AgriventureLogo}
+          alt="company logo" />
+         
 
           <input
             type="text"
