@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 export default function LoginSelection() {
   const navigate = useNavigate();
@@ -27,6 +29,10 @@ export default function LoginSelection() {
         >
           Admin Login
         </button>
+
+           <Link to="/" className="text-blue-700 underline text-sm mt-6 block text-center">
+          Back to Home
+        </Link>
       </div>
     </div>
   );

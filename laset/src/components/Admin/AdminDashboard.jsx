@@ -129,7 +129,7 @@ export default function AdminDashboard() {
 
             </div>
 
-            <Link to="/" className="text-blue-700 underline text-sm mt-6 block text-center">
+        <Link to="/" className="text-blue-700 underline text-sm mt-6 block text-center">
           Back to Home
         </Link>
 

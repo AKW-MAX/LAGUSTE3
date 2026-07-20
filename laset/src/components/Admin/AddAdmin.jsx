@@ -7,6 +7,11 @@ const ALL_ADMIN_PERMISSIONS = [
   { key: "manage_products", label: "Manage Products" },
   { key: "add_product", label: "Add Product" },
   { key: "add_admin", label: "Add Admin" },
+  { key: "post_invoices", label: "Post Invoices" },
+  { key: "audit_logs", label: "Audit Logs" },
+  { key: "admin_activity", label: "Admin Activity" },
+  { key: "edit_admin_permissions", label: "Edit Admin Permissions" },
+  { key: "sale_receipts", label: "Sale Receipts" },
 ];
 
 const getApiBaseUrl = () => {
@@ -31,7 +36,7 @@ export default function AddAdmin() {
     email: "",
     password: "",
     role: "admin",
-    permissions: ["manage_orders", "manage_products", "add_product"],
+    permissions: ["manage_orders", "manage_products", "add_product", "post_invoices", "audit_logs", "admin_activity", "edit_admin_permissions", "sale_receipts"],
     approved: true,
   });
 

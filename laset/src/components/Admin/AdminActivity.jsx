@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { parseStoredJson } from "../../utils/storage";
+import { Link } from "react-router-dom";
 
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
@@ -60,9 +61,32 @@ export default function AdminActivity() {
     return <p className="p-8">Loading admin activity...</p>;
   }
 
+   // Go back to Admin Dashboard
+  const handleClose = () => {
+    navigate("/admin/dashboard");
+  };
+
+
   return (
     <div className="p-8 space-y-6">
       <h1 className="text-3xl font-bold">Admin Roles and Approved Orders</h1>
+      <Link to="/admin/dashboard">
+         <button
+          type="button"
+          onClick={handleClose}
+          className="
+            bg-green-900
+            px-4 py-2
+            rounded-lg
+            font-semibold
+            hover:bg-green-700
+            transition
+            text-white
+          "
+ >
+          Close
+        </button>
+        </Link>
 
       {admins.length === 0 ? (
         <p>No admins found.</p>

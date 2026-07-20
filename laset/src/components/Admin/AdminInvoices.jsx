@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getApiBaseUrl } from "../../utils/api";
 import AgriventureLogo from "../../assets/AgriventureLogo.png";
+import { Link } from "react-router-dom";
 
 const formatDateTime = (value) => {
   if (!value) return "—";
@@ -350,6 +351,11 @@ export default function AdminInvoices() {
     return <div className="p-8">Loading supplier invoices...</div>;
   }
 
+  // Go back to Admin Dashboard
+  const handleClose = () => {
+    navigate("/admin/dashboard");
+  };
+
   return (
     <div className="p-8 space-y-8">
       <div>
@@ -357,6 +363,24 @@ export default function AdminInvoices() {
         <p className="mt-2 text-gray-600">
           Record stock-in from suppliers with date and contact details, then download invoice files for records.
         </p>
+        <Link to="/admin/dashboard">
+         <button
+          type="button"
+          onClick={handleClose}
+          className="
+            bg-green-900
+            mt-4
+            px-4 py-2
+            rounded-lg
+            font-semibold
+            hover:bg-green-700
+            transition
+            text-white
+          ">
+          Close
+        </button>
+        </Link>
+
       </div>
 
       {warningMessage ? (
