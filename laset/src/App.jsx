@@ -22,18 +22,18 @@ import MyOrders from "./components/Sections/MyOrders"
 import AdminLogin from "./components/Admin/AdminLogin";
 import AdminForgotPassword from "./components/Admin/AdminForgotPassword";
 import AdminDashboard from "./components/Admin/AdminDashboard";
-import Orders from "./components/Admin/Orders";
-import AdminInvoices from "./components/Admin/AdminInvoices";
-import AdminReceipts from "./components/Admin/AdminReceipts";
-import Products from "./components/Admin/Products";
-import AddProduct from "./components/Admin/AddProduct";
-import EditProduct from "./components/Admin/EditProduct";
-import AddAdmin from "./components/Admin/AddAdmin";
-import AdminActivity from "./components/Admin/AdminActivity";
-import AdminPermissions from "./components/Admin/AdminPermissions";
-import AdminAuditLogs from "./components/Admin/AdminAuditLogs";
-import ProtectedRoute from "./components/Common/ProtectedRoute";
-import LoginSelection from "./components/Sections/LoginSelection";
+import Orders from "./components/Admin/Orders.jsx";
+import AdminInvoices from "./components/Admin/AdminInvoices.jsx";
+import AdminReceipts from "./components/Admin/AdminReceipts.jsx";
+import Products from "./components/Admin/Products.jsx";
+import AddProduct from "./components/Admin/AddProduct.jsx";
+import EditProduct from "./components/Admin/EditProduct.jsx";
+import AddAdmin from "./components/Admin/AddAdmin.jsx";
+import AdminActivity from "./components/Admin/AdminActivity.jsx";
+import AdminPermissions from "./components/Admin/AdminPermissions.jsx";
+import AdminAuditLogs from "./components/Admin/AdminAuditLogs.jsx";
+import ProtectedRoute from "./components/Common/ProtectedRoute.jsx";
+import LoginSelection from "./components/Sections/LoginSelection.jsx";
 import "./index.css"
 
 function App() {
