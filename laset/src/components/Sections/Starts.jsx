@@ -12,21 +12,21 @@ export default function Starts() {
       "
     >
       <div className="border-r border-white px-2 sm:px-6 md:px-10">
-        <p className="font-bold text-sm sm:text-lg md:text-xl">10</p>
+        <p className="font-bold text-sm sm:text-lg md:text-xl">3</p>
         <p className="text-xs sm:text-sm md:text-base font-normal">
           Years <br /> of Experience
         </p>
       </div>
 
       <div className="border-r border-white px-2 sm:px-6 md:px-10">
-        <p className="font-bold text-sm sm:text-lg md:text-xl">5</p>
+        <p className="font-bold text-sm sm:text-lg md:text-xl">1</p>
         <p className="text-xs sm:text-sm md:text-base font-normal">
           Branches <br /> Across the Country
         </p>
       </div>
 
       <div className="border-r border-white px-2 sm:px-6 md:px-10">
-        <p className="font-bold text-sm sm:text-lg md:text-xl">50+</p>
+        <p className="font-bold text-sm sm:text-lg md:text-xl">10+</p>
         <p className="text-xs sm:text-sm md:text-base font-normal">
           Expert <br /> Employees
         </p>

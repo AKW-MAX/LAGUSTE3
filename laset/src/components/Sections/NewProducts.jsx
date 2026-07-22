@@ -58,55 +58,51 @@ export default function NewProducts() {
       name: "Ferrari 1L",
       price: 600,
     },
-    {
-      _id: "10",
-      img: assets.malin,
-      name: "Malin 10g",
-      price: 600,
-    },
-    {
-      _id: "11",
-      img: assets.malin,
-      name: "Malin 10g",
-      price: 600,
-    },
-    {
-      _id: "12",
-      img: assets.malin,
-      name: "Malin 10g",
-      price: 600,
-    },
+   
   ];
 
   return (
-    <>
+    <section
+      className="
+        mt-4
+        w-full
+        overflow-hidden
+        rounded-lg
+        border
+        border-green-700
+        p-3
+        shadow-md
+        sm:p-4
+      "
+    >
       <div
         className="
-          flex flex-col lg:flex-row
-          items-start lg:items-center
-          p-4 lg:p-4
-          relative mt-4
-          border border-green-700
-          rounded-lg shadow-md
-          overflow-hidden
+          flex
+          flex-col
+          gap-6
+          lg:flex-row
+          lg:items-center
         "
       >
-        {/* Left Text Section */}
+        {/* LEFT TEXT SECTION */}
+
         <div
           className="
-            flex-1
-            mb-10 lg:mb-0
-            lg:mr-0
-            ml-6 sm:ml-11
-            text-center sm:text-left
+            w-full
+            shrink-0
+            text-center
+            sm:text-left
+            lg:w-[260px]
+            xl:w-[300px]
           "
         >
           <h2
             className="
+              mb-3
+              text-2xl
               font-extrabold
-              text-2xl lg:text-3xl
-              mb-5 lg:mb-8
               text-green-900
+              sm:text-3xl
             "
           >
             New In Store With
@@ -114,39 +110,84 @@ export default function NewProducts() {
             Great Discounts!!
           </h2>
 
-          <p className="text-sm lg:text-base mb-5 lg:mb-8">
+          <p
+            className="
+              mb-4
+              text-sm
+              text-gray-700
+              sm:text-base
+            "
+          >
             Check out our latest additions to the collection!
           </p>
 
-          <div className="flex items-center justify-center sm:justify-start gap-2 lg:gap-4">
-            <p className="text-green-900 font-semibold">
+          <div
+            className="
+              flex
+              items-center
+              justify-center
+              gap-2
+              sm:justify-start
+            "
+          >
+            <p className="font-semibold text-green-900">
               View All Products
             </p>
 
             <Link to="/NewProducts">
               <img
-                className="w-5 lg:w-6 mt-1 lg:mt-0"
+                className="
+                  mt-1
+                  w-5
+                  transition-transform
+                  hover:translate-x-1
+                  sm:w-6
+                "
                 src={assets.arrow}
-                alt="arrow icon"
+                alt="View all products"
               />
             </Link>
           </div>
         </div>
 
-        {/* Right Cards Section */}
-        <div className="flex-2 w-full overflow-x-auto overflow-y-hidden  scroll-smooth">
-          <div className="flex flex-nowrap text-center gap-4 pb-4">
+        {/* PRODUCTS SLIDER */}
+
+        <div
+          className="
+            min-w-0
+            flex-1
+            overflow-x-auto
+            overflow-y-hidden
+            scroll-smooth
+          "
+        >
+          <div
+            className="
+              flex
+              w-max
+              gap-2
+              pb-4
+              sm:gap-3
+              md:gap-4
+            "
+          >
             {newProducts.map((product) => (
               <div
                 key={product._id}
                 className="
+                  w-[120px]
                   shrink-0
-                  w-[130px]
-                  sm:w-[150px]
-                  md:w-[180px]
-                  lg:w-[200px]
-                  cursor-pointer
-                  transition-transform duration-300
+
+                  sm:w-[140px]
+
+                  md:w-[155px]
+
+                  lg:w-[165px]
+
+                  xl:w-[180px]
+
+                  transition-transform
+                  duration-300
                   hover:scale-105
                 "
               >
@@ -163,6 +204,6 @@ export default function NewProducts() {
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 }

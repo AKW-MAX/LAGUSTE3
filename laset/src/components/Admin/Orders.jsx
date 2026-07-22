@@ -136,9 +136,9 @@ export default function Orders() {
             transition
             text-white
           "
-        >
+          >
           Close
-        </button>
+         </button>
         </Link>
 
       </div>

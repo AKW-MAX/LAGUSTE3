@@ -12,7 +12,14 @@ const FALLBACK_PLUS_ICON =
     </svg>
   `);
 
-const ProductsCard = ({ _id, imgSrc, add, imgAlt, name, price }) => {
+const ProductsCard = ({
+  _id,
+  imgSrc,
+  add,
+  imgAlt,
+  name,
+  price,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -32,46 +39,108 @@ const ProductsCard = ({ _id, imgSrc, add, imgAlt, name, price }) => {
   };
 
   const addIconSrc =
-    resolveImageSource((typeof add === "string" && add.trim()) || "") ||
+    resolveImageSource(
+      (typeof add === "string" && add.trim()) || ""
+    ) ||
     assets?.add_icon_green ||
     assets?.add_icon ||
     FALLBACK_PLUS_ICON;
 
-  const safeImageSrc = resolveImageSource(imgSrc || "");
+  const safeImageSrc =
+    resolveImageSource(imgSrc || "");
 
   return (
-    <div className="w-full sm:w-36 xs:w-32 ml-3 sm:ml-2 mt-5 mb-5 shadow-lg rounded-md border border-green-700">
-      <p className="hidden">{_id}</p>
+    <div className="
+      w-full
+      overflow-hidden
+      rounded-lg
+      border
+      border-green-700
+      bg-white
+      shadow-sm
+    ">
 
-      <img
-        src={safeImageSrc}
-        alt={imgAlt}
-        onClick={handleImageClick}
-        className="w-full h-48 sm:h-40 xs:h-36 object-cover rounded-md cursor-pointer"
-      />
+      {/* Small Product Image */}
+      <div className="
+        flex
+        h-24
+        w-full
+        items-center
+        justify-center
+        bg-gray-50
+        sm:h-28
+        md:h-32
+      ">
 
-      <img
-        src={addIconSrc}
-        alt="Add to cart"
-        onClick={handleAddToCart}
-        onError={(e) => {
-          e.currentTarget.src = FALLBACK_PLUS_ICON;
-        }}
-        className="block w-8 h-8 sm:w-6 sm:h-6 ml-auto mr-3 mt-2 cursor-pointer"
-      />
+        <img
+          src={safeImageSrc}
+          alt={imgAlt}
+          onClick={handleImageClick}
+          className="
+            h-full
+            w-full
+            cursor-pointer
+            object-contain
+            p-1
+          "
+        />
 
-      <div>
-        <h3 className="text-center font-bold text-sm sm:text-xs xs:text-[10px] mt-1">{name}</h3>
       </div>
 
-      <div className="flex justify-center items-center gap-1 mt-1">
-        <p className="font-semibold text-sm">Ksh {price}</p>
-        <p className="line-through text-xs text-gray-400">{price}</p>
+      {/* Add Icon */}
+      <div className="
+        flex
+        justify-end
+        px-2
+        pt-1
+      ">
+
+        <img
+          src={addIconSrc}
+          alt="Add to cart"
+          onClick={handleAddToCart}
+          onError={(e) => {
+            e.currentTarget.src =
+              FALLBACK_PLUS_ICON;
+          }}
+          className="
+            h-5
+            w-5
+            cursor-pointer
+            sm:h-6
+            sm:w-6
+          "
+        />
+
       </div>
+
+      {/* Product Name */}
+      <h3 className="
+        line-clamp-2
+        px-2
+        text-center
+        text-[11px]
+        font-bold
+        leading-4
+        sm:text-xs
+      ">
+        {name}
+      </h3>
+
+      {/* Price */}
+      <p className="
+        mb-2
+        mt-1
+        text-center
+        text-xs
+        font-semibold
+      ">
+        Ksh {price}
+      </p>
+
     </div>
   );
 };
 
 export default ProductsCard;
-
 
