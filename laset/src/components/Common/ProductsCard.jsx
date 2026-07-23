@@ -119,10 +119,13 @@ const ProductsCard = ({
         line-clamp-2
         px-2
         text-center
-        text-[11px]
+        text-base
         font-bold
         leading-4
-        sm:text-xs
+        sm:text-base
+        sm:leading-5
+        md:text-lg
+        md:leading-6
       ">
         {name}
       </h3>

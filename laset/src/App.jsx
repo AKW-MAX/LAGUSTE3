@@ -8,7 +8,7 @@ import NewProducts from "./components/Sections/NewProducts"
 import Features from "./components/Sections/Features"
 import AllProducts from "./components/Sections/AllProducts"
 import CategoryPage from "./components/Sections/CategoryPage"
-import ProductDetails from "./components/Sections/ProductDetails"
+import ProductDetails from "./components/Sections/ProductDetails.jsx"
 import FeedBack from "./components/Sections/FeedBack"
 import SignUp from "./components/Sections/SignUp"
 import AllContacts from "./components/Sections/Contacts/AllContacts"
@@ -49,7 +49,7 @@ function App() {
           <Route path="Features" element={<Features />} />
           <Route path="AllProducts" element={<AllProducts />} />
           <Route path="category/*" element={<CategoryPage />} />
-          <Route path="product/:productId" element={<ProductDetails />} />
+          <Route path="ProductDetails/:productId" element={<ProductDetails />} />
           <Route path="Cart" element={<Cart />} />
           <Route path="FeedBack" element={<FeedBack />} />
           <Route path="SignUp" element={<SignUp />} />

@@ -9,6 +9,8 @@ import {
 } from "../../assets/assets";
 import ProductsCard from "../Common/ProductsCard";
 import { addToCart } from "../../Features/CartSlice";
+import { Link } from "react-router-dom";
+import ProductDetails from "../Sections/ProductDetails.jsx";
 
 export default function AllProducts() {
   const dispatch = useDispatch();
@@ -376,6 +378,26 @@ export default function AllProducts() {
                       >
                         Add to Cart
                       </button>
+                     <Link to={`/ProductDetails/${product._id}`}>
+                      <button
+                        className="
+                          mt-2
+                          w-full
+                          rounded
+                          bg-green-900
+                          px-2
+                          py-2
+                          text-sm
+                          font-semibold
+                          text-white
+                          transition
+                          hover:bg-green-800
+                        "
+                        aria-label={`View ${product.name}`}
+                      >
+                        View Product
+                      </button>
+                    </Link>
 
                     </div>
 
