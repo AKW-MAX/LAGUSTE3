@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../Features/ProductsApi";
-import { resolveImageSource } from "../../assets/assets.js";
+import { resolveImageSource, assets } from "../../assets/assets.js";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../Features/CartSlice";
 import { useState } from "react";
@@ -88,35 +88,58 @@ export default function ProductDetails() {
       <div className="mx-auto max-w-5xl rounded-xl bg-white p-4 shadow-md sm:p-6 lg:p-8">
 
         <div className="grid items-start gap-8 lg:grid-cols-2">
-
           {/* ================= PRODUCT IMAGE ================= */}
-          <div className="
-            flex
-            min-h-[350px]
-            items-center
-            justify-center
-            overflow-hidden
-            rounded-xl
-            bg-gray-50
-            p-6
-            sm:min-h-[450px]
-            lg:min-h-[550px]
-          ">
-
-            <img
-              src={imageSrc}
-              alt={product.name}
+            <div
               className="
-                max-h-[500px]
-                w-full
-                object-contain
-                transition-transform
-                duration-500
-                hover:scale-110
+                relative
+                flex
+                min-h-[350px]
+                items-center
+                justify-center
+                overflow-hidden
+                rounded-xl
+                bg-gray-50
+                p-6
+                sm:min-h-[450px]
+                lg:min-h-[550px]
               "
-            />
+            >
+              {/* Product Image */}
+              <img
+                src={imageSrc}
+                alt={product.name}
+                className="
+                  max-h-[500px]
+                  w-full
+                  object-contain
+                  transition-transform
+                  duration-500
+                  hover:scale-110
+                "
+              />
 
-          </div>
+              {/* Logo Watermark */}
+              <img
+                src={assets.AgriventureLogo1}
+                alt="Agriventure watermark"
+                className="
+                  pointer-events-none
+                  absolute
+                  left-1/2
+                  top-[55%]
+                  h-32
+                  w-32
+                  -translate-x-1/2
+                  -translate-y-1/2
+                  object-contain
+                  opacity-50
+                  sm:h-40
+                  sm:w-40
+                  md:h-48
+                  md:w-48
+                "
+              />
+            </div>
 
           {/* ================= PRODUCT INFORMATION ================= */}
           <div>

@@ -35,7 +35,7 @@ const ProductsCard = ({
   };
 
   const handleImageClick = () => {
-    navigate(`/product/${_id}`);
+    navigate(`/ProductDetails/${_id}`);
   };
 
   const addIconSrc =
@@ -46,32 +46,38 @@ const ProductsCard = ({
     assets?.add_icon ||
     FALLBACK_PLUS_ICON;
 
-  const safeImageSrc =
-    resolveImageSource(imgSrc || "");
+  const safeImageSrc = resolveImageSource(imgSrc || "");
 
   return (
-    <div className="
-      w-full
-      overflow-hidden
-      rounded-lg
-      border
-      border-green-700
-      bg-white
-      shadow-sm
-    ">
-
-      {/* Small Product Image */}
-      <div className="
-        flex
-        h-24
+    <div
+      className="
         w-full
-        items-center
-        justify-center
-        bg-gray-50
-        sm:h-28
-        md:h-32
-      ">
+        overflow-hidden
+        rounded-lg
+        border
+        border-green-700
+        bg-white
+        shadow-sm
+      "
+    >
 
+      {/* Product Image */}
+      <div
+        className="
+          relative
+          flex
+          h-24
+          w-full
+          items-center
+          justify-center
+          overflow-hidden
+          bg-gray-50
+          sm:h-28
+          md:h-32
+        "
+      >
+
+        {/* Product Image */}
         <img
           src={safeImageSrc}
           alt={imgAlt}
@@ -85,23 +91,45 @@ const ProductsCard = ({
           "
         />
 
+        {/* Logo Watermark */}
+        <img
+          src={assets.AgriventureLogo1}
+          alt="Agriventure watermark"
+          className="
+            pointer-events-none
+            absolute
+            left-1/2
+            top-1/2
+            h-12
+            w-12
+            -translate-x-1/2
+            -translate-y-1/2
+            object-contain
+            opacity-20
+            sm:h-16
+            sm:w-16
+            md:h-20
+            md:w-20
+          "
+        />
+
       </div>
 
       {/* Add Icon */}
-      <div className="
-        flex
-        justify-end
-        px-2
-        pt-1
-      ">
-
+      <div
+        className="
+          flex
+          justify-end
+          px-2
+          pt-1
+        "
+      >
         <img
           src={addIconSrc}
           alt="Add to cart"
           onClick={handleAddToCart}
           onError={(e) => {
-            e.currentTarget.src =
-              FALLBACK_PLUS_ICON;
+            e.currentTarget.src = FALLBACK_PLUS_ICON;
           }}
           className="
             h-5
@@ -111,33 +139,36 @@ const ProductsCard = ({
             sm:w-6
           "
         />
-
       </div>
 
       {/* Product Name */}
-      <h3 className="
-        line-clamp-2
-        px-2
-        text-center
-        text-base
-        font-bold
-        leading-4
-        sm:text-base
-        sm:leading-5
-        md:text-lg
-        md:leading-6
-      ">
+      <h3
+        className="
+          line-clamp-2
+          px-2
+          text-center
+          text-base
+          font-bold
+          leading-4
+          sm:text-base
+          sm:leading-5
+          md:text-lg
+          md:leading-6
+        "
+      >
         {name}
       </h3>
 
       {/* Price */}
-      <p className="
-        mb-2
-        mt-1
-        text-center
-        text-xs
-        font-semibold
-      ">
+      <p
+        className="
+          mb-2
+          mt-1
+          text-center
+          text-xs
+          font-semibold
+        "
+      >
         Ksh {price}
       </p>
 

@@ -35,7 +35,7 @@ import WomanImage from "./WomanImage.png";
 import SpiderPlant from "./SpiderPlant.png";
 import Actellic from "./Actellic.png";
 import AgriventureLogo from "./AgriventureLogo.png";
-
+import AgriventureLogo1 from "./AgriventureLogo1.png";
 export const assets = {
     AboutUsPic: AboutPic,
     Actellic,
@@ -107,6 +107,7 @@ assets.spiderPlant = SpiderPlant;
 assets.actellic = Actellic;
 assets.Phone = phone;
 assets.AgriventureLogo = AgriventureLogo;
+assets.AgriventureLogo1 = AgriventureLogo1;
 
 // Build tolerant aliases so API image values resolve in production too.
 const makeImageAliases = (key, value) => {
