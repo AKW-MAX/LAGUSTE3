@@ -36,10 +36,16 @@ function Footer() {
                                  src={assets.facebook} alt="facebook icon" />
                             </a>
 
-                        <Link to="http://whatsapp.com/biz/0704519867">
+                        <a
+                            href="https://wa.me/254704519867"
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            >
                             <img className="w-4 bg-white md:w-3 lg:w-5" 
                                  src={assets.whatsapp} alt="whatsapp icon" />
-                        </Link>
+                        </a>
+
+                    
 
                     </div>
                 </div>
