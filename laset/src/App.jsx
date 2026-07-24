@@ -34,6 +34,8 @@ import AdminPermissions from "./components/Admin/AdminPermissions.jsx";
 import AdminAuditLogs from "./components/Admin/AdminAuditLogs.jsx";
 import ProtectedRoute from "./components/Common/ProtectedRoute.jsx";
 import LoginSelection from "./components/Sections/LoginSelection.jsx";
+import PrivacyPolicy from "./components/Sections/Privacypolicy.jsx";
+import TermsOfService from "./components/Sections/TermsOfservice.jsx";
 import "./index.css"
 
 function App() {
@@ -45,7 +47,7 @@ function App() {
           <Route path="Hero" element={<Hero />} />
           <Route path="About" element={<About />} />
           <Route path="Starts" element={<Starts />} />
-          <Route path="New Products" element={<NewProducts />} />
+          <Route path="NewProducts" element={<NewProducts />} />
           <Route path="Features" element={<Features />} />
           <Route path="AllProducts" element={<AllProducts />} />
           <Route path="category/*" element={<CategoryPage />} />
@@ -75,6 +77,8 @@ function App() {
           <Route path="/admin/admin-activity" element={<ProtectedRoute><AdminActivity /></ProtectedRoute>} />
           <Route path="/admin/audit-logs" element={<ProtectedRoute><AdminAuditLogs /></ProtectedRoute>} />
           <Route path="/myorders" element={ <ProtectedRoute><MyOrders /></ProtectedRoute>}/>
+          <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+          <Route path="/TermsOfService" element={<TermsOfService />} />
         </Routes>
       </div>
     </>

@@ -26,10 +26,15 @@ function Footer() {
                                  src={assets.phone} alt="phone icon" />
                         </Link>
 
-                        <Link to="https://www.facebook.com/profile.php?id=1000078224891871">
+                    
+                        <a
+                            href="https://web.facebook.com/profile.php?id=100078224891871"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >
                             <img className="w-4 bg-white md:w-3 lg:w-5" 
                                  src={assets.facebook} alt="facebook icon" />
-                        </Link>
+                            </a>
 
                         <Link to="http://whatsapp.com/biz/0704519867">
                             <img className="w-4 bg-white md:w-3 lg:w-5" 
@@ -48,7 +53,7 @@ function Footer() {
                     <div className="text-[10px] sm:text-[8px] md:text-[10px] lg:text-sm">
                         <h5 className="font-semibold mt-3 lg:mt-6">Our Products</h5>
                         <Link to="AllProducts">
-                        <p >Inseticides</p>
+                        <p>Insecticides</p>
                         <p>Fungicides</p>
                         <p>Foliar Fertilizers</p>
                         <p>Public Health Products</p>
@@ -67,9 +72,11 @@ function Footer() {
 
                     <div className="text-[10px] sm:text-[8px] md:text-[10px] lg:text-sm">
                         <h3 className="font-semibold mt-3 lg:mt-6">Resources</h3>
+                        <Link to="NewProducts">
                         <p>Product Catalog</p>
                         <p>Popular Products</p>
                         <p>Blog Posts</p>
+                        </Link>
                     </div>
 
                     <div className="text-[10px] sm:text-[11px] md:text-[10px] lg:text-sm">
@@ -80,8 +87,12 @@ function Footer() {
                         <Link to="AllContacts">
                         <p>Contact Us</p>
                         </Link>
+                        <Link to="PrivacyPolicy">
                         <p>Privacy Policy</p>
+                        </Link>
+                        <Link to="TermsOfService">
                         <p>Terms of Service</p>
+                        </Link>
                     </div>
 
                     <div className="text-[10px] sm:text-[11px] md:text-[10px] lg:text-sm">
