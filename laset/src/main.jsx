@@ -11,21 +11,8 @@ import { ProductsApi } from './Features/ProductsApi'
 import CartReducer from './Features/CartSlice'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { SpeedInsights } from '@vercel/speed-insights/next';
- 
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <head>
-        <title>Next.js</title>
-      </head>
-      <body>
-        {children}
-        <SpeedInsights />
-      </body>
-    </html>
-  );
-}
+import { SpeedInsights } from '@vercel/speed-insights/react';
+
 
 export const store = configureStore({
   reducer: {
@@ -44,6 +31,7 @@ createRoot(document.getElementById('root')).render(
   <ToastContainer />
   <Provider store={store}>
     <App />
+     <SpeedInsights />
   </Provider>
  </BrowserRouter> 
   </StrictMode>,
