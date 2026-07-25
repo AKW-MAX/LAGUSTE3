@@ -34,8 +34,8 @@ import AdminPermissions from "./components/Admin/AdminPermissions.jsx";
 import AdminAuditLogs from "./components/Admin/AdminAuditLogs.jsx";
 import ProtectedRoute from "./components/Common/ProtectedRoute.jsx";
 import LoginSelection from "./components/Sections/LoginSelection.jsx";
-import PrivacyPolicy from "./components/Sections/Privacypolicy.jsx";
-import TermsOfService from "./components/Sections/TermsOfservice.jsx";
+import PrivacyPolicy from "./components/Sections/PrivacyPolicy.jsx";
+import TermsOfService from "./components/Sections/TermsOfService.jsx";
 import "./index.css"
 
 function App() {
