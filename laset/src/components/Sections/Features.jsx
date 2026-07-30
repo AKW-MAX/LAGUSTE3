@@ -1,4 +1,10 @@
 import { assets } from "../../assets/assets.js";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+const handleClose = () => {
+    navigate("/");
+  };
 
 export default function Features() {
     return (
@@ -34,6 +40,24 @@ export default function Features() {
                         Our motto <strong>Quality First</strong> is not just a phrase we live by it. 
                         Because in agriculture, quality is what truly matters.
                     </p>
+                    <Link to="/">
+                    <button
+                    type="button"
+                    onClick={handleClose}
+                    className="
+                        mt-10
+                        bg-green-900
+                        px-4 py-2
+                        rounded-lg
+                        font-semibold
+                        hover:bg-green-800
+                        transition
+                        text-white
+                    "
+                    >
+                    Close
+                    </button>
+                    </Link>
                 </div>
 
                 {/* Image Section */}
@@ -45,7 +69,7 @@ export default function Features() {
                             rounded-sm
                             shadow-md
                             mt-6 lg:mt-0
-                            ml-15
+                            ml-15 sm:0
 
                             transition-transform duration-300 ease-in-out
                             hover:scale-105 hover:shadow-lg
