@@ -35,7 +35,7 @@ import AdminAuditLogs from "./components/Admin/AdminAuditLogs.jsx";
 import ProtectedRoute from "./components/Common/ProtectedRoute.jsx";
 import LoginSelection from "./components/Sections/LoginSelection.jsx";
 import PrivacyPolicy from "./components/Sections/PrivacyPolicy.jsx";
-import TermsofService from "./components/Sections/TermsofService.jsx";
+import TermsOfService from "./components/Sections/TermsOfService.jsx";
 import "./index.css"
 
 function App() {
@@ -78,7 +78,7 @@ function App() {
           <Route path="/admin/audit-logs" element={<ProtectedRoute><AdminAuditLogs /></ProtectedRoute>} />
           <Route path="/myorders" element={ <ProtectedRoute><MyOrders /></ProtectedRoute>}/>
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
-          <Route path="/TermsofService" element={<TermsofService />} />
+          <Route path="/TermsOfService" element={<TermsOfService />} />
         </Routes>
       </div>
     </>

@@ -1,5 +1,5 @@
 
-export default function TermsofService() {
+export default function TermsOfService() {
   return (
     <div
       className="
