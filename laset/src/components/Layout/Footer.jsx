@@ -96,7 +96,7 @@ function Footer() {
                         <Link to="PrivacyPolicy">
                         <p>Privacy Policy</p>
                         </Link>
-                        <Link to="TermsOfService">
+                        <Link to="/TermsOfService">
                         <p>Terms of Service</p>
                         </Link>
                     </div>
