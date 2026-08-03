@@ -134,7 +134,7 @@ export default function NewProducts() {
               View All Products
             </p>
 
-            <Link to="/NewProducts">
+            <Link to="/AllProducts">
               <img
                 className="
                   mt-1
