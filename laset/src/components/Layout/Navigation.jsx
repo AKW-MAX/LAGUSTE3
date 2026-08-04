@@ -80,6 +80,10 @@ const categories = [
     href: "/category/seeds",
   },
    {
+    label: "Fertilizers",
+    href: "/category/fertilizers",
+  },
+   {
     label: "Organic",
     href: "/category/organic",
   },
