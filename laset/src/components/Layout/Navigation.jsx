@@ -79,31 +79,17 @@ const categories = [
     label: "Seeds",
     href: "/category/seeds",
   },
+   {
+    label: "Organic",
+    href: "/category/organic",
+  },
+  {
+    label: "Termiticides",
+    href: "/category/termiticides",
+  },
 ];
 
 const nestedCategories = [
-  {
-    label: "Fertilizer",
-    items: [
-      {
-        label: "Foliar Feed",
-        href: "/category/foliar-feed",
-      },
-      {
-        label: "Planting Fertilisers",
-        href: "/category/fertilizer/planting-fertilisers",
-      },
-      {
-        label: "Top-Dressing Fertilisers",
-        href: "/category/fertilizer/top-dressing-fertilisers",
-      },
-      {
-        label: "Compound Fertilisers",
-        href: "/category/fertilizer/compound-fertilisers",
-      },
-    ],
-  },
-
   {
     label: "Vet Products",
     items: [
