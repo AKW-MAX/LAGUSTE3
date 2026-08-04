@@ -48,7 +48,7 @@ function Footer() {
                     
 
                     </div>
-                </div>a
+                </div>
 
                 {/* Footer links grid - 5 columns on all screens */}
                 <div className="grid grid-cols-5 
