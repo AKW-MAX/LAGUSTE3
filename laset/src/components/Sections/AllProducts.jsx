@@ -202,14 +202,16 @@ export default function AllProducts({ showSearchBar = true }) {
         sm:px-6
       ">
 
-        <div className="mb-4 flex justify-start">
-          <button
-            onClick={() => navigate(-1)}
-            className="rounded border border-green-700 px-3 py-2 text-sm font-semibold text-green-800 transition hover:bg-green-50"
-          >
-            ← Go Back
-          </button>
-        </div>
+        {showSearchBar && (
+          <div className="mb-4 flex justify-start">
+            <button
+              onClick={() => navigate(-1)}
+              className="rounded border border-green-700 px-3 py-2 text-sm font-semibold text-green-800 transition hover:bg-green-50"
+            >
+              ← Go Back
+            </button>
+          </div>
+        )}
 
         <h2 className="
           mt-8
@@ -234,6 +236,17 @@ export default function AllProducts({ showSearchBar = true }) {
           including the latest innovations and
           timeless classics.
         </p>
+
+        {!showSearchBar && (
+          <div className="mt-4 flex justify-center">
+            <Link
+              to="/AllProducts"
+              className="rounded bg-green-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-green-800"
+            >
+              All Products
+            </Link>
+          </div>
+        )}
 
         {isFetching &&
           !isLoading && (
