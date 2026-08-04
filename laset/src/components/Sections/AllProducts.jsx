@@ -202,6 +202,15 @@ export default function AllProducts({ showSearchBar = true }) {
         sm:px-6
       ">
 
+        <div className="mb-4 flex justify-start">
+          <button
+            onClick={() => navigate(-1)}
+            className="rounded border border-green-700 px-3 py-2 text-sm font-semibold text-green-800 transition hover:bg-green-50"
+          >
+            ← Go Back
+          </button>
+        </div>
+
         <h2 className="
           mt-8
           text-2xl
