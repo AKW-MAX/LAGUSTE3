@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../Features/ProductsApi";
 import {
   product_list,
@@ -10,11 +10,11 @@ import {
 import ProductsCard from "../Common/ProductsCard";
 import { addToCart } from "../../Features/CartSlice";
 import { Link } from "react-router-dom";
-import ProductDetails from "../Sections/ProductDetails.jsx";
 
-export default function AllProducts() {
+export default function AllProducts({ showSearchBar = true }) {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const {
     data: apiData,
@@ -25,9 +25,18 @@ export default function AllProducts() {
   } = useGetAllProductsQuery();
 
   const searchParams = new URLSearchParams(location.search);
-
-  const query =
+  const initialQuery =
     searchParams.get("q")?.toLowerCase().trim() || "";
+
+  const [searchTerm, setSearchTerm] = useState(initialQuery);
+
+  useEffect(() => {
+    const nextQuery =
+      searchParams.get("q")?.toLowerCase().trim() || "";
+    setSearchTerm(nextQuery);
+  }, [location.search, searchParams]);
+
+  const query = searchTerm.toLowerCase().trim();
 
   const apiProducts = useMemo(() => {
     if (Array.isArray(apiData)) {
@@ -94,28 +103,28 @@ export default function AllProducts() {
     );
   };
 
-  /*
-  ==========================================
-  GROUP PRODUCTS BY CATEGORY
-  ==========================================
-  */
+  const handleSearchChange = (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+
+    const nextPath = value.trim()
+      ? `/AllProducts?q=${encodeURIComponent(value.trim())}`
+      : "/AllProducts";
+
+    navigate(nextPath, { replace: true });
+  };
 
   const productsByCategory = useMemo(() => {
-    return productsList.reduce(
-      (groups, product) => {
-        const category =
-          product.category || "Other";
+    return productsList.reduce((groups, product) => {
+      const category = product.category || "Other";
 
-        if (!groups[category]) {
-          groups[category] = [];
-        }
+      if (!groups[category]) {
+        groups[category] = [];
+      }
 
-        groups[category].push(product);
-
-        return groups;
-      },
-      {}
-    );
+      groups[category].push(product);
+      return groups;
+    }, {});
   }, [productsList]);
 
   /*
@@ -250,29 +259,145 @@ export default function AllProducts() {
 
       </div>
 
+      {showSearchBar && (
+        <div className="
+          mt-6
+          px-4
+          sm:px-6
+          md:px-10
+        ">
+          <div className="
+            mx-auto
+            flex
+            max-w-xl
+            items-center
+            gap-2
+            rounded-full
+            border
+            border-green-700
+            bg-white
+            px-4
+            py-2
+            shadow-sm
+          ">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              placeholder="Search products..."
+              className="
+                w-full
+                border-none
+                bg-transparent
+                text-sm
+                outline-none
+                placeholder:text-gray-500
+              "
+            />
+          </div>
+        </div>
+      )}
+
       {/* =====================================
-          CATEGORY SECTIONS
+          PRODUCT DISPLAY
       ====================================== */}
 
-      <div className="
-        mt-8
-        space-y-10
-      ">
+      {showSearchBar ? (
+        <div className="
+          mt-8
+          grid
+          gap-5
+          px-4
+          pb-6
+          sm:grid-cols-2
+          sm:px-6
+          md:grid-cols-3
+          md:px-10
+          lg:grid-cols-4
+        ">
+          {productsList.length === 0 ? (
+            <p className="
+              col-span-full
+              text-center
+              text-gray-600
+            ">
+              No products found.
+            </p>
+          ) : (
+            productsList.map((product) => (
+              <div
+                key={product._id}
+                className="
+                  flex
+                  flex-col
+                  rounded-lg
+                  border
+                  border-gray-200
+                  bg-white
+                  p-3
+                  shadow-sm
+                "
+              >
+                <ProductsCard
+                  _id={product._id}
+                  imgSrc={product.imgSrc}
+                  imgAlt={product.name}
+                  add={product.add}
+                  name={product.name}
+                  price={product.price}
+                />
 
-        {Object.entries(
-          productsByCategory
-        ).map(
-          ([
-            category,
-            products,
-          ]) => (
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="
+                    mt-3
+                    w-full
+                    rounded
+                    bg-green-900
+                    px-2
+                    py-2
+                    text-sm
+                    font-semibold
+                    text-white
+                    transition
+                    hover:bg-green-800
+                  "
+                  aria-label={`Add ${product.name} to cart`}
+                >
+                  Add to Cart
+                </button>
 
-            <section
-              key={category}
-            >
-
-              {/* CATEGORY TITLE */}
-
+                <Link to={`/ProductDetails/${product._id}`}>
+                  <button
+                    className="
+                      mt-2
+                      w-full
+                      rounded
+                      bg-green-900
+                      px-2
+                      py-2
+                      text-sm
+                      font-semibold
+                      text-white
+                      transition
+                      hover:bg-green-800
+                    "
+                    aria-label={`View ${product.name}`}
+                  >
+                    View Product
+                  </button>
+                </Link>
+              </div>
+            ))
+          )}
+        </div>
+      ) : (
+        <div className="
+          mt-8
+          space-y-10
+        ">
+          {Object.entries(productsByCategory).map(([category, products]) => (
+            <section key={category}>
               <div className="
                 mb-3
                 flex
@@ -282,7 +407,6 @@ export default function AllProducts() {
                 sm:px-6
                 md:px-10
               ">
-
                 <h3 className="
                   text-xl
                   font-bold
@@ -297,10 +421,7 @@ export default function AllProducts() {
                 ">
                   {category}
                 </h3>
-
               </div>
-
-              {/* CATEGORY SLIDER */}
 
               <div className="
                 flex
@@ -313,72 +434,47 @@ export default function AllProducts() {
                 sm:px-6
                 md:px-10
               ">
+                {products.map((product) => (
+                  <div
+                    key={product._id}
+                    className="
+                      w-40
+                      shrink-0
+                      sm:w-[180px]
+                      md:w-[200px]
+                      lg:w-[220px]
+                    "
+                  >
+                    <ProductsCard
+                      _id={product._id}
+                      imgSrc={product.imgSrc}
+                      imgAlt={product.name}
+                      add={product.add}
+                      name={product.name}
+                      price={product.price}
+                    />
 
-                {products.map(
-                  (product) => (
-
-                    <div
-                      key={
-                        product._id
-                      }
+                    <button
+                      onClick={() => handleAddToCart(product)}
                       className="
-                        w-40
-                        shrink-0
-                        sm:w-[180px]
-                        md:w-[200px]
-                        lg:w-[220px]
+                        mt-2
+                        w-full
+                        rounded
+                        bg-green-900
+                        px-2
+                        py-2
+                        text-sm
+                        font-semibold
+                        text-white
+                        transition
+                        hover:bg-green-800
                       "
+                      aria-label={`Add ${product.name} to cart`}
                     >
+                      Add to Cart
+                    </button>
 
-                      {/* PRODUCT CARD */}
-
-                      <ProductsCard
-                        _id={
-                          product._id
-                        }
-                        imgSrc={
-                          product.imgSrc
-                        }
-                        imgAlt={
-                          product.name
-                        }
-                        add={
-                          product.add
-                        }
-                        name={
-                          product.name
-                        }
-                        price={
-                          product.price
-                        }
-                      />
-
-                      {/* ADD TO CART BUTTON */}
-
-                      <button
-                        onClick={() =>
-                          handleAddToCart(
-                            product
-                          )
-                        }
-                        className="
-                          mt-2
-                          w-full
-                          rounded
-                          bg-green-900
-                          px-2
-                          py-2
-                          text-sm
-                          font-semibold
-                          text-white
-                          transition
-                          hover:bg-green-800
-                        "
-                        aria-label={`Add ${product.name} to cart`}
-                      >
-                        Add to Cart
-                      </button>
-                     <Link to={`/ProductDetails/${product._id}`}>
+                    <Link to={`/ProductDetails/${product._id}`}>
                       <button
                         className="
                           mt-2
@@ -398,20 +494,13 @@ export default function AllProducts() {
                         View Product
                       </button>
                     </Link>
-
-                    </div>
-
-                  )
-                )}
-
+                  </div>
+                ))}
               </div>
-
             </section>
-
-          )
-        )}
-
-      </div>
+          ))}
+        </div>
+      )}
 
     </div>
   );

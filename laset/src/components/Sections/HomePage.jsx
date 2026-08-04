@@ -18,7 +18,7 @@ const HomePage =() =>{
 
             <Hero />
             <NewProducts />
-            <AllProducts/>
+            <AllProducts showSearchBar={false} />
             <FeedBack />
             <SignUp />
             <Footer />

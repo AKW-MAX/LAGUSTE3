@@ -1,16 +1,30 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { resolveImageSource } from "../../assets/assets.js";
 
 export default function Products() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // =========================
   // PRODUCTS STATE
   // =========================
 
   const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState(
+    location.state?.returnSearch || ""
+  );
+
+  const getPageFromUrl = () => {
+    const params = new URLSearchParams(location.search);
+    const pageFromUrl = Number(params.get("page"));
+    return Number.isInteger(pageFromUrl) && pageFromUrl > 0 ? pageFromUrl : 1;
+  };
+
+  const [currentPage, setCurrentPage] = useState(
+    location.state?.returnPage || getPageFromUrl()
+  );
 
   // =========================
   // MIGRATION STATE
@@ -32,9 +46,6 @@ export default function Products() {
   // =========================
   // PAGINATION STATE
   // =========================
-
-  const [currentPage, setCurrentPage] =
-    useState(1);
 
   const productsPerPage = 10;
 
@@ -74,8 +85,46 @@ export default function Products() {
   // PAGINATION CALCULATIONS
   // =========================
 
+  const filteredProducts = products.filter((product) => {
+    const normalizedSearch = search.trim().toLowerCase();
+
+    if (!normalizedSearch) {
+      return true;
+    }
+
+    const values = [
+      product.name,
+      product.category,
+      product.description,
+      product.price,
+      product.stock,
+      product.quantity,
+      product._id,
+    ]
+      .filter(Boolean)
+      .map((value) => String(value).toLowerCase());
+
+    return values.some((value) => value.includes(normalizedSearch));
+  });
+
   const totalPages = Math.ceil(
-    products.length / productsPerPage
+    filteredProducts.length / productsPerPage
+  );
+
+  useEffect(() => {
+    if (totalPages === 0) {
+      setCurrentPage(1);
+      return;
+    }
+
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  const pageNumbers = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
   );
 
   const indexOfLastProduct =
@@ -84,7 +133,7 @@ export default function Products() {
   const indexOfFirstProduct =
     indexOfLastProduct - productsPerPage;
 
-  const currentProducts = products.slice(
+  const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
@@ -92,6 +141,45 @@ export default function Products() {
   // =========================
   // FETCH PRODUCTS ON LOAD
   // =========================
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const pageFromUrl = Number(params.get("page"));
+
+    if (Number.isInteger(pageFromUrl) && pageFromUrl > 0) {
+      setCurrentPage(pageFromUrl);
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    params.set("page", String(currentPage));
+
+    const nextSearch = params.toString();
+    const nextUrl = `${location.pathname}${nextSearch ? `?${nextSearch}` : ""}`;
+
+    if (location.pathname + location.search !== nextUrl) {
+      navigate(nextUrl, { replace: true });
+    }
+  }, [currentPage, location.pathname, location.search]);
+
+  useEffect(() => {
+    localStorage.setItem("adminProductsPage", String(currentPage));
+  }, [currentPage]);
+
+  useEffect(() => {
+    localStorage.setItem("adminProductsSearch", search);
+  }, [search]);
+
+  useEffect(() => {
+    const savedScrollY = Number(sessionStorage.getItem("adminProductsScrollY"));
+    if (Number.isFinite(savedScrollY)) {
+      window.scrollTo({
+        top: savedScrollY,
+        behavior: "auto",
+      });
+    }
+  }, [products.length]);
 
   useEffect(() => {
     const token =
@@ -734,36 +822,12 @@ export default function Products() {
   // PAGINATION CONTROLS
   // =========================
 
-  const goToNextPage = () => {
-    if (
-      currentPage < totalPages
-    ) {
-      setCurrentPage(
-        (prevPage) =>
-          prevPage + 1
-      );
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+  const goToPage = (page) => {
+    if (page < 1 || page > totalPages) {
+      return;
     }
-  };
 
-  const goToPreviousPage = () => {
-    if (
-      currentPage > 1
-    ) {
-      setCurrentPage(
-        (prevPage) =>
-          prevPage - 1
-      );
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    }
+    setCurrentPage(page);
   };
 
   // =========================
@@ -923,6 +987,30 @@ export default function Products() {
 
         </div>
 
+      </div>
+
+      <div className="mb-6">
+        <input
+          type="text"
+          value={search}
+          onChange={(event) => {
+            setSearch(event.target.value);
+            setCurrentPage(1);
+          }}
+          placeholder="Search by name, category, description, price, stock, or ID"
+          className="
+            w-full
+            max-w-xl
+            rounded-lg
+            border
+            border-gray-300
+            px-4
+            py-2
+            shadow-sm
+            outline-none
+            focus:border-green-700
+          "
+        />
       </div>
 
       {/* =========================
@@ -1114,7 +1202,7 @@ export default function Products() {
           PRODUCTS
       ========================= */}
 
-      {products.length === 0 ? (
+      {filteredProducts.length === 0 ? (
 
         <div className="
           bg-white
@@ -1430,6 +1518,11 @@ export default function Products() {
 
               <Link
                 to={`/admin/edit-product/${product._id}`}
+                state={{
+                  returnPage: currentPage,
+                  returnSearch: search,
+                  returnScrollY: window.scrollY,
+                }}
                 className="
                   bg-blue-600
                   hover:bg-blue-700
@@ -1522,7 +1615,7 @@ export default function Products() {
 
               {" "}of{" "}
 
-              {products.length}
+              {filteredProducts.length}
 
               {" "}products
 
@@ -1532,73 +1625,31 @@ export default function Products() {
 
             <div className="
               flex
+              flex-wrap
               items-center
-              gap-3
+              justify-center
+              gap-2
             ">
-
-              <button
-                onClick={
-                  goToPreviousPage
-                }
-                disabled={
-                  currentPage === 1
-                }
-                className="
-                  bg-gray-700
-                  hover:bg-gray-800
-                  disabled:bg-gray-300
-                  disabled:cursor-not-allowed
-                  text-white
-                  px-3
-                  sm:px-4
-                  py-2
-                  rounded
-                  text-sm
-                  sm:text-base
-                "
-              >
-                Previous
-              </button>
-
-              <span className="
-                font-semibold
-                text-sm
-                sm:text-base
-                whitespace-nowrap
-              ">
-
-                Page{" "}
-                {currentPage}
-                {" "}of{" "}
-                {totalPages}
-
-              </span>
-
-              <button
-                onClick={
-                  goToNextPage
-                }
-                disabled={
-                  currentPage ===
-                  totalPages
-                }
-                className="
-                  bg-green-700
-                  hover:bg-green-800
-                  disabled:bg-gray-300
-                  disabled:cursor-not-allowed
-                  text-white
-                  px-3
-                  sm:px-4
-                  py-2
-                  rounded
-                  text-sm
-                  sm:text-base
-                "
-              >
-                Next
-              </button>
-
+              {pageNumbers.map((page) => (
+                <button
+                  key={page}
+                  onClick={() => goToPage(page)}
+                  className={`
+                    rounded
+                    px-3
+                    py-2
+                    text-sm
+                    sm:text-base
+                    ${
+                      page === currentPage
+                        ? "bg-green-700 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }
+                  `}
+                >
+                  {page}
+                </button>
+              ))}
             </div>
 
           </div>

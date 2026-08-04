@@ -9,6 +9,7 @@ export default function Orders() {
   const navigate = useNavigate();
 
   const [orders, setOrders] = useState([]);
+  const [search, setSearch] = useState("");
   const [updatingOrderId, setUpdatingOrderId] = useState(null);
 
   useEffect(() => {
@@ -114,6 +115,36 @@ export default function Orders() {
     navigate("/admin/dashboard");
   };
 
+  const filteredOrders = orders.filter((order) => {
+    const normalizedSearch = search.trim().toLowerCase();
+
+    if (!normalizedSearch) {
+      return true;
+    }
+
+    const customerName =
+      (order.customer?.name || order.user?.name || "")
+        .toLowerCase();
+    const email =
+      (order.customer?.email || order.user?.email || "")
+        .toLowerCase();
+    const phone = (order.customer?.phone || "").toLowerCase();
+    const orderId = (order._id || "").toLowerCase();
+    const status = (order.status || "").toLowerCase();
+    const itemNames = (order.orderItems || [])
+      .map((item) => (item.name || "").toLowerCase())
+      .join(" ");
+
+    return [
+      customerName,
+      email,
+      phone,
+      orderId,
+      status,
+      itemNames,
+    ].some((value) => value.includes(normalizedSearch));
+  });
+
   return (
     <div className="p-4 sm:p-6 md:p-8">
 
@@ -143,7 +174,28 @@ export default function Orders() {
 
       </div>
 
-      {orders.length === 0 ? (
+      <div className="mb-6">
+        <input
+          type="text"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Search by customer, email, phone, status, or order ID"
+          className="
+            w-full
+            max-w-xl
+            rounded-lg
+            border
+            border-gray-300
+            px-4
+            py-2
+            shadow-sm
+            outline-none
+            focus:border-green-700
+          "
+        />
+      </div>
+
+      {filteredOrders.length === 0 ? (
 
         <p>No orders found.</p>
 
@@ -151,7 +203,7 @@ export default function Orders() {
 
         <div className="space-y-6">
 
-          {orders.map((order) => (
+          {filteredOrders.map((order) => (
 
             <div
               key={order._id}

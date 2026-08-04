@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { resolveImageSource } from "../../assets/assets";
 
 const getApiBaseUrl = () => {
@@ -16,6 +16,7 @@ const getApiBaseUrl = () => {
 
 export default function EditProduct() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { id } = useParams();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -194,7 +195,7 @@ export default function EditProduct() {
       );
 
       alert("Product updated successfully!");
-      navigate("/admin/products");
+      navigate(-1);
     } catch (error) {
       console.error(error);
 
