@@ -16,9 +16,9 @@ const getApiBaseUrl = () => {
 export const ProductsApi = createApi({
   reducerPath: "productsApi",
   tagTypes: ["Products"],
-  keepUnusedDataFor: 60,
-  refetchOnFocus: true,
-  refetchOnReconnect: true,
+  keepUnusedDataFor: 300,
+  refetchOnFocus: false,
+  refetchOnReconnect: false,
 
   baseQuery: fetchBaseQuery({
     baseUrl: getApiBaseUrl(),

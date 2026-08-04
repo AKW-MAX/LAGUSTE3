@@ -22,7 +22,11 @@ export default function AllProducts({ showSearchBar = true }) {
     isLoading,
     isFetching,
     refetch,
-  } = useGetAllProductsQuery();
+  } = useGetAllProductsQuery(undefined, {
+    pollingInterval: 0,
+    refetchOnMountOrArgChange: false,
+    skip: false,
+  });
 
   const searchParams = new URLSearchParams(location.search);
   const initialQuery =
@@ -50,10 +54,13 @@ export default function AllProducts({ showSearchBar = true }) {
     return [];
   }, [apiData]);
 
-  const source =
-    apiProducts.length > 0
-      ? apiProducts
-      : product_list;
+  const source = useMemo(() => {
+    if (apiProducts.length > 0) {
+      return apiProducts;
+    }
+
+    return product_list;
+  }, [apiProducts]);
 
   const productsList = useMemo(() => {
     const normalized = source.map((p) => ({
@@ -133,7 +140,7 @@ export default function AllProducts({ showSearchBar = true }) {
   ==========================================
   */
 
-  if (isLoading) {
+  if (isLoading && apiProducts.length === 0) {
     return (
       <p className="mt-8 text-center">
         Loading products...
