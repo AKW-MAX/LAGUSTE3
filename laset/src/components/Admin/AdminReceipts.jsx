@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getApiBaseUrl } from "../../utils/api";
+import AgriventureLogo from "../../assets/AgriventureLogo.png";
 import { Link } from "react-router-dom";
 
 const formatDateTime = (value) => {
@@ -9,7 +10,26 @@ const formatDateTime = (value) => {
   return new Date(value).toLocaleString();
 };
 
-const buildReceiptHtml = (invoice) => {
+const getImageDataUrl = async (imageUrl) => {
+  try {
+    const response = await fetch(imageUrl);
+    if (!response.ok) throw new Error("Unable to load receipt logo");
+
+    const blob = await response.blob();
+
+    return await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  } catch (error) {
+    console.error(error);
+    return imageUrl;
+  }
+};
+
+const buildReceiptHtml = (invoice, logoSrc) => {
   const itemsMarkup = (invoice.items || [])
     .map(
       (item) => `
@@ -30,10 +50,15 @@ const buildReceiptHtml = (invoice) => {
   </head>
   <body style="font-family: Arial, sans-serif; color: #0f172a; padding: 24px;">
     <div style="max-width: 900px; margin: 0 auto;">
-      <h1 style="margin-bottom: 8px;">Customer Sale Receipt</h1>
+      <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom: 12px; text-align:center;">
+        <img src="${logoSrc || AgriventureLogo}" alt="Agriventure logo" style="width:70px; height:auto; border-radius:8px;" />
+        <div>
+          <h1 style="margin:0; ce font-size:24px;">AGRIVENTURE ENTERPRISE</h1>
+          <p style="margin:4px 0 0; color:#475569;">Customer Sale Receipt</p>
+        </div>
+      </div>
       <p style="margin: 4px 0;"><strong>Receipt Number:</strong> ${invoice.receipt?.receiptNumber || "—"}</p>
       <p style="margin: 4px 0;"><strong>Issued At:</strong> ${formatDateTime(invoice.receipt?.issuedAt)}</p>
-      <p style="margin: 4px 0;"><strong>Invoice Number:</strong> ${invoice.invoiceNumber || "—"}</p>
       <p style="margin: 4px 0;"><strong>Customer:</strong> ${invoice.customer?.name || "N/A"}</p>
       <p style="margin: 4px 0;"><strong>Email:</strong> ${invoice.customer?.email || "N/A"}</p>
       <p style="margin: 4px 0;"><strong>Phone:</strong> ${invoice.customer?.phone || "N/A"}</p>
@@ -291,7 +316,8 @@ export default function AdminReceipts() {
     }
   };
 
-  const printReceipt = (invoice) => {
+  const printReceipt = async (invoice) => {
+    const logoSrc = await getImageDataUrl(AgriventureLogo);
     const receiptWindow = window.open("", "_blank", "width=900,height=700");
 
     if (!receiptWindow) {
@@ -300,14 +326,15 @@ export default function AdminReceipts() {
     }
 
     receiptWindow.document.open();
-    receiptWindow.document.write(buildReceiptHtml(invoice));
+    receiptWindow.document.write(buildReceiptHtml(invoice, logoSrc));
     receiptWindow.document.close();
     receiptWindow.focus();
     receiptWindow.print();
   };
 
-  const downloadReceipt = (invoice) => {
-    const receiptHtml = buildReceiptHtml(invoice);
+  const downloadReceipt = async (invoice) => {
+    const logoSrc = await getImageDataUrl(AgriventureLogo);
+    const receiptHtml = buildReceiptHtml(invoice, logoSrc);
     const receiptBlob = new Blob([receiptHtml], { type: "text/html;charset=utf-8" });
     const receiptUrl = URL.createObjectURL(receiptBlob);
     const downloadLink = document.createElement("a");

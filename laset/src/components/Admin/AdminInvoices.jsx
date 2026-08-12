@@ -486,7 +486,10 @@ export default function AdminInvoices() {
           </div>
 
           {draftInvoice.items.map((item, index) => (
-            <div key={`supplier-item-${index}`} className="flex flex-row gap-3 rounded border p-4 md:grid-cols-[2fr,1fr,1fr,auto] md:items-end">
+            <div
+              key={`supplier-item-${index}`}
+              className="grid grid-cols-[2fr_1fr_1fr_auto] items-end gap-3 rounded border p-4"
+            >
               <div>
                 <label className="mb-2 block text-sm font-medium">Product</label>
                 <select
@@ -529,7 +532,7 @@ export default function AdminInvoices() {
                 type="button"
                 onClick={() => removeItemRow(index)}
                 disabled={draftInvoice.items.length === 1}
-                className="rounded bg-red-600 px-4 py-2 text-white disabled:opacity-50"
+                className="w-full rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:opacity-50 lg:w-auto"
               >
                 Remove
               </button>
