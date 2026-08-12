@@ -312,6 +312,34 @@ export default function AdminInvoices() {
     URL.revokeObjectURL(url);
   };
 
+  const deleteInvoice = async (invoiceId) => {
+    if (!window.confirm("Delete this supplier invoice?")) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      const response = await axios.delete(`${getApiBaseUrl()}/admin/invoices/${invoiceId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setInvoices((prev) => prev.filter((invoice) => invoice._id !== invoiceId));
+      alert(response.data?.message || "Invoice deleted successfully.");
+    } catch (error) {
+      console.error(error);
+      if (error.response?.status === 401) {
+        localStorage.removeItem("adminToken");
+        localStorage.removeItem("admin");
+        navigate("/admin/login");
+        return;
+      }
+
+      alert(error.response?.data?.message || "Failed to delete invoice.");
+    }
+  };
+
   const filteredInvoices = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
     const sorted = [...invoices].sort(
@@ -557,6 +585,14 @@ export default function AdminInvoices() {
                     className="rounded bg-slate-800 px-4 py-2 text-white"
                   >
                     Download Supplier Invoice
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => deleteInvoice(invoice._id)}
+                    className="rounded bg-red-700 px-4 py-2 text-white"
+                  >
+                    Delete Invoice
                   </button>
                 </div>
 

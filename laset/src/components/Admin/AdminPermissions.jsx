@@ -9,6 +9,11 @@ const ALL_ADMIN_PERMISSIONS = [
   { key: "manage_products", label: "Manage Products" },
   { key: "add_product", label: "Add Product" },
   { key: "add_admin", label: "Add Admin" },
+  { key: "post_invoices", label: "Post Invoices" },
+  { key: "audit_logs", label: "Audit Logs" },
+  { key: "admin_activity", label: "Admin Activity" },
+  { key: "edit_admin_permissions", label: "Edit Admin Permissions" },
+  { key: "sale_receipts", label: "Sale Receipts" },
 ];
 
 const getApiBaseUrl = () => {
@@ -98,6 +103,28 @@ export default function AdminPermissions() {
 
   const handleApprovalToggle = (adminId, approved) => {
     updateAdminLocally(adminId, () => ({ approved }));
+  };
+
+  const handleDeleteAdmin = async (admin) => {
+    if (!window.confirm(`Delete admin ${admin.username}?`)) {
+      return;
+    }
+
+    const token = localStorage.getItem("adminToken");
+
+    try {
+      const res = await axios.delete(`${getApiBaseUrl()}/admin/admins/${admin._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setAdmins((prev) => prev.filter((item) => item._id !== admin._id));
+      alert(res.data?.message || "Admin deleted successfully.");
+    } catch (error) {
+      console.error(error);
+      alert(error.response?.data?.message || "Failed to delete admin.");
+    }
   };
 
   const handleSave = async (admin) => {
@@ -218,13 +245,22 @@ export default function AdminPermissions() {
               </div>
             </div>
 
-            <button
-              onClick={() => handleSave(admin)}
-              disabled={savingId === admin._id}
-              className="mt-4 bg-black text-white px-4 py-2 rounded disabled:opacity-60"
-            >
-              {savingId === admin._id ? "Saving..." : "Save Changes"}
-            </button>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <button
+                onClick={() => handleSave(admin)}
+                disabled={savingId === admin._id}
+                className="bg-black text-white px-4 py-2 rounded disabled:opacity-60"
+              >
+                {savingId === admin._id ? "Saving..." : "Save Changes"}
+              </button>
+
+              <button
+                onClick={() => handleDeleteAdmin(admin)}
+                className="bg-red-700 text-white px-4 py-2 rounded"
+              >
+                Delete Admin
+              </button>
+            </div>
           </div>
         ))
       )}

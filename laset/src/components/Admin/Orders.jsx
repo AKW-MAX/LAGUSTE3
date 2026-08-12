@@ -49,6 +49,58 @@ export default function Orders() {
     }
   };
 
+  const deleteOrder = async (id) => {
+    if (!window.confirm("Delete this order?")) {
+      return;
+    }
+
+    const token = localStorage.getItem("adminToken");
+    const order = orders.find((item) => item._id === id);
+    const customerEmail = order?.customer?.email || order?.user?.email || "";
+
+    try {
+      await axios.delete(`${getApiBaseUrl()}/admin/orders/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setOrders((prevOrders) => prevOrders.filter((order) => order._id !== id));
+      alert("Order deleted successfully.");
+    } catch (error) {
+      console.error(error);
+
+      if (error.response?.status === 401) {
+        localStorage.removeItem("adminToken");
+        localStorage.removeItem("admin");
+        navigate("/admin/login");
+        return;
+      }
+
+      if (error.response?.status === 404 && customerEmail) {
+        try {
+          await axios.delete(`${getApiBaseUrl()}/api/orders/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            data: {
+              email: customerEmail,
+            },
+          });
+
+          setOrders((prevOrders) => prevOrders.filter((order) => order._id !== id));
+          alert("Order deleted successfully.");
+          return;
+        } catch (fallbackError) {
+          console.error(fallbackError);
+        }
+      }
+
+      const message = error.response?.data?.message || error.response?.data?.error || "Failed to delete order.";
+      alert(message);
+    }
+  };
+
   const updateStatus = async (id, status) => {
     if (!["Approved", "Rejected", "Pending"].includes(status)) {
       alert("Invalid status update requested.");
@@ -381,6 +433,18 @@ export default function Orders() {
                   "
                 >
                   Pending
+                </button>
+
+                <button
+                  onClick={() => deleteOrder(order._id)}
+                  className="
+                    bg-red-700
+                    text-white
+                    px-4 py-2
+                    rounded
+                  "
+                >
+                  Delete
                 </button>
 
               </div>

@@ -319,6 +319,34 @@ export default function AdminReceipts() {
     URL.revokeObjectURL(receiptUrl);
   };
 
+  const deleteReceipt = async (invoiceId) => {
+    if (!window.confirm("Delete this customer receipt?")) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      const response = await axios.delete(`${getApiBaseUrl()}/admin/invoices/${invoiceId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setInvoices((prev) => prev.filter((invoice) => invoice._id !== invoiceId));
+      alert(response.data?.message || "Receipt deleted successfully.");
+    } catch (error) {
+      console.error(error);
+      if (error.response?.status === 401) {
+        localStorage.removeItem("adminToken");
+        localStorage.removeItem("admin");
+        navigate("/admin/login");
+        return;
+      }
+
+      alert(error.response?.data?.message || "Failed to delete receipt.");
+    }
+  };
+
   const filteredReceipts = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
     const sorted = [...invoices].sort(
@@ -813,6 +841,24 @@ export default function AdminReceipts() {
                   "
                 >
                   Download Receipt File
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => deleteReceipt(invoice._id)}
+                  className="
+                    w-full
+                    rounded
+                    bg-red-700
+                    px-4
+                    py-2
+                    text-white
+                    transition
+                    hover:bg-red-800
+                    sm:w-auto
+                  "
+                >
+                  Delete Receipt
                 </button>
 
               </div>

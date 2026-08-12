@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getApiBaseUrl } from "../../utils/api";
 
 const ALL_ADMIN_PERMISSIONS = [
   { key: "manage_orders", label: "Manage Orders" },
@@ -14,19 +15,6 @@ const ALL_ADMIN_PERMISSIONS = [
   { key: "sale_receipts", label: "Sale Receipts" },
 ];
 
-const getApiBaseUrl = () => {
-  const hostname = window.location.hostname;
-
-  if (hostname === "localhost" || hostname === "127.0.0.1") {
-    return "http://localhost:5000";
-  }
-
-  return (
-    import.meta.env.VITE_API_URL ||
-    "https://agriventure-enterprise-backend.onrender.com"
-  );
-};
-
 export default function AddAdmin() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -36,7 +24,7 @@ export default function AddAdmin() {
     email: "",
     password: "",
     role: "admin",
-    permissions: ["manage_orders", "manage_products", "add_product", "post_invoices", "audit_logs", "admin_activity", "edit_admin_permissions", "sale_receipts"],
+    permissions: ALL_ADMIN_PERMISSIONS.map((permission) => permission.key),
     approved: true,
   });
 
@@ -100,7 +88,7 @@ export default function AddAdmin() {
         email: "",
         password: "",
         role: "admin",
-        permissions: ["manage_orders", "manage_products", "add_product"],
+        permissions: ALL_ADMIN_PERMISSIONS.map((permission) => permission.key),
         approved: true,
       });
       navigate("/admin/dashboard");

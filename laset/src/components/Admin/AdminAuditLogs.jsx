@@ -2,22 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { parseStoredJson } from "../../utils/storage";
-
-const getApiBaseUrl = () => {
-  const hostname = window.location.hostname;
-
-  if (
-    hostname === "localhost" ||
-    hostname === "127.0.0.1"
-  ) {
-    return "http://localhost:5000";
-  }
-
-  return (
-    import.meta.env.VITE_API_URL ||
-    "https://agriventure-enterprise-backend.onrender.com"
-  );
-};
+import { getApiBaseUrl } from "../../utils/api";
 
 export default function AdminAuditLogs() {
   const navigate = useNavigate();
@@ -148,6 +133,27 @@ export default function AdminAuditLogs() {
     navigate(
       "/admin/dashboard"
     );
+  };
+
+  const handleDeleteLog = async (logId) => {
+    if (!window.confirm("Delete this audit log entry?")) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      const res = await axios.delete(`${getApiBaseUrl()}/admin/audit-logs/${logId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setLogs((prevLogs) => prevLogs.filter((log) => log._id !== logId));
+      alert(res.data?.message || "Audit log deleted successfully.");
+    } catch (error) {
+      console.error(error);
+      alert(error.response?.data?.message || "Failed to delete audit log.");
+    }
   };
 
   // =========================
@@ -422,6 +428,14 @@ export default function AdminAuditLogs() {
                   </p>
                 </div>
 
+                <button
+                  type="button"
+                  onClick={() => handleDeleteLog(log._id)}
+                  className="w-full rounded bg-red-700 px-4 py-2 text-sm font-semibold text-white"
+                >
+                  Delete
+                </button>
+
               </div>
 
             ))}
@@ -499,6 +513,14 @@ export default function AdminAuditLogs() {
                     text-left
                   ">
                     Details
+                  </th>
+
+                  <th className="
+                    border
+                    p-3
+                    text-left
+                  ">
+                    Actions
                   </th>
 
                 </tr>
@@ -583,6 +605,16 @@ export default function AdminAuditLogs() {
                     ">
                       {log.details ||
                         "-"}
+                    </td>
+
+                    <td className="border p-3">
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteLog(log._id)}
+                        className="rounded bg-red-700 px-3 py-2 text-sm font-semibold text-white"
+                      >
+                        Delete
+                      </button>
                     </td>
 
                   </tr>

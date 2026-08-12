@@ -1,6 +1,25 @@
 const LOCAL_API_URL = "http://localhost:5000";
 const REMOTE_API_URL = "https://agriventure-enterprise-backend.onrender.com";
 
+const isLocalHost = (hostname = "") => {
+  const normalizedHostname = String(hostname || "").trim().toLowerCase();
+
+  if (!normalizedHostname) {
+    return false;
+  }
+
+  return [
+    "localhost",
+    "127.0.0.1",
+    "::1",
+    "0.0.0.0",
+    "[::1]",
+  ].includes(normalizedHostname) ||
+    normalizedHostname.startsWith("192.168.") ||
+    normalizedHostname.startsWith("10.") ||
+    normalizedHostname.startsWith("172.");
+};
+
 export const getApiBaseUrl = () => {
   const configuredApiUrl = (import.meta.env.VITE_API_URL || "")
     .trim()
@@ -13,7 +32,7 @@ export const getApiBaseUrl = () => {
   if (typeof window !== "undefined") {
     const hostname = window.location.hostname;
 
-    if (hostname === "localhost" || hostname === "127.0.0.1") {
+    if (isLocalHost(hostname)) {
       return LOCAL_API_URL;
     }
 
