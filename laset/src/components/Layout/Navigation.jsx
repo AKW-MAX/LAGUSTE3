@@ -88,6 +88,10 @@ const categories = [
     href: "/category/organic",
   },
   {
+    label: "Adjuvant",
+    href: "/category/adjuvant",
+  },
+  {
     label: "Termiticides",
     href: "/category/termiticides",
   },
@@ -914,7 +918,9 @@ function Navigation() {
                           top-0
                           z-110
                           hidden
+                          max-h-[75vh]
                           min-w-60
+                          overflow-y-auto
                           rounded-md
                           bg-white
                           py-2
