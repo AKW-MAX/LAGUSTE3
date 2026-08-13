@@ -49,7 +49,7 @@ export default function AdminDashboard() {
                 </p>
 
                 <p className="text-sm sm:text-base">
-                    Email: info@agriventure.com
+                    Email: agriventureenterprise@gmail.com
                 </p>
 
             </div>

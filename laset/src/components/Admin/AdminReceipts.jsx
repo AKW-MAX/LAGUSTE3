@@ -55,6 +55,9 @@ const buildReceiptHtml = (invoice, logoSrc) => {
         <div>
           <h1 style="margin:0; ce font-size:24px;">AGRIVENTURE ENTERPRISE</h1>
           <p style="margin:4px 0 0; color:#475569;">Customer Sale Receipt</p>
+          <p style="margin:4px 0 0; color:#475569;">P.O. Box 100, Nairobi, Kenya</p>
+          <p style="margin:4px 0 0; color:#475569;">Phone: +254 704 519 867</p>
+          <p style="margin:4px 0 0; color:#475569;">Email: agriventureenterprise@gmail.com</p>
         </div>
       </div>
       <p style="margin: 4px 0;"><strong>Receipt Number:</strong> ${invoice.receipt?.receiptNumber || "—"}</p>
