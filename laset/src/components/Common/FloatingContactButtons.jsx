@@ -25,6 +25,13 @@ const contacts = [
 ];
 
 function FloatingContactButtons() {
+  const pathname = window.location.pathname;
+  const shouldHide = pathname === '/Cart' || pathname.startsWith('/admin');
+
+  if (shouldHide) {
+    return null;
+  }
+
   return (
     <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-3">
       {contacts.map((contact, index) => (
