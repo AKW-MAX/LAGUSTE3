@@ -29,7 +29,10 @@ const isVisibleInNewProducts = (value) => {
 };
 
 export default function NewProducts() {
-  const { data } = useGetAllProductsQuery();
+  const { data } = useGetAllProductsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true,
+  });
 
   const newProducts = useMemo(() => {
     const products = Array.isArray(data)
@@ -40,6 +43,11 @@ export default function NewProducts() {
 
     return products
       .filter((product) => isVisibleInNewProducts(product.showInNewProducts))
+      .sort((a, b) => {
+        const aTime = new Date(a.updatedAt || a.createdAt || 0).getTime();
+        const bTime = new Date(b.updatedAt || b.createdAt || 0).getTime();
+        return bTime - aTime;
+      })
       .slice(0, 8)
       .map((product) => ({
         _id: product._id || product.id,

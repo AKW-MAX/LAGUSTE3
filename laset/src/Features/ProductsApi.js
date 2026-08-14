@@ -18,7 +18,7 @@ export const ProductsApi = createApi({
   tagTypes: ["Products"],
   keepUnusedDataFor: 300,
   refetchOnFocus: false,
-  refetchOnReconnect: false,
+  refetchOnReconnect: true,
 
   baseQuery: fetchBaseQuery({
     baseUrl: getApiBaseUrl(),
