@@ -4,6 +4,30 @@ import { useMemo } from "react";
 import { useGetAllProductsQuery } from "../../Features/ProductsApi";
 import { assets, resolveImageSource } from "../../assets/assets.js";
 
+const isVisibleInNewProducts = (value) => {
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  if (typeof value === "number") {
+    return value !== 0;
+  }
+
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+
+    if (["true", "1", "yes", "on"].includes(normalized)) {
+      return true;
+    }
+
+    if (["false", "0", "no", "off", ""].includes(normalized)) {
+      return false;
+    }
+  }
+
+  return Boolean(value);
+};
+
 export default function NewProducts() {
   const { data } = useGetAllProductsQuery();
 
@@ -15,7 +39,7 @@ export default function NewProducts() {
         : data?.value || [];
 
     return products
-      .filter((product) => Boolean(product.showInNewProducts))
+      .filter((product) => isVisibleInNewProducts(product.showInNewProducts))
       .slice(0, 8)
       .map((product) => ({
         _id: product._id || product.id,
