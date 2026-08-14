@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom';
 import { assets } from '../../assets/assets.js';
 
 const contacts = [
@@ -25,8 +26,9 @@ const contacts = [
 ];
 
 function FloatingContactButtons() {
-  const pathname = window.location.pathname;
-  const shouldHide = pathname === '/Cart' || pathname.startsWith('/admin');
+  const { pathname } = useLocation();
+  const normalizedPath = pathname.toLowerCase();
+  const shouldHide = normalizedPath === '/cart' || normalizedPath.startsWith('/admin');
 
   if (shouldHide) {
     return null;
