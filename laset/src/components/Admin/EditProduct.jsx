@@ -202,6 +202,9 @@ export default function EditProduct() {
       dispatch(
         ProductsApi.util.invalidateTags([{ type: "Products", id: "LIST" }])
       );
+      await dispatch(
+        ProductsApi.endpoints.getAllProducts.initiate()
+      );
 
       alert("Product updated successfully!");
       navigate(-1);

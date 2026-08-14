@@ -1,6 +1,6 @@
 import ProductsCard from "../Common/ProductsCard";
 import { Link } from "react-router-dom";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useGetAllProductsQuery } from "../../Features/ProductsApi";
 import { assets, resolveImageSource } from "../../assets/assets.js";
 
@@ -29,10 +29,14 @@ const isVisibleInNewProducts = (value) => {
 };
 
 export default function NewProducts() {
-  const { data } = useGetAllProductsQuery(undefined, {
+  const { data, refetch } = useGetAllProductsQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const newProducts = useMemo(() => {
     const products = Array.isArray(data)
