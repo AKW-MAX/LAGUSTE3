@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { resolveImageSource } from "../../assets/assets";
+import { ProductsApi } from "../../Features/ProductsApi";
 
 const getApiBaseUrl = () => {
   if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
@@ -16,6 +18,7 @@ const getApiBaseUrl = () => {
 
 export default function EditProduct() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
   const { id } = useParams();
 
@@ -194,6 +197,10 @@ export default function EditProduct() {
             Authorization: `Bearer ${token}`,
           },
         }
+      );
+
+      dispatch(
+        ProductsApi.util.invalidateTags([{ type: "Products", id: "LIST" }])
       );
 
       alert("Product updated successfully!");

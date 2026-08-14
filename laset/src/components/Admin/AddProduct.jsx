@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { resolveImageSource } from "../../assets/assets";
+import { ProductsApi } from "../../Features/ProductsApi";
 
 const getApiBaseUrl = () => {
   if (
@@ -19,6 +21,7 @@ const getApiBaseUrl = () => {
 
 export default function AddProduct() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [selectedFileName, setSelectedFileName] =
     useState("");
@@ -285,6 +288,10 @@ export default function AddProduct() {
             Authorization: `Bearer ${token}`,
           },
         }
+      );
+
+      dispatch(
+        ProductsApi.util.invalidateTags([{ type: "Products", id: "LIST" }])
       );
 
       alert(
