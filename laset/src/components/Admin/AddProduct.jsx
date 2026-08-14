@@ -33,6 +33,7 @@ export default function AddProduct() {
     price: "",
     stock: "",
     img: "",
+    showInNewProducts: false,
   });
 
   const imagePreview = resolveImageSource(
@@ -297,6 +298,7 @@ export default function AddProduct() {
         price: "",
         stock: "",
         img: "",
+        showInNewProducts: false,
       });
 
       setSelectedFileName("");
@@ -616,6 +618,29 @@ export default function AddProduct() {
 
             </div>
 
+          </div>
+
+          {/* NEW PRODUCTS TOGGLE */}
+
+          <div className="rounded-lg border border-gray-300 p-3 sm:p-4">
+            <label className="flex items-center gap-3 text-sm font-medium text-gray-700">
+              <input
+                type="checkbox"
+                name="showInNewProducts"
+                checked={Boolean(product.showInNewProducts)}
+                onChange={(e) =>
+                  setProduct((prev) => ({
+                    ...prev,
+                    showInNewProducts: e.target.checked,
+                  }))
+                }
+                className="h-4 w-4 rounded border-gray-300 text-green-700 focus:ring-green-700"
+              />
+              Show this product in New Products
+            </label>
+            <p className="mt-2 text-xs sm:text-sm text-gray-600">
+              Enable this to display the product in the homepage New Products section without removing it from All Products.
+            </p>
           </div>
 
           {/* IMAGE UPLOAD */}

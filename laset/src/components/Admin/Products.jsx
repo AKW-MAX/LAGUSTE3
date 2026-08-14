@@ -1321,6 +1321,20 @@ export default function Products() {
           Qty
         </th>
 
+        {/* NEW PRODUCTS */}
+
+        <th className="
+          border
+          p-1
+          sm:p-2
+          md:p-3
+          text-left
+          hidden
+          md:table-cell
+        ">
+          New
+        </th>
+
         {/* DESCRIPTION */}
 
         <th className="
@@ -1477,6 +1491,22 @@ export default function Products() {
               0
             )}
 
+          </td>
+
+          {/* NEW PRODUCTS */}
+
+          <td className="
+            border
+            p-1
+            sm:p-2
+            md:p-3
+            text-sm
+            hidden
+            md:table-cell
+          ">
+            <span className={product.showInNewProducts ? "font-semibold text-green-700" : "text-gray-500"}>
+              {product.showInNewProducts ? "Yes" : "No"}
+            </span>
           </td>
 
           {/* DESCRIPTION */}

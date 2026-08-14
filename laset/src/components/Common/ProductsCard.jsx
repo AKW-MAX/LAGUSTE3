@@ -34,7 +34,7 @@ const ProductsCard = ({
     );
   };
 
-  const handleImageClick = () => {
+  const handleCardClick = () => {
     navigate(`/ProductDetails/${_id}`);
   };
 
@@ -50,8 +50,18 @@ const ProductsCard = ({
 
   return (
     <div
+      onClick={handleCardClick}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          handleCardClick();
+        }
+      }}
+      role="button"
+      tabIndex={0}
       className="
         w-full
+        cursor-pointer
         overflow-hidden
         rounded-lg
         border
@@ -81,11 +91,9 @@ const ProductsCard = ({
         <img
           src={safeImageSrc}
           alt={imgAlt}
-          onClick={handleImageClick}
           className="
             h-full
             w-full
-            cursor-pointer
             object-contain
             p-1
           "
@@ -127,7 +135,10 @@ const ProductsCard = ({
         <img
           src={addIconSrc}
           alt="Add to cart"
-          onClick={handleAddToCart}
+          onClick={(event) => {
+            event.stopPropagation();
+            handleAddToCart();
+          }}
           onError={(e) => {
             e.currentTarget.src = FALLBACK_PLUS_ICON;
           }}

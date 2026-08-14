@@ -73,7 +73,7 @@ const categories = [
   },
   {
     label: "Fungicides",
-    href: "/category/fungicide",
+    href: "/category/fungicides",
   },
   {
     label: "Seeds",

@@ -1,65 +1,30 @@
 import ProductsCard from "../Common/ProductsCard";
 import { Link } from "react-router-dom";
-import { assets } from "../../assets/assets.js";
+import { useMemo } from "react";
+import { useGetAllProductsQuery } from "../../Features/ProductsApi";
+import { assets, resolveImageSource } from "../../assets/assets.js";
 
 export default function NewProducts() {
-  const newProducts = [
-    {
-      _id: "1",
-      img: assets.twix,
-      name: "Twix 10g",
-      price: 600,
-    },
-    {
-      _id: "2",
-      img: assets.redRiz,
-      name: "Red Riz 10g",
-      price: 600,
-    },
-    {
-      _id: "3",
-      img: assets.malin,
-      name: "Malin 10g",
-      price: 600,
-    },
-    {
-      _id: "4",
-      img: assets.bioenzyme,
-      name: "Biozyme 100ml",
-      price: 600,
-    },
-    {
-      _id: "5",
-      img: assets.handspray,
-      name: "Handspray 2L",
-      price: 600,
-    },
-    {
-      _id: "6",
-      img: assets.kelpreal,
-      name: "Kelpreal 10g",
-      price: 600,
-    },
-    {
-      _id: "7",
-      img: assets.ferrari,
-      name: "Ferrari 1L",
-      price: 600,
-    },
-    {
-      _id: "8",
-      img: assets.kelpreal,
-      name: "Kelpreal 10g",
-      price: 600,
-    },
-    {
-      _id: "9",
-      img: assets.ferrari,
-      name: "Ferrari 1L",
-      price: 600,
-    },
-   
-  ];
+  const { data } = useGetAllProductsQuery();
+
+  const newProducts = useMemo(() => {
+    const products = Array.isArray(data)
+      ? data
+      : Array.isArray(data?.products)
+        ? data.products
+        : data?.value || [];
+
+    return products
+      .filter((product) => Boolean(product.showInNewProducts))
+      .slice(0, 8)
+      .map((product) => ({
+        _id: product._id || product.id,
+        img: resolveImageSource(product.img || product.image || ""),
+        name: product.name || "Unnamed product",
+        price: Number(product.price) || 0,
+        description: product.description || "",
+      }));
+  }, [data]);
 
   return (
     <section
