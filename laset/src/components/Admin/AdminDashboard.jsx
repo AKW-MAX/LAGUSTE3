@@ -5,6 +5,97 @@ import { parseStoredJson } from "../../utils/storage";
 import { assets } from "../../assets/assets";
 import { getApiBaseUrl } from "../../utils/api";
 
+const buildFallbackReport = ({ orders = [], products = [] }) => {
+    const today = new Date();
+    const startOfDay = new Date(today);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(today);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const dailyOrders = (orders || []).filter((order) => {
+        const createdAt = order?.createdAt ? new Date(order.createdAt) : null;
+        return createdAt && !Number.isNaN(createdAt.getTime()) && createdAt >= startOfDay && createdAt <= endOfDay;
+    });
+
+    const revenue = dailyOrders.reduce((sum, order) => sum + Number(order?.totalAmount || 0), 0);
+    const averageOrderValue = dailyOrders.length > 0 ? revenue / dailyOrders.length : 0;
+
+    const productDemandMap = new Map();
+    const categoryDemandMap = new Map();
+
+    dailyOrders.forEach((order) => {
+        const items = Array.isArray(order?.orderItems) ? order.orderItems : [];
+        items.forEach((item) => {
+            const name = String(item?.name || "Unknown product").trim();
+            const quantity = Number(item?.cartQuantity ?? item?.quantity ?? 0);
+            if (!name || !Number.isFinite(quantity) || quantity <= 0) return;
+
+            const current = productDemandMap.get(name) || { name, quantity: 0, revenue: 0 };
+            current.quantity += quantity;
+            current.revenue += Number(item?.price || 0) * quantity;
+            productDemandMap.set(name, current);
+
+            const category = String(item?.category || "Uncategorized").trim() || "Uncategorized";
+            const categoryEntry = categoryDemandMap.get(category) || { category, quantity: 0, revenue: 0 };
+            categoryEntry.quantity += quantity;
+            categoryEntry.revenue += Number(item?.price || 0) * quantity;
+            categoryDemandMap.set(category, categoryEntry);
+        });
+    });
+
+    const lowStockProducts = (products || [])
+        .filter((product) => Number(product?.stock || 0) <= 5)
+        .sort((left, right) => Number(left?.stock || 0) - Number(right?.stock || 0))
+        .slice(0, 5);
+
+    const repeatCustomers = dailyOrders.filter((order) => {
+        const email = String(order?.customer?.email || order?.user?.email || "").trim().toLowerCase();
+        const phone = String(order?.customer?.phone || "").trim();
+        return Boolean(email || phone);
+    }).length;
+
+    return {
+        reportDate: today.toISOString(),
+        traffic: {
+            visits: 0,
+            uniqueVisitors: 0,
+            conversionRate: 0,
+        },
+        sales: {
+            orders: dailyOrders.length,
+            revenue,
+            pendingOrders: dailyOrders.filter((order) => String(order?.status || "").trim().toLowerCase() === "pending").length,
+            approvedOrders: dailyOrders.filter((order) => String(order?.status || "").trim().toLowerCase() === "approved").length,
+            averageOrderValue: Number(averageOrderValue.toFixed(2)),
+        },
+        demand: {
+            topProducts: Array.from(productDemandMap.values()).sort((left, right) => right.quantity - left.quantity).slice(0, 5),
+            orderedProducts: Array.from(productDemandMap.values()).sort((left, right) => right.quantity - left.quantity),
+            cartAdditions: [],
+            viewedButNotPurchased: [],
+            increasingDemandProducts: [],
+        },
+        categories: {
+            bestSelling: Array.from(categoryDemandMap.values()).sort((left, right) => right.quantity - left.quantity),
+        },
+        customers: {
+            repeatCustomers,
+        },
+        inventory: {
+            lowStockProducts,
+        },
+        insights: [
+            dailyOrders.length > 0
+                ? `Generated from ${dailyOrders.length} order${dailyOrders.length === 1 ? "" : "s"} recorded today.`
+                : "No orders were recorded today.",
+            lowStockProducts.length > 0
+                ? `Low stock alert: ${lowStockProducts.map((product) => `${product.name} (${product.stock})`).join(", ")}`
+                : "Inventory looks healthy for the current stock levels.",
+        ],
+    };
+};
+
 const downloadCsv = (report) => {
     const rows = [];
 
@@ -79,11 +170,27 @@ export default function AdminDashboard() {
                 },
             }).catch(async (error) => {
                 if (error?.response?.status === 404) {
-                    return axios.get(`${getApiBaseUrl()}/business-report`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
+                    const [ordersResponse, productsResponse] = await Promise.all([
+                        axios.get(`${getApiBaseUrl()}/admin/orders`, {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }),
+                        axios.get(`${getApiBaseUrl()}/admin/products`, {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }),
+                    ]);
+
+                    const fallbackReport = buildFallbackReport({
+                        orders: ordersResponse?.data?.orders || [],
+                        products: productsResponse?.data?.products || [],
                     });
+
+                    downloadCsv(fallbackReport);
+                    setReportMessage("Daily report generated from available admin data and downloaded.");
+                    return { data: { report: fallbackReport } };
                 }
 
                 throw error;
