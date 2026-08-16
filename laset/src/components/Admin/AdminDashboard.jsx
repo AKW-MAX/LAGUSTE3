@@ -77,6 +77,16 @@ export default function AdminDashboard() {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
+            }).catch(async (error) => {
+                if (error?.response?.status === 404) {
+                    return axios.get(`${getApiBaseUrl()}/business-report`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                }
+
+                throw error;
             });
 
             const report = response?.data?.report || response?.data?.snapshot || null;
