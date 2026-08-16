@@ -96,33 +96,66 @@ const buildFallbackReport = ({ orders = [], products = [] }) => {
     };
 };
 
-const downloadCsv = (report) => {
-    const rows = [];
+const formatCurrency = (value) => {
+    const numericValue = Number(value || 0);
+    return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 2,
+    }).format(numericValue);
+};
 
-    rows.push(["Metric", "Value"]);
-    rows.push(["Report Date", report?.reportDate || ""]);
-    rows.push(["Traffic Visits", report?.traffic?.visits ?? 0]);
-    rows.push(["Unique Visitors", report?.traffic?.uniqueVisitors ?? 0]);
-    rows.push(["Conversion Rate", `${report?.traffic?.conversionRate ?? 0}%`]);
-    rows.push(["Orders", report?.sales?.orders ?? 0]);
-    rows.push(["Revenue", report?.sales?.revenue ?? 0]);
-    rows.push(["Pending Orders", report?.sales?.pendingOrders ?? 0]);
-    rows.push(["Approved Orders", report?.sales?.approvedOrders ?? 0]);
-    rows.push(["Average Order Value", report?.sales?.averageOrderValue ?? 0]);
-    rows.push(["Repeat Customers", report?.customers?.repeatCustomers ?? 0]);
-    rows.push(["Top Products", (report?.demand?.topProducts || []).map((item) => `${item.name} (${item.quantity})`).join(" | ")]);
-    rows.push(["Cart Additions", (report?.demand?.cartAdditions || []).map((item) => `${item.name} (${item.count})`).join(" | ")]);
-    rows.push(["Viewed But Not Purchased", (report?.demand?.viewedButNotPurchased || []).map((item) => `${item.name} (${item.count})`).join(" | ")]);
-    rows.push(["Best Selling Categories", (report?.categories?.bestSelling || []).map((item) => `${item.category} (${item.quantity})`).join(" | ")]);
-    rows.push(["Low Stock Products", (report?.inventory?.lowStockProducts || []).map((item) => `${item.name} (${item.stock})`).join(" | ")]);
-    rows.push(["Insights", (report?.insights || []).join(" | ")]);
+const renderList = (items = [], formatter = (item) => item) => {
+    if (!Array.isArray(items) || items.length === 0) {
+        return <span className="text-gray-500">None</span>;
+    }
 
-    const csvContent = rows.map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(",")).join("\n");
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    return (
+        <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
+            {items.map((item, index) => (
+                <li key={`${item?.name || item?.category || item?.title || "item"}-${index}`}>{formatter(item)}</li>
+            ))}
+        </ul>
+    );
+};
+
+const downloadReportText = (report) => {
+    const lines = [
+        "AGRIVENTURE DAILY REPORT",
+        `Date: ${new Date(report?.reportDate || new Date()).toDateString()}`,
+        "",
+        `Website visitors: ${report?.traffic?.visits ?? 0}`,
+        `Unique visitors: ${report?.traffic?.uniqueVisitors ?? 0}`,
+        `Conversion rate: ${report?.traffic?.conversionRate ?? 0}%`,
+        `Orders: ${report?.sales?.orders ?? 0}`,
+        `Sales: ${formatCurrency(report?.sales?.revenue ?? 0)}`,
+        `Average order value: ${formatCurrency(report?.sales?.averageOrderValue ?? 0)}`,
+        `Repeat customers: ${report?.customers?.repeatCustomers ?? 0}`,
+        "",
+        "Top ordered products:",
+        ...(report?.demand?.topProducts || []).map((item) => `- ${item.name}: ${item.quantity} units`),
+        "",
+        "Most added to cart:",
+        ...(report?.demand?.cartAdditions || []).map((item) => `- ${item.name}: ${item.count} times`),
+        "",
+        "Viewed but not purchased:",
+        ...(report?.demand?.viewedButNotPurchased || []).map((item) => `- ${item.name}: ${item.count} views`),
+        "",
+        "Best-selling categories:",
+        ...(report?.categories?.bestSelling || []).map((item) => `- ${item.category}: ${item.quantity} units`),
+        "",
+        "Low-stock products:",
+        ...(report?.inventory?.lowStockProducts || []).map((item) => `- ${item.name}: ${item.stock} in stock`),
+        "",
+        "Insights:",
+        ...(report?.insights || []).map((insight) => `- ${insight}`),
+    ];
+
+    const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8;" });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `agriventure-daily-report-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.download = `agriventure-daily-report-${new Date().toISOString().slice(0, 10)}.txt`;
     link.click();
     window.URL.revokeObjectURL(url);
 };
@@ -131,6 +164,7 @@ export default function AdminDashboard() {
     const admin = parseStoredJson("admin", null);
     const [isGeneratingReport, setIsGeneratingReport] = useState(false);
     const [reportMessage, setReportMessage] = useState("");
+    const [latestReport, setLatestReport] = useState(null);
 
     const isSuperAdmin = admin?.role === "superadmin";
     const permissions = Array.isArray(admin?.permissions)
@@ -188,8 +222,8 @@ export default function AdminDashboard() {
                         products: productsResponse?.data?.products || [],
                     });
 
-                    downloadCsv(fallbackReport);
-                    setReportMessage("Daily report generated from available admin data and downloaded.");
+                    setLatestReport(fallbackReport);
+                    setReportMessage("Daily report generated from available admin data.");
                     return { data: { report: fallbackReport } };
                 }
 
@@ -198,8 +232,8 @@ export default function AdminDashboard() {
 
             const report = response?.data?.report || response?.data?.snapshot || null;
             if (report) {
-                downloadCsv(report);
-                setReportMessage(`Daily report generated and downloaded successfully for ${new Date(report.reportDate).toDateString()}.`);
+                setLatestReport(report);
+                setReportMessage(`Daily report generated successfully for ${new Date(report.reportDate).toDateString()}.`);
             } else {
                 setReportMessage("Daily report generated successfully.");
             }
@@ -330,6 +364,107 @@ export default function AdminDashboard() {
             {reportMessage && (
                 <div className="max-w-6xl mx-auto mt-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
                     {reportMessage}
+                </div>
+            )}
+
+            {latestReport && (
+                <div className="max-w-6xl mx-auto mt-8 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                    <div className="flex flex-col gap-2 border-b border-gray-200 pb-4 md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Agriventure Daily Report</p>
+                            <h2 className="text-2xl font-bold text-gray-900">
+                                {new Date(latestReport.reportDate).toDateString()}
+                            </h2>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2">
+                            <div className="rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-800">
+                                {latestReport.sales?.orders ?? 0} orders • {formatCurrency(latestReport.sales?.revenue ?? 0)} sales
+                            </div>
+                            <button
+                                onClick={() => downloadReportText(latestReport)}
+                                className="rounded-full bg-slate-800 px-3 py-1 text-sm font-medium text-white hover:bg-slate-900"
+                            >
+                                Download Report
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                            <p className="text-sm font-semibold text-gray-600">Website visitors</p>
+                            <p className="mt-2 text-2xl font-bold text-gray-900">{latestReport.traffic?.visits ?? 0}</p>
+                        </div>
+                        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                            <p className="text-sm font-semibold text-gray-600">Unique visitors</p>
+                            <p className="mt-2 text-2xl font-bold text-gray-900">{latestReport.traffic?.uniqueVisitors ?? 0}</p>
+                        </div>
+                        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                            <p className="text-sm font-semibold text-gray-600">Conversion rate</p>
+                            <p className="mt-2 text-2xl font-bold text-gray-900">{latestReport.traffic?.conversionRate ?? 0}%</p>
+                        </div>
+                        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                            <p className="text-sm font-semibold text-gray-600">Orders</p>
+                            <p className="mt-2 text-2xl font-bold text-gray-900">{latestReport.sales?.orders ?? 0}</p>
+                        </div>
+                        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                            <p className="text-sm font-semibold text-gray-600">Sales</p>
+                            <p className="mt-2 text-2xl font-bold text-gray-900">{formatCurrency(latestReport.sales?.revenue ?? 0)}</p>
+                        </div>
+                        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                            <p className="text-sm font-semibold text-gray-600">Average order value</p>
+                            <p className="mt-2 text-2xl font-bold text-gray-900">{formatCurrency(latestReport.sales?.averageOrderValue ?? 0)}</p>
+                        </div>
+                    </div>
+
+                    <div className="mt-8 grid gap-6 lg:grid-cols-2">
+                        <div>
+                            <h3 className="text-lg font-semibold text-gray-900">Top ordered products</h3>
+                            <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                                {renderList(latestReport.demand?.topProducts || [], (item) => `${item.name} — ${item.quantity} units`)}
+                            </div>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold text-gray-900">Most added to cart</h3>
+                            <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                                {renderList(latestReport.demand?.cartAdditions || [], (item) => `${item.name} — ${item.count} times`)}
+                            </div>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold text-gray-900">Viewed but not purchased</h3>
+                            <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                                {renderList(latestReport.demand?.viewedButNotPurchased || [], (item) => `${item.name} — ${item.count} views`)}
+                            </div>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold text-gray-900">Best-selling categories</h3>
+                            <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                                {renderList(latestReport.categories?.bestSelling || [], (item) => `${item.category} — ${item.quantity} units`)}
+                            </div>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold text-gray-900">Low-stock products</h3>
+                            <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                                {renderList(latestReport.inventory?.lowStockProducts || [], (item) => `${item.name} — ${item.stock} in stock`)}
+                            </div>
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold text-gray-900">Repeat customers</h3>
+                            <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                                <p className="text-lg font-semibold text-gray-900">{latestReport.customers?.repeatCustomers ?? 0}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-8">
+                        <h3 className="text-lg font-semibold text-gray-900">Insights</h3>
+                        <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                            <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
+                                {(latestReport.insights || []).map((insight, index) => (
+                                    <li key={`${insight}-${index}`}>{insight}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             )}
 
