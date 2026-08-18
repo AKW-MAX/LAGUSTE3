@@ -40,6 +40,22 @@ export default function AllProducts({ showSearchBar = true }) {
     setSearchTerm(nextQuery);
   }, [location.search, searchParams]);
 
+  useEffect(() => {
+    document.title = "Our Products | Agriventure Enterprise";
+    const descriptionTag = document.querySelector('meta[name="description"]');
+    if (descriptionTag) {
+      descriptionTag.setAttribute(
+        "content",
+        "Browse Agriventure Enterprise products including seeds, crop protection, fertilizers, and farm essentials for every growing need."
+      );
+    } else {
+      const meta = document.createElement("meta");
+      meta.name = "description";
+      meta.content = "Browse Agriventure Enterprise products including seeds, crop protection, fertilizers, and farm essentials for every growing need.";
+      document.head.appendChild(meta);
+    }
+  }, []);
+
   const query = searchTerm.toLowerCase().trim();
 
   const apiProducts = useMemo(() => {

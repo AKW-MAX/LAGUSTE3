@@ -77,11 +77,24 @@ export default function ProductDetails() {
   useEffect(() => {
     if (!product) return;
 
+    document.title = `${product.name} | Agriventure Enterprise`;
+    const descriptionTag = document.querySelector('meta[name="description"]');
+    const descriptionText = product.description || `Discover ${product.name} from Agriventure Enterprise, a trusted farm input and agro supply product for modern agriculture.`;
+
+    if (descriptionTag) {
+      descriptionTag.setAttribute("content", descriptionText);
+    } else {
+      const meta = document.createElement("meta");
+      meta.name = "description";
+      meta.content = descriptionText;
+      document.head.appendChild(meta);
+    }
+
     trackAnalyticsEvent("product_view", {
       productId: product._id,
       productName: product.name,
     });
-  }, [product?._id]);
+  }, [product?._id, product?.name, product?.description]);
 
   if (isLoading) {
     return (
