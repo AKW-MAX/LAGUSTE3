@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { parseStoredJson } from "../../utils/storage";
 import { getApiBaseUrl } from "../../utils/api";
 
 const formatCurrency = (value) => {
@@ -13,87 +11,34 @@ const formatCurrency = (value) => {
   }).format(numericValue);
 };
 
-const buildFallbackReport = ({ orders = [], products = [] }) => {
-  const today = new Date();
-  const startOfDay = new Date(today);
-  startOfDay.setHours(0, 0, 0, 0);
+const getLocalDateString = (value = new Date()) => {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
 
-  const endOfDay = new Date(today);
-  endOfDay.setHours(23, 59, 59, 999);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
-  const dailyOrders = (orders || []).filter((order) => {
-    const createdAt = order?.createdAt ? new Date(order.createdAt) : null;
-    return createdAt && !Number.isNaN(createdAt.getTime()) && createdAt >= startOfDay && createdAt <= endOfDay;
-  });
-
-  const revenue = dailyOrders.reduce((sum, order) => sum + Number(order?.totalAmount || 0), 0);
-  const averageOrderValue = dailyOrders.length > 0 ? revenue / dailyOrders.length : 0;
-
-  const productDemandMap = new Map();
-  const categoryDemandMap = new Map();
-
-  dailyOrders.forEach((order) => {
-    const items = Array.isArray(order?.orderItems) ? order.orderItems : [];
-    items.forEach((item) => {
-      const name = String(item?.name || "Unknown product").trim();
-      const quantity = Number(item?.cartQuantity ?? item?.quantity ?? 0);
-      if (!name || !Number.isFinite(quantity) || quantity <= 0) return;
-
-      const current = productDemandMap.get(name) || { name, quantity: 0, revenue: 0 };
-      current.quantity += quantity;
-      current.revenue += Number(item?.price || 0) * quantity;
-      productDemandMap.set(name, current);
-
-      const category = String(item?.category || "Uncategorized").trim() || "Uncategorized";
-      const categoryEntry = categoryDemandMap.get(category) || { category, quantity: 0, revenue: 0 };
-      categoryEntry.quantity += quantity;
-      categoryEntry.revenue += Number(item?.price || 0) * quantity;
-      categoryDemandMap.set(category, categoryEntry);
+const formatReportDate = (value) => {
+  const raw = value || new Date();
+  if (typeof raw === "string" && /^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+    const [year, month, day] = raw.split("-").map(Number);
+    return new Date(year, month - 1, day).toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     });
+  }
+
+  return new Date(raw).toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
   });
-
-  const lowStockProducts = (products || [])
-    .filter((product) => Number(product?.stock || 0) <= 5)
-    .sort((left, right) => Number(left?.stock || 0) - Number(right?.stock || 0))
-    .slice(0, 5);
-
-  return {
-    reportDate: today.toISOString(),
-    traffic: {
-      visits: 0,
-      uniqueVisitors: 0,
-      conversionRate: 0,
-    },
-    sales: {
-      orders: dailyOrders.length,
-      revenue,
-      pendingOrders: dailyOrders.filter((order) => String(order?.status || "").trim().toLowerCase() === "pending").length,
-      approvedOrders: dailyOrders.filter((order) => String(order?.status || "").trim().toLowerCase() === "approved").length,
-      averageOrderValue: Number(averageOrderValue.toFixed(2)),
-    },
-    demand: {
-      topProducts: Array.from(productDemandMap.values()).sort((left, right) => right.quantity - left.quantity).slice(0, 5),
-      cartAdditions: [],
-      viewedButNotPurchased: [],
-    },
-    categories: {
-      bestSelling: Array.from(categoryDemandMap.values()).sort((left, right) => right.quantity - left.quantity),
-    },
-    customers: {
-      repeatCustomers: dailyOrders.filter((order) => Boolean(String(order?.customer?.email || order?.user?.email || "").trim() || String(order?.customer?.phone || "").trim())).length,
-    },
-    inventory: {
-      lowStockProducts,
-    },
-    insights: [
-      dailyOrders.length > 0
-        ? `Generated from ${dailyOrders.length} order${dailyOrders.length === 1 ? "" : "s"} recorded today.`
-        : "No orders were recorded today.",
-      lowStockProducts.length > 0
-        ? `Low stock alert: ${lowStockProducts.map((product) => `${product.name} (${product.stock})`).join(", ")}`
-        : "Inventory looks healthy for the current stock levels.",
-    ],
-  };
 };
 
 export default function DailyReportPage() {
@@ -101,46 +46,71 @@ export default function DailyReportPage() {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedDate, setSelectedDate] = useState(getLocalDateString(new Date()));
 
   useEffect(() => {
-    const loadReport = async () => {
-      const token = localStorage.getItem("adminToken");
+    const loadReport = async (dateToLoad = selectedDate) => {
+      const rawToken = localStorage.getItem("adminToken") || localStorage.getItem("token") || "";
+      const token = String(rawToken).trim();
+
       if (!token) {
-        setError("Admin session not found.");
+        setError("Admin session not found. Please log in again.");
         setLoading(false);
         return;
       }
 
+      setLoading(true);
+      setError("");
+
       try {
-        const [ordersResponse, productsResponse] = await Promise.all([
-          axios.get(`${getApiBaseUrl()}/admin/orders`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          axios.get(`${getApiBaseUrl()}/admin/products`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
+        const dateValue = dateToLoad || getLocalDateString(new Date());
+        const endpoints = [
+          `${getApiBaseUrl()}/admin/business-report?date=${dateValue}`,
+          `${getApiBaseUrl()}/business-report?date=${dateValue}`,
+        ];
 
-        const generatedReport = buildFallbackReport({
-          orders: ordersResponse?.data?.orders || [],
-          products: productsResponse?.data?.products || [],
-        });
+        let lastError = null;
 
-        setReport(generatedReport);
+        for (const endpoint of endpoints) {
+          try {
+            const response = await fetch(endpoint, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "application/json",
+              },
+            });
+
+            const payload = await response.json().catch(() => null);
+
+            if (response.ok && payload?.report) {
+              setReport(payload.report);
+              setLoading(false);
+              return;
+            }
+
+            lastError = new Error(payload?.message || `The report request failed with status ${response.status}.`);
+          } catch (requestError) {
+            lastError = requestError;
+          }
+        }
+
+        const serverMessage = lastError?.message || "Failed to load report.";
+        setError(`${serverMessage} (checked admin and public report endpoints)`);
       } catch (err) {
-        setError(err?.response?.data?.message || "Failed to load report.");
+        setError(err?.response?.data?.message || err?.message || "Failed to load report.");
       } finally {
         setLoading(false);
       }
     };
 
-    loadReport();
-  }, []);
+    loadReport(selectedDate);
+  }, [selectedDate]);
 
   const handleDownload = () => {
     const lines = [
       "AGRIVENTURE DAILY REPORT",
-      `Date: ${new Date(report?.reportDate || new Date()).toDateString()}`,
+      `Date: ${formatReportDate(report?.reportDate || selectedDate)}`,
       "",
       `Website visitors: ${report?.traffic?.visits ?? 0}`,
       `Unique visitors: ${report?.traffic?.uniqueVisitors ?? 0}`,
@@ -167,13 +137,20 @@ export default function DailyReportPage() {
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `daily-report-${new Date().toISOString().slice(0, 10)}.txt`;
+    link.download = `daily-report-${selectedDate || getLocalDateString(new Date())}.txt`;
     link.click();
     window.URL.revokeObjectURL(url);
   };
 
   if (loading) {
-    return <div className="min-h-screen bg-gray-100 p-6">Loading report...</div>;
+    return (
+      <div className="min-h-screen bg-gray-100 p-6">
+        <div className="mx-auto max-w-2xl rounded-2xl border border-gray-200 bg-white p-6 shadow-sm text-center">
+          <p className="text-lg font-semibold text-gray-900">Loading report...</p>
+          <p className="mt-2 text-sm text-gray-600">If this takes too long, the backend may be unavailable or your admin session may be invalid.</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -182,9 +159,24 @@ export default function DailyReportPage() {
         <div className="flex flex-col gap-4 border-b border-gray-200 pb-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Agriventure Daily Report</p>
-            <h1 className="text-2xl font-bold text-gray-900">{new Date(report?.reportDate || new Date()).toDateString()}</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{formatReportDate(report?.reportDate)}</h1>
           </div>
           <div className="flex flex-wrap gap-2">
+            <label className="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-3 py-1 text-sm font-medium text-gray-700">
+              <span className="text-gray-500">Date</span>
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(event) => setSelectedDate(event.target.value)}
+                className="border-0 bg-transparent p-0 text-sm font-medium text-gray-700 outline-none"
+              />
+            </label>
+            <button
+              onClick={() => setSelectedDate(getLocalDateString(new Date()))}
+              className="rounded-full border border-gray-300 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+              Today
+            </button>
             <button
               onClick={() => navigate(-1)}
               className="rounded-full border border-gray-300 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50"
@@ -204,7 +196,21 @@ export default function DailyReportPage() {
         </div>
 
         {error ? (
-          <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</div>
+          <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            <p className="font-semibold">Could not load the report.</p>
+            <p className="mt-1">{error}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                onClick={() => window.location.reload()}
+                className="rounded-full bg-red-700 px-3 py-1 text-sm font-medium text-white hover:bg-red-800"
+              >
+                Retry
+              </button>
+              <Link to="/admin/login" className="rounded-full border border-red-300 px-3 py-1 text-sm font-medium text-red-700 hover:bg-red-100">
+                Go to admin login
+              </Link>
+            </div>
+          </div>
         ) : report ? (
           <>
             <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -235,6 +241,30 @@ export default function DailyReportPage() {
             </div>
 
             <div className="mt-8 grid gap-6 lg:grid-cols-2">
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">🔥 Most demanded products</h2>
+                <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                  <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                    {(report.demand?.mostDemandedProducts || []).map((item, index) => (
+                      <li key={`${item.name}-${index}`}>
+                        <span className="font-semibold text-gray-900">{item.name}</span> — {item.views ?? 0} views / {item.cartAdditions ?? 0} cart adds / {item.orders ?? 0} orders
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">⚠️ Products getting attention but not selling</h2>
+                <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                  <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                    {(report.demand?.attentionWithoutSales || []).map((item, index) => (
+                      <li key={`${item.name}-${index}`}>
+                        <span className="font-semibold text-gray-900">{item.name}</span> — {item.views ?? 0} views, {item.cartAdditions ?? 0} cart adds, 0 orders
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
               <div>
                 <h2 className="text-lg font-semibold text-gray-900">Top ordered products</h2>
                 <div className="mt-3 rounded-xl border border-gray-200 p-4">

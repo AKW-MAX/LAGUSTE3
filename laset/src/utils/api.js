@@ -31,6 +31,11 @@ export const getApiBaseUrl = () => {
 
   if (typeof window !== "undefined") {
     const hostname = window.location.hostname;
+    const protocol = window.location.protocol;
+
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return `${protocol}//localhost:5000`;
+    }
 
     if (isLocalHost(hostname)) {
       return LOCAL_API_URL;

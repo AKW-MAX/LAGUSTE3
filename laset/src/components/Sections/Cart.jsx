@@ -4,20 +4,38 @@ import { addToCart, removeFromCart, decreaseCart } from "../../Features/CartSlic
 import { resolveImageSource } from "../../assets/assets.js";
 import { Link } from "react-router-dom";
 import CheckOut from "./CheckOut.jsx";
+import axios from "axios";
+import { getApiBaseUrl } from "../../utils/api";
 
 export default function Cart() {
   const cart = useSelector((state) => state.cart);
   const totalQuantity = cart?.cartTotalQuantity ?? cart?.cartTotalQuanty ?? 0;
   const dispatch = useDispatch();
 
+  const trackAnalyticsEvent = async (eventType, metadata = {}) => {
+    try {
+      await axios.post(`${getApiBaseUrl()}/api/analytics`, {
+        eventType,
+        page: window.location.pathname,
+        referrer: document.referrer || "",
+        metadata,
+      });
+    } catch (error) {
+      console.warn("Analytics tracking failed", error);
+    }
+  };
+
   const handleRemoveFromCart = (cartItem) => {
     dispatch(removeFromCart(cartItem));
+    trackAnalyticsEvent("remove_from_cart", { productName: cartItem?.name || "", productId: cartItem?._id || "" });
   };
   const handleDecreaseCart = (cartItem) => {
     dispatch(decreaseCart(cartItem));
+    trackAnalyticsEvent("update_cart", { productName: cartItem?.name || "", productId: cartItem?._id || "" });
   };
   const handleIncreaseCart = (cartItem) => {
     dispatch(addToCart(cartItem));
+    trackAnalyticsEvent("add_to_cart", { productName: cartItem?.name || "", productId: cartItem?._id || "" });
   };
   return (
     <>

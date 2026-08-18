@@ -3,8 +3,10 @@ import { useGetAllProductsQuery } from "../../Features/ProductsApi";
 import { resolveImageSource, assets } from "../../assets/assets.js";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../Features/CartSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { getApiBaseUrl } from "../../utils/api";
 
 export default function ProductDetails() {
   const { productId } = useParams();
@@ -29,6 +31,23 @@ export default function ProductDetails() {
     (item) => item._id?.toString() === productId?.toString()
   );
 
+  const trackAnalyticsEvent = async (eventType, metadata = {}) => {
+    try {
+      await axios.post(`${getApiBaseUrl()}/api/analytics`, {
+        eventType,
+        page: window.location.pathname,
+        referrer: document.referrer || "",
+        metadata: {
+          ...metadata,
+          productId: product?._id || metadata.productId || "",
+          productName: product?.name || metadata.productName || "",
+        },
+      });
+    } catch (error) {
+      console.warn("Analytics tracking failed", error);
+    }
+  };
+
   const handleAddToCart = () => {
     if (!product) return;
 
@@ -43,12 +62,26 @@ export default function ProductDetails() {
       })
     );
 
+    trackAnalyticsEvent("add_to_cart", {
+      productId: product._id,
+      productName: product.name,
+    });
+
     setAddedToCart(true);
 
     setTimeout(() => {
       setAddedToCart(false);
     }, 2000);
   };
+
+  useEffect(() => {
+    if (!product) return;
+
+    trackAnalyticsEvent("product_view", {
+      productId: product._id,
+      productName: product.name,
+    });
+  }, [product?._id]);
 
   if (isLoading) {
     return (

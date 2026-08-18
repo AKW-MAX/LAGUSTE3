@@ -38,12 +38,14 @@ import LoginSelection from "./components/Sections/LoginSelection.jsx";
 import PrivacyPolicy from "./components/Sections/PrivacyPolicy.jsx";
 import TermsOfService from "./components/Sections/TermsOfService.jsx";
 import FloatingContactButtons from "./components/Common/FloatingContactButtons.jsx";
+import AnalyticsTracker from "./components/Common/AnalyticsTracker.jsx";
 import "./index.css"
 
 function App() {
   return (
     <>
       <div>
+        <AnalyticsTracker />
         <FloatingContactButtons />
         <Routes>
           <Route path="/" element={<HomePage />} />
