@@ -159,7 +159,7 @@ export default function DailyReportPage() {
         <div className="flex flex-col gap-4 border-b border-gray-200 pb-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Agriventure Daily Report</p>
-            <h1 className="text-2xl font-bold text-gray-900">{formatReportDate(report?.reportDate)}</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{formatReportDate(selectedDate || report?.reportDate)}</h1>
           </div>
           <div className="flex flex-wrap gap-2">
             <label className="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-3 py-1 text-sm font-medium text-gray-700">
