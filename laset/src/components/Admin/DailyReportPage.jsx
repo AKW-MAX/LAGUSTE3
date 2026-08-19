@@ -41,6 +41,20 @@ const formatReportDate = (value) => {
   });
 };
 
+const formatDuration = (seconds = 0) => {
+  if (!Number.isFinite(seconds) || seconds <= 0) {
+    return "0s";
+  }
+
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  if (mins > 0) {
+    return `${mins}m ${secs}s`;
+  }
+
+  return `${secs}s`;
+};
+
 export default function DailyReportPage() {
   const navigate = useNavigate();
   const [report, setReport] = useState(null);
@@ -126,6 +140,22 @@ export default function DailyReportPage() {
       "",
       "Top ordered products:",
       ...(report?.demand?.topProducts || []).map((item) => `- ${item.name}: ${item.quantity} units`),
+      "",
+      "Most searched terms:",
+      ...(report?.engagement?.mostSearchedTerms || []).map((item) => `- ${item.term}: ${item.count} searches`),
+      "",
+      "Most clicked items:",
+      ...(report?.engagement?.mostClickedItems || []).map((item) => `- ${item.name}: ${item.count} clicks`),
+      "",
+      "Clicks by country/region:",
+      ...(report?.engagement?.clickLocations || []).map((item) => `- ${item.country}/${item.region}: ${item.count} clicks`),
+      "",
+      "Top regions:",
+      ...(report?.engagement?.topRegions || []).map((item) => `- ${item.label}: ${item.count} clicks`),
+      "",
+      "Average session duration:",
+      `- ${formatDuration(report?.engagement?.sessionDuration?.averageSeconds ?? 0)}`,
+      `Longest session duration: ${formatDuration(report?.engagement?.sessionDuration?.longestSeconds ?? 0)}`,
       "",
       "Best-selling categories:",
       ...(report?.categories?.bestSelling || []).map((item) => `- ${item.category}: ${item.quantity} units`),
@@ -289,6 +319,57 @@ export default function DailyReportPage() {
                       <li key={`${item.name}-${index}`}>{item.name} — {item.quantity} units</li>
                     ))}
                   </ul>
+                </div>
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">Most searched terms</h2>
+                <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                  <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
+                    {(report.engagement?.mostSearchedTerms || []).map((item, index) => (
+                      <li key={`${item.term}-${index}`}>{item.term} — {item.count} searches</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">Most clicked items</h2>
+                <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                  <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
+                    {(report.engagement?.mostClickedItems || []).map((item, index) => (
+                      <li key={`${item.name}-${index}`}>{item.name} — {item.count} clicks</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">Clicks by country / region</h2>
+                <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                  <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
+                    {(report.engagement?.locationBreakdown || report.engagement?.clickLocations || []).map((item, index) => (
+                      <li key={`${item.country}-${item.region}-${index}`}>{item.country} / {item.region} — {item.count} clicks</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">Top regions</h2>
+                <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                  <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
+                    {(report.engagement?.topRegions || []).map((item, index) => (
+                      <li key={`${item.label}-${index}`}>{item.label} — {item.count} clicks</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">Session duration</h2>
+                <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                  <p className="text-sm text-gray-700">
+                    <span className="font-semibold text-gray-900">Average:</span> {formatDuration(report.engagement?.sessionDuration?.averageSeconds ?? 0)}
+                  </p>
+                  <p className="mt-2 text-sm text-gray-700">
+                    <span className="font-semibold text-gray-900">Longest:</span> {formatDuration(report.engagement?.sessionDuration?.longestSeconds ?? 0)}
+                  </p>
                 </div>
               </div>
               <div>

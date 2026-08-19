@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { addToCart } from "../../Features/CartSlice";
 import { useDispatch } from "react-redux";
 import { assets, resolveImageSource } from "../../assets/assets.js";
@@ -11,6 +12,17 @@ const FALLBACK_PLUS_ICON =
       <path d="M12 7v10M7 12h10" stroke="#166534" stroke-width="2.5" stroke-linecap="round"/>
     </svg>
   `);
+
+const getApiBaseUrl = () => {
+  if (window.location.hostname === "localhost") {
+    return "http://localhost:5000";
+  }
+
+  return (
+    import.meta.env.VITE_API_URL ||
+    "https://agriventure-enterprise-backend.onrender.com"
+  );
+};
 
 const ProductsCard = ({
   _id,
@@ -34,7 +46,23 @@ const ProductsCard = ({
     );
   };
 
-  const handleCardClick = () => {
+  const trackItemClick = async () => {
+    try {
+      await axios.post(`${getApiBaseUrl()}/api/analytics`, {
+        eventType: "click_item",
+        page: `/ProductDetails/${_id}`,
+        metadata: {
+          productId: _id,
+          productName: name,
+        },
+      });
+    } catch (error) {
+      console.warn("Product click analytics tracking failed", error);
+    }
+  };
+
+  const handleCardClick = async () => {
+    await trackItemClick();
     navigate(`/ProductDetails/${_id}`);
   };
 

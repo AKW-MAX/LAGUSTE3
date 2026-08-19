@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import assets from "../../assets/assets.js";
 import { parseStoredJson } from "../../utils/storage";
 
@@ -205,8 +206,22 @@ function Navigation() {
 
   const avatarUrl = getAvatarUrl(user);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     const trimmed = searchTerm.trim();
+
+    if (trimmed) {
+      try {
+        await axios.post(`${getApiBaseUrl()}/api/analytics`, {
+          eventType: "search",
+          page: "/AllProducts",
+          metadata: {
+            query: trimmed,
+          },
+        });
+      } catch (error) {
+        console.warn("Search analytics tracking failed", error);
+      }
+    }
 
     const query = trimmed
       ? `?q=${encodeURIComponent(trimmed)}`
