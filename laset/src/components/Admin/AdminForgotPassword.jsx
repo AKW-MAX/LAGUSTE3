@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import PasswordInput from "../Common/PasswordInput";
 
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
@@ -122,8 +123,7 @@ export default function AdminForgotPassword() {
           required
         />
 
-        <input
-          type="password"
+        <PasswordInput
           placeholder="New Password"
           className="w-full border p-3 rounded"
           value={newPassword}
@@ -131,8 +131,7 @@ export default function AdminForgotPassword() {
           required
         />
 
-        <input
-          type="password"
+        <PasswordInput
           placeholder="Confirm New Password"
           className="w-full border p-3 rounded"
           value={confirmPassword}

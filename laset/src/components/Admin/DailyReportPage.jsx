@@ -117,6 +117,9 @@ export default function DailyReportPage() {
       `Unique visitors: ${report?.traffic?.uniqueVisitors ?? 0}`,
       `Conversion rate: ${report?.traffic?.conversionRate ?? 0}%`,
       `Orders: ${report?.sales?.orders ?? 0}`,
+      `Approved orders: ${report?.sales?.approvedOrders ?? 0}`,
+      `Pending orders: ${report?.sales?.pendingOrders ?? 0}`,
+      `Rejected orders: ${report?.sales?.rejectedOrders ?? 0}`,
       `Sales: ${formatCurrency(report?.sales?.revenue ?? 0)}`,
       `Average order value: ${formatCurrency(report?.sales?.averageOrderValue ?? 0)}`,
       `Repeat customers: ${report?.customers?.repeatCustomers ?? 0}`,
@@ -230,6 +233,18 @@ export default function DailyReportPage() {
               <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
                 <p className="text-sm font-semibold text-gray-600">Orders</p>
                 <p className="mt-2 text-2xl font-bold text-gray-900">{report.sales?.orders ?? 0}</p>
+              </div>
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                <p className="text-sm font-semibold text-gray-600">Approved orders</p>
+                <p className="mt-2 text-2xl font-bold text-gray-900">{report.sales?.approvedOrders ?? 0}</p>
+              </div>
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                <p className="text-sm font-semibold text-gray-600">Pending orders</p>
+                <p className="mt-2 text-2xl font-bold text-gray-900">{report.sales?.pendingOrders ?? 0}</p>
+              </div>
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                <p className="text-sm font-semibold text-gray-600">Rejected orders</p>
+                <p className="mt-2 text-2xl font-bold text-gray-900">{report.sales?.rejectedOrders ?? 0}</p>
               </div>
               <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
                 <p className="text-sm font-semibold text-gray-600">Sales</p>

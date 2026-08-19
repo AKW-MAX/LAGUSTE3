@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { getApiBaseUrl } from "../../utils/api";
+import PasswordInput from "../Common/PasswordInput";
 
 export default function Login({
   isOpen = true,
@@ -93,13 +94,12 @@ export default function Login({
             Password
           </label>
 
-          <input
-            type="password"
+          <PasswordInput
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
-            className="w-full rounded border p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
+            className="focus:outline-none focus:ring-2 focus:ring-green-700"
           />
         </div>
 

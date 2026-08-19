@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { getApiBaseUrl } from "../../utils/api";
-
+import { getApiBaseUrl } from "../../utils/api";import PasswordInput from "../Common/PasswordInput";
 const Register = ({
   isOpen = true,
   setIsOpen = () => {},
@@ -161,14 +160,12 @@ const Register = ({
           <label className="block mb-2 font-medium">
             Password
           </label>
-          <input
-            type="password"
+          <PasswordInput
             name="password"
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
             className="
-              w-full
               border border-gray-300
               rounded-lg
               px-3 py-2
@@ -185,14 +182,12 @@ const Register = ({
           <label className="block mb-2 font-medium">
             Confirm Password
           </label>
-          <input
-            type="password"
+          <PasswordInput
             name="confirm_password"
             placeholder="Confirm Password"
             value={formData.confirm_password}
             onChange={handleChange}
             className="
-              w-full
               border border-gray-300
               rounded-lg
               px-3 py-2

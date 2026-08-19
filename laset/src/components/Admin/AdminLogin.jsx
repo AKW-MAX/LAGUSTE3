@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { getApiBaseUrl } from "../../utils/api";
+import PasswordInput from "../Common/PasswordInput";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -65,9 +66,8 @@ export default function AdminLogin() {
         onChange={(e) => setUsername(e.target.value)}
       />
 
-      <input
-        type="password"
-        className="border p-3 w-full mb-6 rounded"
+      <PasswordInput
+        className="mb-6"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
