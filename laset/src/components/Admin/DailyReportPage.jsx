@@ -64,9 +64,10 @@ export default function DailyReportPage() {
 
       try {
         const dateValue = dateToLoad || getLocalDateString(new Date());
+        const timeZoneOffsetMinutes = new Date().getTimezoneOffset();
         const endpoints = [
-          `${getApiBaseUrl()}/admin/business-report?date=${dateValue}`,
-          `${getApiBaseUrl()}/business-report?date=${dateValue}`,
+          `${getApiBaseUrl()}/admin/business-report?date=${dateValue}&tzOffset=${timeZoneOffsetMinutes}`,
+          `${getApiBaseUrl()}/business-report?date=${dateValue}&tzOffset=${timeZoneOffsetMinutes}`,
         ];
 
         let lastError = null;
