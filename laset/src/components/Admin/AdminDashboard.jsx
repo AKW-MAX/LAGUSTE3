@@ -26,6 +26,9 @@ export default function AdminDashboard() {
     const canGenerateDailyReport =
         isSuperAdmin || permissions.includes("generate_daily_report");
 
+    const canViewRegionAnalytics =
+        isSuperAdmin || permissions.includes("view_region_analytics");
+
     return (
         <div className="min-h-screen bg-gray-100 p-4 sm:p-6 md:p-8">
 
@@ -110,21 +113,21 @@ export default function AdminDashboard() {
                 )}
 
                 {canGenerateDailyReport && (
-                    <>
-                        <button
-                            onClick={() => navigate("/admin/daily-report")}
-                            className="w-full h-14 rounded-lg bg-amber-600 hover:bg-amber-700 transition duration-300 text-white font-semibold shadow-md"
-                        >
-                            Open Daily Report
-                        </button>
+                    <button
+                        onClick={() => navigate("/admin/daily-report")}
+                        className="w-full h-14 rounded-lg bg-amber-600 hover:bg-amber-700 transition duration-300 text-white font-semibold shadow-md"
+                    >
+                        Open Daily Report
+                    </button>
+                )}
 
-                        <button
-                            onClick={() => navigate("/admin/region-analytics")}
-                            className="w-full h-14 rounded-lg bg-sky-700 hover:bg-sky-800 transition duration-300 text-white font-semibold shadow-md"
-                        >
-                            Region Analytics
-                        </button>
-                    </>
+                {canViewRegionAnalytics && (
+                    <button
+                        onClick={() => navigate("/admin/region-analytics")}
+                        className="w-full h-14 rounded-lg bg-sky-700 hover:bg-sky-800 transition duration-300 text-white font-semibold shadow-md"
+                    >
+                        Region Analytics
+                    </button>
                 )}
 
                 {isSuperAdmin && (

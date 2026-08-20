@@ -14,6 +14,8 @@ const ALL_ADMIN_PERMISSIONS = [
   { key: "admin_activity", label: "Admin Activity" },
   { key: "edit_admin_permissions", label: "Edit Admin Permissions" },
   { key: "sale_receipts", label: "Sale Receipts" },
+  { key: "generate_daily_report", label: "Generate Daily Report" },
+  { key: "view_region_analytics", label: "View Region Analytics" },
 ];
 
 const getApiBaseUrl = () => {
