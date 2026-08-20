@@ -211,13 +211,19 @@ function Navigation() {
 
     if (trimmed) {
       try {
-        await axios.post(`${getApiBaseUrl()}/api/analytics`, {
+        const metadata = await buildAnalyticsMetadata({
+          query: trimmed,
+          searchTerm: trimmed,
+          source: "navigation-search",
+        });
+
+        const payload = {
           eventType: "search",
           page: "/AllProducts",
-          metadata: {
-            query: trimmed,
-          },
-        });
+          referrer: window.location.pathname,
+          metadata,
+        };
+        await axios.post(`${getApiBaseUrl()}/api/analytics`, payload);
       } catch (error) {
         console.warn("Search analytics tracking failed", error);
       }

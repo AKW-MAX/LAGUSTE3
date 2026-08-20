@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import CheckOut from "./CheckOut.jsx";
 import axios from "axios";
 import { getApiBaseUrl } from "../../utils/api";
+import { buildAnalyticsMetadata } from "../../utils/analytics";
 
 export default function Cart() {
   const cart = useSelector((state) => state.cart);
@@ -14,11 +15,12 @@ export default function Cart() {
 
   const trackAnalyticsEvent = async (eventType, metadata = {}) => {
     try {
+      const resolvedMetadata = await buildAnalyticsMetadata(metadata);
       await axios.post(`${getApiBaseUrl()}/api/analytics`, {
         eventType,
         page: window.location.pathname,
         referrer: document.referrer || "",
-        metadata,
+        metadata: resolvedMetadata,
       });
     } catch (error) {
       console.warn("Analytics tracking failed", error);

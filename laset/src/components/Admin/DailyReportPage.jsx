@@ -110,8 +110,8 @@ export default function DailyReportPage() {
         const dateValue = dateToLoad || getLocalDateString(new Date());
         const timeZoneOffsetMinutes = new Date().getTimezoneOffset();
         const endpoints = [
-          `${getApiBaseUrl()}/admin/business-report?date=${dateValue}&tzOffset=${timeZoneOffsetMinutes}`,
-          `${getApiBaseUrl()}/business-report?date=${dateValue}&tzOffset=${timeZoneOffsetMinutes}`,
+          `${getApiBaseUrl()}/admin/business-report?date=${dateValue}&tzOffset=${timeZoneOffsetMinutes}&refresh=true`,
+          `${getApiBaseUrl()}/business-report?date=${dateValue}&tzOffset=${timeZoneOffsetMinutes}&refresh=true`,
         ];
 
         let lastError = null;
@@ -122,6 +122,7 @@ export default function DailyReportPage() {
               method: "GET",
               headers: {
                 Authorization: `Bearer ${token}`,
+                "X-Admin-Token": token,
                 Accept: "application/json",
               },
             });

@@ -3,6 +3,7 @@ import axios from "axios";
 import { addToCart } from "../../Features/CartSlice";
 import { useDispatch } from "react-redux";
 import { assets, resolveImageSource } from "../../assets/assets.js";
+import { buildAnalyticsMetadata } from "../../utils/analytics";
 
 const FALLBACK_PLUS_ICON =
   "data:image/svg+xml;utf8," +
@@ -48,14 +49,20 @@ const ProductsCard = ({
 
   const trackItemClick = async () => {
     try {
-      await axios.post(`${getApiBaseUrl()}/api/analytics`, {
+      const metadata = await buildAnalyticsMetadata({
+        productId: _id,
+        productName: name,
+        itemName: name,
+        source: "products-card",
+      });
+
+      const payload = {
         eventType: "click_item",
         page: `/ProductDetails/${_id}`,
-        metadata: {
-          productId: _id,
-          productName: name,
-        },
-      });
+        referrer: window.location.pathname,
+        metadata,
+      };
+      await axios.post(`${getApiBaseUrl()}/api/analytics`, payload);
     } catch (error) {
       console.warn("Product click analytics tracking failed", error);
     }

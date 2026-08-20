@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getApiBaseUrl } from "../../utils/api";
+import { buildAnalyticsMetadata } from "../../utils/analytics";
 
 export default function ProductDetails() {
   const { productId } = useParams();
@@ -33,15 +34,17 @@ export default function ProductDetails() {
 
   const trackAnalyticsEvent = async (eventType, metadata = {}) => {
     try {
+      const resolvedMetadata = await buildAnalyticsMetadata({
+        ...metadata,
+        productId: product?._id || metadata.productId || "",
+        productName: product?.name || metadata.productName || "",
+      });
+
       await axios.post(`${getApiBaseUrl()}/api/analytics`, {
         eventType,
         page: window.location.pathname,
         referrer: document.referrer || "",
-        metadata: {
-          ...metadata,
-          productId: product?._id || metadata.productId || "",
-          productName: product?.name || metadata.productName || "",
-        },
+        metadata: resolvedMetadata,
       });
     } catch (error) {
       console.warn("Analytics tracking failed", error);
