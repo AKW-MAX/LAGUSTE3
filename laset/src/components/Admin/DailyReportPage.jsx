@@ -55,6 +55,36 @@ const formatDuration = (seconds = 0) => {
   return `${secs}s`;
 };
 
+const getCountrySummary = (activeReport) => {
+  const explicitCountries = Array.isArray(activeReport?.engagement?.clicksPerCountry)
+    ? activeReport.engagement.clicksPerCountry
+    : [];
+
+  if (explicitCountries.length > 0) {
+    return explicitCountries;
+  }
+
+  const locationEntries = Array.isArray(activeReport?.engagement?.locationBreakdown)
+    ? activeReport.engagement.locationBreakdown
+    : Array.isArray(activeReport?.engagement?.clickLocations)
+      ? activeReport.engagement.clickLocations
+      : [];
+
+  if (locationEntries.length === 0) {
+    return [];
+  }
+
+  const summaryMap = new Map();
+  locationEntries.forEach((item) => {
+    const country = String(item?.country || "Unknown").trim() || "Unknown";
+    const existing = summaryMap.get(country) || { country, count: 0 };
+    existing.count += Number(item?.count || 0);
+    summaryMap.set(country, existing);
+  });
+
+  return Array.from(summaryMap.values()).sort((left, right) => right.count - left.count || left.country.localeCompare(right.country));
+};
+
 export default function DailyReportPage() {
   const navigate = useNavigate();
   const [report, setReport] = useState(null);
@@ -147,7 +177,7 @@ export default function DailyReportPage() {
       "Most clicked items:",
       ...(report?.engagement?.mostClickedItems || []).map((item) => `- ${item.name}: ${item.count} clicks`),
       "",
-      "Clicks by country/region:",
+      "Exact regions by clicks:",
       ...(report?.engagement?.clickLocations || []).map((item) => `- ${item.country}/${item.region}: ${item.count} clicks`),
       "",
       "Top regions:",
@@ -342,13 +372,27 @@ export default function DailyReportPage() {
                 </div>
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">Clicks by country / region</h2>
+                <h2 className="text-lg font-semibold text-gray-900">Clicks by country</h2>
                 <div className="mt-3 rounded-xl border border-gray-200 p-4">
                   <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
-                    {(report.engagement?.locationBreakdown || report.engagement?.clickLocations || []).map((item, index) => (
-                      <li key={`${item.country}-${item.region}-${index}`}>{item.country} / {item.region} — {item.count} clicks</li>
+                    {(getCountrySummary(report) || []).map((item, index) => (
+                      <li key={`${item.country}-${index}`}>{item.country} — {item.count} clicks</li>
                     ))}
                   </ul>
+                </div>
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">Exact regions</h2>
+                <div className="mt-3 rounded-xl border border-gray-200 p-4">
+                  {(report.engagement?.locationBreakdown || report.engagement?.clickLocations || []).length > 0 ? (
+                    <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
+                      {(report.engagement?.locationBreakdown || report.engagement?.clickLocations || []).map((item, index) => (
+                        <li key={`${item.country}-${item.region}-${index}`}>{item.country} / {item.region} — {item.count} clicks</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-gray-600">No region-level click data has been captured yet.</p>
+                  )}
                 </div>
               </div>
               <div>

@@ -33,6 +33,7 @@ import AdminActivity from "./components/Admin/AdminActivity.jsx";
 import AdminPermissions from "./components/Admin/AdminPermissions.jsx";
 import AdminAuditLogs from "./components/Admin/AdminAuditLogs.jsx";
 import DailyReportPage from "./components/Admin/DailyReportPage.jsx";
+import RegionAnalyticsPage from "./components/Admin/RegionAnalyticsPage.jsx";
 import ProtectedRoute from "./components/Common/ProtectedRoute.jsx";
 import LoginSelection from "./components/Sections/LoginSelection.jsx";
 import PrivacyPolicy from "./components/Sections/PrivacyPolicy.jsx";
@@ -82,6 +83,7 @@ function App() {
           <Route path="/admin/admin-activity" element={<ProtectedRoute><AdminActivity /></ProtectedRoute>} />
           <Route path="/admin/audit-logs" element={<ProtectedRoute><AdminAuditLogs /></ProtectedRoute>} />
           <Route path="/admin/daily-report" element={<ProtectedRoute><DailyReportPage /></ProtectedRoute>} />
+          <Route path="/admin/region-analytics" element={<ProtectedRoute><RegionAnalyticsPage /></ProtectedRoute>} />
           <Route path="/myorders" element={ <ProtectedRoute><MyOrders /></ProtectedRoute>}/>
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/TermsOfService" element={<TermsOfService />} />

@@ -9,6 +9,11 @@ export default function AnalyticsTracker() {
   useEffect(() => {
     const trackPageView = async () => {
       try {
+        const clientLocation = {
+          country: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+          region: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+        };
+
         await axios.post(`${getApiBaseUrl()}/api/analytics`, {
           eventType: "page_view",
           page: location.pathname,
@@ -16,6 +21,8 @@ export default function AnalyticsTracker() {
           metadata: {
             pathname: location.pathname,
             search: location.search,
+            country: clientLocation.country,
+            region: clientLocation.region,
           },
         });
       } catch (error) {

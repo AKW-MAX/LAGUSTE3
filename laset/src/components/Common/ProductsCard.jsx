@@ -24,6 +24,10 @@ const getApiBaseUrl = () => {
   );
 };
 
+const getClientLocation = () => ({
+  country: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+});
+
 const ProductsCard = ({
   _id,
   imgSrc,
@@ -48,12 +52,15 @@ const ProductsCard = ({
 
   const trackItemClick = async () => {
     try {
+      const clientLocation = getClientLocation();
       await axios.post(`${getApiBaseUrl()}/api/analytics`, {
         eventType: "click_item",
         page: `/ProductDetails/${_id}`,
         metadata: {
           productId: _id,
           productName: name,
+          country: clientLocation.country,
+          region: clientLocation.country,
         },
       });
     } catch (error) {
