@@ -61,7 +61,10 @@ const getCountrySummary = (activeReport) => {
     : [];
 
   if (explicitCountries.length > 0) {
-    return explicitCountries;
+    return explicitCountries.map((item) => ({
+      country: String(item?.country || "Unknown").trim() || "Unknown",
+      count: Number(item?.count || 0),
+    }));
   }
 
   const locationEntries = Array.isArray(activeReport?.engagement?.locationBreakdown)
@@ -120,6 +123,7 @@ export default function DailyReportPage() {
           try {
             const response = await fetch(endpoint, {
               method: "GET",
+              cache: "no-store",
               headers: {
                 Authorization: `Bearer ${token}`,
                 "X-Admin-Token": token,

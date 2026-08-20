@@ -65,10 +65,11 @@ export default function RegionAnalyticsPage() {
       try {
         const dateValue = dateToLoad || getLocalDateString(new Date());
         const timeZoneOffsetMinutes = new Date().getTimezoneOffset();
-        const endpoint = `${getApiBaseUrl()}/admin/business-report?date=${dateValue}&tzOffset=${timeZoneOffsetMinutes}`;
+        const endpoint = `${getApiBaseUrl()}/admin/business-report?date=${dateValue}&tzOffset=${timeZoneOffsetMinutes}&refresh=true`;
 
         const response = await fetch(endpoint, {
           method: "GET",
+          cache: "no-store",
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
@@ -152,7 +153,7 @@ export default function RegionAnalyticsPage() {
               <div className="mt-4 space-y-2">
                 {countryEntries.length > 0 ? countryEntries.map((item, index) => (
                   <div key={`${item.country}-${index}`} className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-3 py-2">
-                    <span className="font-medium text-gray-800">{item.country}</span>
+                    <span className="font-medium text-gray-800">{item.country || "Unknown"}</span>
                     <span className="text-sm text-gray-600">{item.count} clicks</span>
                   </div>
                 )) : (
@@ -171,7 +172,7 @@ export default function RegionAnalyticsPage() {
               <div className="mt-4 space-y-2">
                 {regionEntries.length > 0 ? regionEntries.map((item, index) => (
                   <div key={`${item.country}-${item.region}-${index}`} className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-3 py-2">
-                    <span className="font-medium text-gray-800">{item.country} / {item.region}</span>
+                    <span className="font-medium text-gray-800">{item.country || "Unknown"} / {item.region || "Unknown"}</span>
                     <span className="text-sm text-gray-600">{item.count} clicks</span>
                   </div>
                 )) : (
