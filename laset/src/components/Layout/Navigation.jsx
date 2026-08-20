@@ -211,18 +211,11 @@ function Navigation() {
 
     if (trimmed) {
       try {
-        const clientLocation = {
-          country: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
-          region: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
-        };
-
         await axios.post(`${getApiBaseUrl()}/api/analytics`, {
           eventType: "search",
           page: "/AllProducts",
           metadata: {
             query: trimmed,
-            country: clientLocation.country,
-            region: clientLocation.region,
           },
         });
       } catch (error) {
