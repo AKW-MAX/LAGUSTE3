@@ -4,6 +4,8 @@ import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { resolveImageSource } from "../../assets/assets";
 import { ProductsApi } from "../../Features/ProductsApi";
+import ProductCategoryFields from "./ProductCategoryFields";
+import { isValidProductCategory } from "../../utils/productCategories";
 
 const getApiBaseUrl = () => {
   if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
@@ -176,6 +178,11 @@ export default function EditProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!isValidProductCategory(product.category)) {
+      alert("Please select a valid category and subcategory.");
+      return;
+    }
+
     if (!product.img.trim()) {
       alert("Please upload an image to Cloudinary before saving this product.");
       return;
@@ -242,14 +249,11 @@ export default function EditProduct() {
           required
         />
 
-        <input
-          type="text"
-          name="category"
-          placeholder="Category"
+        <ProductCategoryFields
           value={product.category}
-          onChange={handleChange}
-          className="w-full border rounded p-3"
-          required
+          onChange={(category) =>
+            setProduct((prev) => ({ ...prev, category }))
+          }
         />
 
         <textarea

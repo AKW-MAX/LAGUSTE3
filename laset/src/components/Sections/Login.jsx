@@ -26,13 +26,17 @@ export default function Login({
       const response = await axios.post(`${API_URL}/login`, {
         email,
         password,
+        timeZoneOffsetMinutes: new Date().getTimezoneOffset(),
       });
 
       if (response.data.message === "Login successful") {
         // Save the logged-in user
         localStorage.setItem(
           "user",
-          JSON.stringify(response.data.user)
+          JSON.stringify({
+            ...response.data.user,
+            sessionExpiresAt: response.data.sessionExpiresAt,
+          })
         );
 
         // Optional token if your backend returns one

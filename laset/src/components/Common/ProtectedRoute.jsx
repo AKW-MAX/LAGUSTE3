@@ -1,15 +1,50 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { parseStoredJson } from "../../utils/storage";
 
 export default function ProtectedRoute({ children }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const user = parseStoredJson("user", null);
   const admin = parseStoredJson("admin", null);
   const adminToken = localStorage.getItem("adminToken");
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const active = isAdminRoute ? Boolean(adminToken) : Boolean(user);
+  const sessionExpiresAt = isAdminRoute
+    ? localStorage.getItem("adminSessionExpiresAt")
+    : user?.sessionExpiresAt;
+  const sessionExpiration = sessionExpiresAt ? Date.parse(sessionExpiresAt) : NaN;
+  const [sessionExpired, setSessionExpired] = useState(false);
+
+  useEffect(() => {
+    if (!active) return undefined;
+
+    const clearSession = () => {
+      if (isAdminRoute) {
+        localStorage.removeItem("adminToken");
+        localStorage.removeItem("admin");
+        localStorage.removeItem("adminSessionExpiresAt");
+        navigate("/admin/login", { replace: true });
+        return;
+      }
+
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      navigate("/login", { replace: true });
+    };
+
+    const expirationDelay = Number.isFinite(sessionExpiration)
+      ? Math.max(0, sessionExpiration - Date.now())
+      : 0;
+    const timeout = window.setTimeout(() => {
+      clearSession();
+      setSessionExpired(true);
+    }, expirationDelay);
+    return () => window.clearTimeout(timeout);
+  }, [active, isAdminRoute, navigate, sessionExpiration]);
 
   if (isAdminRoute) {
-    if (!adminToken) {
+    if (!adminToken || sessionExpired) {
       return <Navigate to="/admin/login" replace />;
     }
 
@@ -62,5 +97,5 @@ export default function ProtectedRoute({ children }) {
     return <Navigate to="/admin/dashboard" replace />;
   }
 
-  return user ? children : <Navigate to="/login" replace />;
+  return user && !sessionExpired ? children : <Navigate to="/login" replace />;
 }

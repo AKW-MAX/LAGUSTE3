@@ -162,8 +162,9 @@ export default function DailyReportPage() {
       "AGRIVENTURE DAILY REPORT",
       `Date: ${formatReportDate(report?.reportDate || selectedDate)}`,
       "",
-      `Website visitors: ${report?.traffic?.visits ?? 0}`,
+      `Visits: ${report?.traffic?.visits ?? 0}`,
       `Unique visitors: ${report?.traffic?.uniqueVisitors ?? 0}`,
+      `Page views: ${report?.traffic?.pageViews ?? report?.traffic?.visits ?? 0}`,
       `Conversion rate: ${report?.traffic?.conversionRate ?? 0}%`,
       `Orders: ${report?.sales?.orders ?? 0}`,
       `Approved orders: ${report?.sales?.approvedOrders ?? 0}`,
@@ -284,12 +285,16 @@ export default function DailyReportPage() {
           <>
             <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
-                <p className="text-sm font-semibold text-gray-600">Website visitors</p>
+                <p className="text-sm font-semibold text-gray-600">Visits</p>
                 <p className="mt-2 text-2xl font-bold text-gray-900">{report.traffic?.visits ?? 0}</p>
               </div>
               <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
                 <p className="text-sm font-semibold text-gray-600">Unique visitors</p>
                 <p className="mt-2 text-2xl font-bold text-gray-900">{report.traffic?.uniqueVisitors ?? 0}</p>
+              </div>
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+                <p className="text-sm font-semibold text-gray-600">Page views</p>
+                <p className="mt-2 text-2xl font-bold text-gray-900">{report.traffic?.pageViews ?? report.traffic?.visits ?? 0}</p>
               </div>
               <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
                 <p className="text-sm font-semibold text-gray-600">Conversion rate</p>

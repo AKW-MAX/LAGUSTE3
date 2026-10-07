@@ -4,6 +4,8 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { resolveImageSource } from "../../assets/assets";
 import { ProductsApi } from "../../Features/ProductsApi";
+import ProductCategoryFields from "./ProductCategoryFields";
+import { isValidProductCategory } from "../../utils/productCategories";
 
 const getApiBaseUrl = () => {
   if (
@@ -248,6 +250,11 @@ export default function AddProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!isValidProductCategory(product.category)) {
+      alert("Please select a valid category and subcategory.");
+      return;
+    }
+
     if (!product.img.trim()) {
       alert(
         "Please upload an image to Cloudinary before saving this product."
@@ -474,40 +481,12 @@ export default function AddProduct() {
 
           {/* CATEGORY */}
 
-          <div>
-
-            <label className="
-              block
-              mb-1
-              text-sm
-              font-medium
-              text-gray-700
-            ">
-              Category
-            </label>
-
-            <input
-              type="text"
-              name="category"
-              placeholder="Enter category"
-              value={product.category}
-              onChange={handleChange}
-              className="
-                w-full
-                border
-                border-gray-300
-                rounded-lg
-                p-3
-                text-sm
-                sm:text-base
-                focus:outline-none
-                focus:ring-2
-                focus:ring-green-700
-              "
-              required
-            />
-
-          </div>
+          <ProductCategoryFields
+            value={product.category}
+            onChange={(category) =>
+              setProduct((prevProduct) => ({ ...prevProduct, category }))
+            }
+          />
 
           {/* DESCRIPTION */}
 

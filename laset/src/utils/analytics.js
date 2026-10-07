@@ -1,6 +1,37 @@
 let cachedLocationMetadata = null;
 let cachedLocationTimestamp = 0;
 const LOCATION_CACHE_TTL_MS = 60 * 60 * 1000;
+const VISITOR_ID_KEY = "analyticsVisitorId";
+const SESSION_ID_KEY = "analyticsSessionId";
+const SESSION_ACTIVITY_KEY = "analyticsSessionActivityAt";
+const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
+
+const createAnalyticsId = () => {
+  if (globalThis.crypto?.randomUUID) {
+    return globalThis.crypto.randomUUID();
+  }
+
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+};
+
+export const getAnalyticsIdentity = () => {
+  let visitorId = localStorage.getItem(VISITOR_ID_KEY);
+  if (!visitorId) {
+    visitorId = createAnalyticsId();
+    localStorage.setItem(VISITOR_ID_KEY, visitorId);
+  }
+
+  const now = Date.now();
+  const lastActivityAt = Number(sessionStorage.getItem(SESSION_ACTIVITY_KEY));
+  let sessionId = sessionStorage.getItem(SESSION_ID_KEY);
+  if (!sessionId || !Number.isFinite(lastActivityAt) || now - lastActivityAt > SESSION_TIMEOUT_MS) {
+    sessionId = createAnalyticsId();
+    sessionStorage.setItem(SESSION_ID_KEY, sessionId);
+  }
+  sessionStorage.setItem(SESSION_ACTIVITY_KEY, String(now));
+
+  return { visitorId, sessionId };
+};
 
 const normalizeLocationValue = (value) => {
   const text = String(value || "").trim();
@@ -42,7 +73,7 @@ export const resolveBrowserLocationMetadata = async () => {
     cachedLocationMetadata = locationMetadata;
     cachedLocationTimestamp = now;
     return locationMetadata;
-  } catch (error) {
+  } catch {
     cachedLocationMetadata = { country: "", region: "" };
     cachedLocationTimestamp = now;
     return cachedLocationMetadata;

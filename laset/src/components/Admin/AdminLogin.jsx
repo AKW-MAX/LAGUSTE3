@@ -22,11 +22,13 @@ export default function AdminLogin() {
       const res = await axios.post(`${getApiBaseUrl()}/admin/login`, {
         username: normalizedUsername,
         password: normalizedPassword,
+        timeZoneOffsetMinutes: new Date().getTimezoneOffset(),
       });
 
       if (res.data.success) {
         // Save JWT token
         localStorage.setItem("adminToken", res.data.token);
+        localStorage.setItem("adminSessionExpiresAt", res.data.sessionExpiresAt);
 
         // Save admin information
         localStorage.setItem(

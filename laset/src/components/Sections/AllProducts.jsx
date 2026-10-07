@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../Features/ProductsApi";
@@ -28,17 +28,7 @@ export default function AllProducts({ showSearchBar = true }) {
     skip: false,
   });
 
-  const searchParams = new URLSearchParams(location.search);
-  const initialQuery =
-    searchParams.get("q")?.toLowerCase().trim() || "";
-
-  const [searchTerm, setSearchTerm] = useState(initialQuery);
-
-  useEffect(() => {
-    const nextQuery =
-      searchParams.get("q")?.toLowerCase().trim() || "";
-    setSearchTerm(nextQuery);
-  }, [location.search, searchParams]);
+  const searchTerm = new URLSearchParams(location.search).get("q") || "";
 
   useEffect(() => {
     document.title = "Our Products | Agriventure Enterprise";
@@ -128,10 +118,9 @@ export default function AllProducts({ showSearchBar = true }) {
 
   const handleSearchChange = (event) => {
     const value = event.target.value;
-    setSearchTerm(value);
 
-    const nextPath = value.trim()
-      ? `/AllProducts?q=${encodeURIComponent(value.trim())}`
+    const nextPath = value
+      ? `/AllProducts?q=${encodeURIComponent(value)}`
       : "/AllProducts";
 
     navigate(nextPath, { replace: true });

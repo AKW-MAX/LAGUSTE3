@@ -8,15 +8,23 @@ import {
 } from "../../assets/assets.js";
 import {Link} from "react-router-dom";
 
-const normalizeSlug = (slug) => slug.replace(/-/g, " ").toLowerCase();
+const normalizeSlug = (slug) =>
+  slug
+    .split("/")
+    .map((part) => part.replace(/-/g, " ").toLowerCase())
+    .join(" / ");
 
 const toSlug = (value) =>
   value
     ?.toString()
     .trim()
     .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w-]/g, "") || "";
+    .split("/")
+    .map((part) =>
+      part.trim().replace(/\s+/g, "-").replace(/[^\w-]/g, "")
+    )
+    .filter(Boolean)
+    .join("/") || "";
 
 export default function CategoryPage() {
   const params = useParams();

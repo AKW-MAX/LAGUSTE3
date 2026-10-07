@@ -7,7 +7,10 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getApiBaseUrl } from "../../utils/api";
-import { buildAnalyticsMetadata } from "../../utils/analytics";
+import {
+  buildAnalyticsMetadata,
+  getAnalyticsIdentity,
+} from "../../utils/analytics";
 
 export default function ProductDetails() {
   const { productId } = useParams();
@@ -34,8 +37,10 @@ export default function ProductDetails() {
 
   const trackAnalyticsEvent = async (eventType, metadata = {}) => {
     try {
+      const identity = getAnalyticsIdentity();
       const resolvedMetadata = await buildAnalyticsMetadata({
         ...metadata,
+        ...identity,
         productId: product?._id || metadata.productId || "",
         productName: product?.name || metadata.productName || "",
       });
@@ -44,6 +49,7 @@ export default function ProductDetails() {
         eventType,
         page: window.location.pathname,
         referrer: document.referrer || "",
+        ...identity,
         metadata: resolvedMetadata,
       });
     } catch (error) {
