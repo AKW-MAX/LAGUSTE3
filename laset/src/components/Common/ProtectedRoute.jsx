@@ -2,6 +2,19 @@ import { useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { parseStoredJson } from "../../utils/storage";
 
+const getJwtExpiration = (token) => {
+  try {
+    const payload = token.split(".")[1];
+    if (!payload) return NaN;
+
+    const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const decoded = JSON.parse(atob(base64));
+    return Number.isFinite(decoded.exp) ? decoded.exp * 1000 : NaN;
+  } catch {
+    return NaN;
+  }
+};
+
 export default function ProtectedRoute({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -13,7 +26,10 @@ export default function ProtectedRoute({ children }) {
   const sessionExpiresAt = isAdminRoute
     ? localStorage.getItem("adminSessionExpiresAt")
     : user?.sessionExpiresAt;
-  const sessionExpiration = sessionExpiresAt ? Date.parse(sessionExpiresAt) : NaN;
+  const savedSessionExpiration = sessionExpiresAt ? Date.parse(sessionExpiresAt) : NaN;
+  const sessionExpiration = isAdminRoute && !Number.isFinite(savedSessionExpiration)
+    ? getJwtExpiration(adminToken || "")
+    : savedSessionExpiration;
   const [sessionExpired, setSessionExpired] = useState(false);
 
   useEffect(() => {
