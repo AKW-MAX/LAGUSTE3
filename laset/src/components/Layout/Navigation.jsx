@@ -4,6 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import assets from "../../assets/assets.js";
 import { parseStoredJson } from "../../utils/storage";
+import {
+  PRODUCT_NAVIGATION_CATEGORIES as categories,
+  PRODUCT_NAVIGATION_GROUPS as nestedCategories,
+} from "../../utils/productCategories";
 
 const getInitials = (userData) => {
   if (!userData) return "U";
@@ -62,107 +66,6 @@ const getAvatarUrl = (userData) => {
     trimmed.startsWith("/") ? "" : "/"
   }${trimmed}`;
 };
-
-const categories = [
-  {
-    label: "Insecticides",
-    href: "/category/insecticide",
-  },
-  {
-    label: "Public Health Insecticides",
-    href: "/category/public-health-insecticide",
-  },
-  {
-    label: "Fungicides",
-    href: "/category/fungicides",
-  },
-  {
-    label: "Seeds",
-    href: "/category/seeds",
-  },
-   {
-    label: "Fertilizers",
-    href: "/category/fertilizers",
-  },
-   {
-    label: "Organic",
-    href: "/category/organic",
-  },
-  {
-    label: "Adjuvant",
-    href: "/category/adjuvant",
-  },
-  {
-    label: "Termiticides",
-    href: "/category/termiticides",
-  },
-];
-
-const nestedCategories = [
-  {
-    label: "Vet Products",
-    items: [
-      {
-        label: "Dewormers",
-        href: "/category/vet-products/dewormers",
-      },
-      {
-        label: "Supplements",
-        href: "/category/vet-products/supplements",
-      },
-      {
-        label: "Ethicals",
-        href: "/category/vet-products/ethicals",
-      },
-      {
-        label: "Disinfectants",
-        href: "/category/vet-products/disinfectants",
-      },
-      {
-        label: "Acaricides",
-        href: "/category/vet-products/acaricides",
-      },
-      {
-        label: "Intramammary",
-        href: "/category/vet-products/intramammary",
-      },
-      {
-        label: "Pet shampoos",
-        href: "/category/vet-products/pet-shampoos",
-      },
-    ],
-  },
-
-  {
-    label: "Equipments",
-    items: [
-      {
-        label: "Pigs",
-        href: "/category/equipments/pigs",
-      },
-      {
-        label: "Chicken",
-        href: "/category/equipments/chicken",
-      },
-      {
-        label: "Cattle",
-        href: "/category/equipments/cattle",
-      },
-      {
-        label: "Pets",
-        href: "/category/equipments/pets",
-      },
-      {
-        label: "Fumigation",
-        href: "/category/equipments/fumigation",
-      },
-      {
-        label: "Farm",
-        href: "/category/equipments/farm",
-      },
-    ],
-  },
-];
 
 function Navigation() {
   const cart = useSelector(

@@ -28,7 +28,11 @@ export default function AdminLogin() {
       if (res.data.success) {
         // Save JWT token
         localStorage.setItem("adminToken", res.data.token);
-        localStorage.setItem("adminSessionExpiresAt", res.data.sessionExpiresAt);
+        if (res.data.sessionExpiresAt) {
+          localStorage.setItem("adminSessionExpiresAt", res.data.sessionExpiresAt);
+        } else {
+          localStorage.removeItem("adminSessionExpiresAt");
+        }
 
         // Save admin information
         localStorage.setItem(

@@ -10,6 +10,11 @@ import {
 import ProductsCard from "../Common/ProductsCard";
 import { addToCart } from "../../Features/CartSlice";
 import { Link } from "react-router-dom";
+import {
+  PRODUCT_CATEGORIES,
+  PRODUCT_NAVIGATION_CATEGORIES,
+  PRODUCT_NAVIGATION_GROUPS,
+} from "../../utils/productCategories";
 
 export default function AllProducts({ showSearchBar = true }) {
   const dispatch = useDispatch();
@@ -127,16 +132,68 @@ export default function AllProducts({ showSearchBar = true }) {
   };
 
   const productsByCategory = useMemo(() => {
-    return productsList.reduce((groups, product) => {
+    const groups = productsList.reduce((categoryGroups, product) => {
       const category = product.category || "Other";
 
-      if (!groups[category]) {
-        groups[category] = [];
+      if (!categoryGroups[category]) {
+        categoryGroups[category] = [];
       }
 
-      groups[category].push(product);
-      return groups;
+      categoryGroups[category].push(product);
+      return categoryGroups;
     }, {});
+
+    const navigationCategories = [
+      ...PRODUCT_NAVIGATION_CATEGORIES,
+      ...PRODUCT_NAVIGATION_GROUPS.flatMap((group) =>
+        group.items.map((item) => ({
+          ...item,
+          label: `${group.label} / ${item.label}`,
+        }))
+      ),
+    ];
+    const navigationCategoryValues = new Set(
+      navigationCategories.map((category) => category.value)
+    );
+    const additionalCategories = PRODUCT_CATEGORIES.flatMap((category) =>
+      category.subcategories
+        ? category.subcategories.map((subcategory) => ({
+            value: `${category.value}/${subcategory.value}`,
+            label: `${category.label} / ${subcategory.label}`,
+          }))
+        : [{ value: category.value, label: category.label }]
+    ).filter(
+      (category) => !navigationCategoryValues.has(category.value)
+    );
+    const orderedCategories = [
+      ...navigationCategories,
+      ...additionalCategories,
+    ];
+    const categoryOrder = new Map(
+      orderedCategories.map((category, index) => [category.value, index])
+    );
+
+    return Object.entries(groups)
+      .map(([category, products], originalIndex) => ({
+        category,
+        products,
+        originalIndex,
+        configuredCategory: orderedCategories.find(
+          (item) => item.value === category.trim().toLowerCase()
+        ),
+      }))
+      .sort((first, second) => {
+        const firstOrder = categoryOrder.get(first.category.trim().toLowerCase());
+        const secondOrder = categoryOrder.get(second.category.trim().toLowerCase());
+
+        if (firstOrder === undefined && secondOrder === undefined) {
+          return first.originalIndex - second.originalIndex;
+        }
+
+        if (firstOrder === undefined) return 1;
+        if (secondOrder === undefined) return -1;
+        return firstOrder - secondOrder;
+      });
   }, [productsList]);
 
   /*
@@ -430,7 +487,7 @@ export default function AllProducts({ showSearchBar = true }) {
           mt-8
           space-y-10
         ">
-          {Object.entries(productsByCategory).map(([category, products]) => (
+          {productsByCategory.map(({ category, products, configuredCategory }) => (
             <section key={category}>
               <div className="
                 mb-3
@@ -453,7 +510,7 @@ export default function AllProducts({ showSearchBar = true }) {
                   py-2
                   z-10
                 ">
-                  {category}
+                  {configuredCategory?.label || category}
                 </h3>
               </div>
 
