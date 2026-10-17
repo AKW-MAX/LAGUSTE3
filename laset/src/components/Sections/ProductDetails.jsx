@@ -3,7 +3,7 @@ import { useGetAllProductsQuery } from "../../Features/ProductsApi";
 import { resolveImageSource, assets } from "../../assets/assets.js";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../Features/CartSlice";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getApiBaseUrl } from "../../utils/api";
@@ -11,9 +11,10 @@ import {
   buildAnalyticsMetadata,
   getAnalyticsIdentity,
 } from "../../utils/analytics";
+import { getProductSeo, getProductSlug } from "../../utils/productSeo";
 
 export default function ProductDetails() {
-  const { productId } = useParams();
+  const { productId, productSlug } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,11 +32,13 @@ export default function ProductDetails() {
       ? data.products
       : data?.value || [];
 
-  const product = products.find(
-    (item) => item._id?.toString() === productId?.toString()
+  const product = products.find((item) =>
+    productSlug
+      ? getProductSlug(item) === productSlug
+      : item._id?.toString() === productId?.toString()
   );
 
-  const trackAnalyticsEvent = async (eventType, metadata = {}) => {
+  const trackAnalyticsEvent = useCallback(async (eventType, metadata = {}) => {
     try {
       const identity = getAnalyticsIdentity();
       const resolvedMetadata = await buildAnalyticsMetadata({
@@ -55,7 +58,7 @@ export default function ProductDetails() {
     } catch (error) {
       console.warn("Analytics tracking failed", error);
     }
-  };
+  }, [product]);
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -86,24 +89,126 @@ export default function ProductDetails() {
   useEffect(() => {
     if (!product) return;
 
-    document.title = `${product.name} | Agriventure Enterprise`;
-    const descriptionTag = document.querySelector('meta[name="description"]');
-    const descriptionText = product.description || `Discover ${product.name} from Agriventure Enterprise, a trusted farm input and agro supply product for modern agriculture.`;
+    const previousTitle = document.title;
+    const previousMeta = new Map();
+    const { slug, title, description: descriptionText } = getProductSeo(product);
+    const canonicalUrl = `${window.location.origin}/products/${slug}`;
+    const rawImage = resolveImageSource(product.img || product.image || "");
+    const imageUrl = rawImage ? new URL(rawImage, window.location.origin).href : "";
+    const price = Number(product.price);
 
-    if (descriptionTag) {
-      descriptionTag.setAttribute("content", descriptionText);
-    } else {
-      const meta = document.createElement("meta");
-      meta.name = "description";
-      meta.content = descriptionText;
-      document.head.appendChild(meta);
+    const setMeta = (attribute, key, content) => {
+      const selector = `meta[${attribute}="${key}"]`;
+      let meta = document.head.querySelector(selector);
+
+      if (!meta) {
+        meta = document.createElement("meta");
+        meta.setAttribute(attribute, key);
+        document.head.appendChild(meta);
+        previousMeta.set(meta, null);
+      } else if (!previousMeta.has(meta)) {
+        previousMeta.set(meta, meta.getAttribute("content"));
+      }
+
+      meta.setAttribute("content", content);
+    };
+
+    document.title = title;
+    setMeta("name", "description", descriptionText);
+    setMeta("property", "og:type", "product");
+    setMeta("property", "og:title", document.title);
+    setMeta("property", "og:description", descriptionText);
+    setMeta("property", "og:url", canonicalUrl);
+    setMeta("property", "og:site_name", "Agriventure Enterprise");
+    setMeta("name", "twitter:card", "summary_large_image");
+    setMeta("name", "twitter:title", document.title);
+    setMeta("name", "twitter:description", descriptionText);
+
+    if (imageUrl) {
+      setMeta("property", "og:image", imageUrl);
+      setMeta("name", "twitter:image", imageUrl);
     }
+
+    if (Number.isFinite(price)) {
+      setMeta("property", "product:price:amount", String(price));
+      setMeta("property", "product:price:currency", "KES");
+    }
+
+    let canonical = document.head.querySelector('link[rel="canonical"]');
+    const createdCanonical = !canonical;
+    const previousCanonicalUrl = canonical?.getAttribute("href");
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", canonicalUrl);
+
+    let structuredData = document.getElementById("product-jsonld");
+    const createdStructuredData = !structuredData;
+    const previousStructuredData = structuredData?.textContent;
+    if (!structuredData) {
+      structuredData = document.createElement("script");
+      structuredData.id = "product-jsonld";
+      structuredData.type = "application/ld+json";
+      document.head.appendChild(structuredData);
+    }
+    const productSchema = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: product.name,
+      description: descriptionText,
+      image: imageUrl ? [imageUrl] : undefined,
+      sku: product._id,
+      category: product.category || undefined,
+      brand: {
+        "@type": "Brand",
+        name: "Agriventure Enterprise",
+      },
+      offers: Number.isFinite(price)
+        ? {
+            "@type": "Offer",
+            url: canonicalUrl,
+            priceCurrency: "KES",
+            price,
+            availability:
+              Number(product.stock) > 0
+                ? "https://schema.org/InStock"
+                : "https://schema.org/OutOfStock",
+            itemCondition: "https://schema.org/NewCondition",
+          }
+        : undefined,
+    };
+    structuredData.textContent = JSON.stringify(productSchema).replace(/</g, "\\u003c");
 
     trackAnalyticsEvent("product_view", {
       productId: product._id,
       productName: product.name,
     });
-  }, [product?._id, product?.name, product?.description]);
+
+    return () => {
+      document.title = previousTitle;
+      previousMeta.forEach((previousContent, meta) => {
+        if (previousContent === null) {
+          meta.remove();
+        } else {
+          meta.setAttribute("content", previousContent);
+        }
+      });
+
+      if (createdCanonical) {
+        canonical.remove();
+      } else if (previousCanonicalUrl) {
+        canonical.setAttribute("href", previousCanonicalUrl);
+      }
+
+      if (createdStructuredData) {
+        structuredData.remove();
+      } else {
+        structuredData.textContent = previousStructuredData || "";
+      }
+    };
+  }, [product, trackAnalyticsEvent]);
 
   if (isLoading) {
     return (

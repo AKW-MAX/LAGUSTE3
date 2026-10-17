@@ -4,6 +4,7 @@ import { addToCart } from "../../Features/CartSlice";
 import { useDispatch } from "react-redux";
 import { assets, resolveImageSource } from "../../assets/assets.js";
 import { buildAnalyticsMetadata } from "../../utils/analytics";
+import { getProductSlug } from "../../utils/productSeo";
 
 const FALLBACK_PLUS_ICON =
   "data:image/svg+xml;utf8," +
@@ -35,6 +36,7 @@ const ProductsCard = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const productUrl = `/products/${getProductSlug({ _id, name })}`;
 
   const handleAddToCart = () => {
     dispatch(
@@ -58,7 +60,7 @@ const ProductsCard = ({
 
       const payload = {
         eventType: "click_item",
-        page: `/ProductDetails/${_id}`,
+        page: productUrl,
         referrer: window.location.pathname,
         metadata,
       };
@@ -70,7 +72,7 @@ const ProductsCard = ({
 
   const handleCardClick = async () => {
     await trackItemClick();
-    navigate(`/ProductDetails/${_id}`);
+    navigate(productUrl);
   };
 
   const addIconSrc =
@@ -126,6 +128,8 @@ const ProductsCard = ({
         <img
           src={safeImageSrc}
           alt={imgAlt}
+          loading="lazy"
+          decoding="async"
           className="
             h-full
             w-full

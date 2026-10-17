@@ -15,6 +15,7 @@ import {
   PRODUCT_NAVIGATION_CATEGORIES,
   PRODUCT_NAVIGATION_GROUPS,
 } from "../../utils/productCategories";
+import { getProductSlug } from "../../utils/productSeo";
 
 export default function AllProducts({ showSearchBar = true }) {
   const dispatch = useDispatch();
@@ -458,7 +459,7 @@ export default function AllProducts({ showSearchBar = true }) {
                   Add to Cart
                 </button>
 
-                <Link to={`/ProductDetails/${product._id}`}>
+                <Link to={`/products/${getProductSlug(product)}`}>
                   <button
                     className="
                       mt-2
@@ -565,7 +566,7 @@ export default function AllProducts({ showSearchBar = true }) {
                       Add to Cart
                     </button>
 
-                    <Link to={`/ProductDetails/${product._id}`}>
+                    <Link to={`/products/${getProductSlug(product)}`}>
                       <button
                         className="
                           mt-2

@@ -57,6 +57,7 @@ function App() {
           <Route path="Features" element={<Features />} />
           <Route path="AllProducts" element={<AllProducts />} />
           <Route path="category/*" element={<CategoryPage />} />
+          <Route path="products/:productSlug" element={<ProductDetails />} />
           <Route path="ProductDetails/:productId" element={<ProductDetails />} />
           <Route path="Cart" element={<Cart />} />
           <Route path="FeedBack" element={<FeedBack />} />
